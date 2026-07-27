@@ -1,0 +1,327 @@
+{
+  "home": 
+    {
+      "title": "VET CMU RUN 2025",
+      "subtitle": "The event will begin on November 30, 2025, at the Faculty of Veterinary Medicine, Chiang Mai University.",
+      "register": "Register Now",
+       "checkstatus": " Check Registration Status",
+      "sponsors": "Sponsors",
+      "maps": "Running route map",
+      "contactTitle": "Further information please contact",
+      "contactMethods": [
+        "Facebook Inbox:  VET CMU RUN 2025",
+        "Phone: 0 5394 8009, 0 5394 008, 0 5394 028",
+        "Faculty of Veterinary Medicine, Chiang Mai University"
+      ],
+      "contactButton": "Facebook page",
+      "close_register": "Close Registration",
+      "announcement": "Sorry, registration is currently closed.",
+      "sale_shirt": "Buy a running shirt",
+      "close_sale_shirt": "Shirt orders are now closed.",
+      "trackeing": "Track your order"
+    },
+  "table_list": {
+      "list_participants": "List of Participants",
+      "search": "Search by name or bib number",
+      "fullname": "Fullname",
+      "numberbib": "BIB Number",
+      "category": "Category",
+      "detail": "More Detail",
+      "not_found": "Not Found",
+      "arrow_back": "Back",
+      "try_different_filter": "Please try a different filter.",
+      "status_payment": "Payment Status",
+      "select_category": {
+        "all": "All",
+        "vip": "VIP",
+        "funrun": {
+          "all": "All",
+          "fr1": "FUN RUN 4 KM (with dog)",
+          "fr2": "FUN RUN 4 KM"
+        },
+        "marathon": {
+          "all": "MINI MARATHON (11 KM)",
+          "Y19": "Age not over 19 Yrs.",
+          "Y20": "Age 20 - 29 Yrs.",
+          "Y30": "Age 30 - 39 Yrs.",
+          "Y40": "Age 40 - 49 Yrs.",
+          "Y50": "Age over 50 Yrs"
+        },
+        "fancy": "FANCY"
+      }
+    },
+    "page": {
+      "title": "Registration Form for VET CMU RUN 2025",
+      "button": {
+        "ok": "OK"
+      },
+      "steps": {
+        "step": "Step",
+        "select_event": "Select Event",
+        "select_option": "Select Option",
+        "personal_info": "Personal Information",
+        "confirmation": "Confirmation"
+      },
+      "validation": {
+        "transfer_file": "Please upload your receipt.",
+        "required_fields": "Please fill in all required fields.",
+        "receipt_address": "Please fill in your receipt address.",
+        "dog_info": "Please fill in your dog's information."
+      },
+      "modal": {
+        "warning": "Warning",
+        "error": "Error",
+        "success": "Success"
+      }
+    },
+    "step1": {
+      "title": "Registration Option",
+      "label_radio1": "VIP (Unlimited option)",
+      "label_radio2": "FUN RUN (4 KM) ",
+      "label_radio3": "MINI MARATHON (11 KM)",
+      "baht": "THB",
+      "next_button": "Next",
+      "back_button": "Back",
+      "tooltip": {
+        "tooltip_vip": "Registration",
+        "tooltip_funrun": "Registration",
+        "tooltip_marathon": "Registration"
+      }
+    },
+    "step2": {
+     "select_option": "Select Option",
+     "option": {
+      "vip": {
+        "label_radio1": "VIP FUN RUN (without dog)",
+        "label_radio2": "VIP FUN RUN (with dog)",
+        "label_radio3": "VIP MINI MARATHON (11 KM)"
+      },
+      "funrun": {
+        "label_radio1": "FUN RUN 4 KM (without dog)",
+        "label_radio2": "FUN RUN 4 KM (with dog)"
+      },
+      "marathon": {
+        "label_radio1": "Age not over 19 yrs.",
+        "label_radio2": "Age 20 - 29 yrs.",
+        "label_radio3": "Age 30 - 39 yrs.",
+        "label_radio4": "Age 40 - 49 yrs.",
+        "label_radio5": "Age over 50 yrs."
+      },
+      "close_register": "Registration is now closed"
+
+     }
+    },
+     "step3": {
+      "title_personal": "Applicant information",
+      "title_animal": "Dog information (1 Applicant per 1 Dog ONLY)",
+      "button": {
+        "examine": "Review Information",
+        "click_file": "Click to Select File"
+      },
+      "form_personal": {
+        "fristname": "First Name",
+        "lastname": "Last Name",
+        "email": "Email",
+        "phone": "Phone Number",
+        "validation": {
+          "phone_invalid": "Please enter a valid phone number."
+        },
+        "select_reward": "Please select only one reward.",
+        "select_trophy": "Trophy",
+        "select_shirt_2": "Second running shirt",
+        "select_model_shrit": "Select your preferred shirt model",
+        
+        "select_sex": "Select Gender",
+        "select_age_range": "Select Age Range",
+        "select_size_shirt": "Select Shirt Size",
+        "needReceipt": "Request a Receipt",
+        "address": "Enter Address for Receipt Delivery",
+        "paymentFile": "Payment transaction/slip File size does not exceed 5 mb.",
+        "shirt": {
+          "chest_size": "Chest",
+          "length_size": "Length"
+        },
+        "sex": {
+          "male": "Male",
+          "female": "Female"
+        }
+      },
+      "form_animal": {
+        "name": "Pet's Name",
+        "breed": "Breed",
+        "weight": "Weight (kg)",
+        "select_sex": "Gender",
+        "select_contest": "Will you join the fancy dress contest or not?",
+        "closed": "Closed for fancy dress contest",
+        "sex": {
+          "select_sex": "Select Gender",
+          "male": "Male",
+          "female": "Female"
+        }
+      },
+      "card_payment": {
+        "title": "Payment method",
+        "account_name": "Account name:",
+        "account_name_detail": "CMU FUNRUN MINIMARATHON",
+        "bank_name": "Bank name:",
+        "bank_name_detail": "Siam Commercial Bank",
+        "branch": "Branch:",
+        "branch_detail": "Chiang Mai University",
+        "account_number": "Account number",
+        "button": {
+          "copy": "Copy",
+          "copied": "Copied"
+        }
+      }
+      
+    },
+    "step4": {
+      "personal_info": "Personal Information",
+      "animal_info": "Dog Information",
+      "receipt_info": "Receipt Information",
+      "title": "Check Information Before Confirmation",
+      "category": "Category",
+      "model": "Model",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone Number",
+      "size_shrit": "Size Shirt",
+      "need_receipt": "Request a Receipt",
+      "address": "Receipt Address",
+      "reward": "Selected reward",
+      "payment_title": "Payment Transaction Slip",
+      "age": "age",
+      "button": {
+        "confrim_send": "Confirma",
+        "edit_data": "Edit"
+      },
+      "sex": {
+        "sex_title": "Gender", 
+        "male": "Male",
+        "female": "Female"
+      },
+      "animal": {
+        "name": "Pet's Name",
+        "breed": "Breed",
+        "weight": "Weight (kg)",
+        "gender": "Gender",
+        "fancys": "Fancy Dress Contest",
+        "yes": "Yes",
+        "no": "No"
+      },
+      "animal_sex": {
+        "male": "Male",
+        "female": "Female"
+      }
+    },
+  "process_loading": {
+      "message": {
+        "error": "An unexpected error has occurred.",
+        "success": "Your data has been successfully submitted.",
+        "pending": "Submitting your data. Please wait..."
+      },
+      "loading": "Loading data. Please wait...",
+      "please_wait": "Please wait while the system retrieves information from the database.",
+      "reload": "Refresh data"
+  },
+
+  "form_sale": {
+    "title": "Running shirts only",
+    "subtitle": "Please fill in the information below to proceed with your order",
+    "data_user": {
+      "title": "Buyer information",
+      "fullname": "Full name",
+      "contact_number": "Contact number",
+      "email": "Email"
+    },
+    "data_shirts": {
+      "title": "Number of shirts",
+      "subtitle": "Select the quantity you wish to purchase (maximum 10 shirts)",
+      "select_quantity": "Select quantity",
+      "shirts": "shirts",
+      "title_details": "Shirt details",
+      "subtitle_details": "Please select the details for each shirt",
+      "shirt_number": "Shirt number",
+      "shirt_model": "Select shirt model",
+      "shirt_size": "Select shirt size"
+    },
+    "data_method": {
+      "title": "Shirt collection method",
+      "pick_up": {
+        "title": "Self pick-up",
+        "subtitle": "Pick up at Faculty of Veterinary Medicine, Chiang Mai University"
+      } ,
+      "delivery": {
+        "title":  "Delivery",
+        "subtitle": "Postal delivery",
+        "delivery_address": {
+          "title": "Delivery address",
+          "address": "Address" 
+        }
+      },
+      "cost_summary": {
+        "title": "Cost summary",
+        "bath": "THB",
+        "shirt": "Running shirt",
+        "shipping_fee": "Shipping fee",
+        "shipping_fee_f": "Shipping fee (first item)",
+        "free": "Free of charge (Pick up at the Faculty on November 28–29, 2025, between 9:00 AM and 4:30 PM)",
+        "additional_shipping_fee": "Additional shipping fee",
+        "total_amount": "Total amount",
+        "info": "Shipping fee: First item 50 Baht, additional items 5 Baht each",
+         "info2": "Shipping starts from December 1, 2025 onward."
+      },
+      "payment_information": {
+        "title": "Payment information",
+        "copy": "Copy"
+      },
+      "upload_transfer": {
+        "title": "Upload transfer slip",
+        "subtitle": "Please upload your payment slip",
+        "click_upload": "Click to select a file or drag and drop it here",
+        "image_file": "Image files supported",
+        "confirm_order": "Confirma order"
+      } 
+    }
+  },
+    "form_confirm": {
+    "title": "Confirm Order Information",
+    "subtitle": "Please verify your information before confirming",
+    "data_detail": {
+      "title": "Shirt Details",
+      "no": "No.",
+      "shirt_model": "Shirt Model",
+      "size": "Size",
+      "sh": "Shirt",
+      "total": "Total Payment",
+      "delivery_address": "Delivery Address",
+      "sh_price": "Shirt Price"
+    },
+    "payment_upload": {
+      "title": "Payment Evidence",
+      "file_name": "File Name",
+      "file_size": "File Size",
+      "file_type": "File Type"
+    },
+    "checkbox_confirm": {
+      "title": "Confirmation",
+      "subtitle": "I confirm that the information provided is accurate and complete, and I accept full responsibility for all submitted data",
+      "refund_policy_description": "The Faculty of Veterinary Medicine, Chiang Mai University, reserves the right not to issue refunds after the registration fee has been paid. Please carefully review the payment details before making your payment.",
+      "pdpa": "Under the Personal Data Protection Act (PDPA), I consent to the collection, use, and disclosure of my personal data for purposes related to the specified operations. I understand my rights under the law and can withdraw this consent as permitted by law"
+    },
+    "button_confirm": "Confirm and Submit",
+    "button_edit": "Edit Information"
+  },
+  "tracking": {
+    "title": "Track Order Status",
+    "search": "Search Order (Name, Phone, Email)",
+    "searchPlaceholder": "Enter name, phone, or email...",
+    "fullname": "Customer Information",
+    "payment": "Payment Information",
+    "collection": "Delivery Method",
+    "tracking": "Tracking Number",
+    "items": "Number of Items",
+    "date": "Order Date"
+  }
+   
+}
