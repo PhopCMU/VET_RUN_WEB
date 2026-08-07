@@ -1,54 +1,72 @@
-# React + TypeScript + Vite
+# VET CMU RUN
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend application for the VET CMU RUN participant registration, participant list, shirt sales, and order tracking workflows.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React 19 and TypeScript
+- Vite 6
+- Tailwind CSS 4
+- React Router DOM
+- Axios
+- i18next / react-i18next
+- CryptoJS and Framer Motion
 
-## Expanding the ESLint configuration
+## Development
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Install dependencies:
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Start the Vite development server:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm run dev
 ```
+
+The development server uses port `3002`.
+
+Available commands:
+
+```bash
+npm run build
+npm run lint
+npm run preview
+```
+
+## Application Routes
+
+- `/`: Home and project status
+- `/page/registration`: Participant registration
+- `/list/participants`: Participant list
+- `/sale/shirt`: Shirt order form
+- `/sale/shirt/tracking`: Order tracking
+
+## Environment Variables
+
+The application reads Vite environment variables for API selection and client-side configuration:
+
+- `VITE_ENV`
+- `VITE_URL_API`
+- `VITE_URL_API_DEV`
+- `VITE_PROJECT_ID`
+- `VITE_SECRET_KEY_CRYPTO_FRONTEND`
+
+Do not commit real secrets or environment-specific credentials.
+
+## Project Documentation
+
+The modular AI Knowledge Base is maintained under `.agents/`:
+
+- `.agents/02_MANIFEST.md`: Documentation index and lazy-loading guide
+- `.agents/03_TASK_MAP.md`: Task-to-document lookup
+- `.agents/architecture/overview.md`: Runtime architecture and folders
+- `.agents/api/overview.md`: API endpoints and payload behavior
+- `.agents/database/overview.md`: Database findings and unknowns
+- `.agents/business/rules.md`: Client-observable business rules
+- `.agents/features/overview.md`: Main user-facing features
+- `.agents/standards/typescript-react.md`: TypeScript, React, and lint conventions
+
+Backend implementation, database schema, complete API contracts, and server-side business rules are outside this repository and are documented as unknown where applicable.

@@ -3,7 +3,11 @@ import { images } from "../constant";
 
 export default function Loading() {
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-[#f8f1e9]/50 backdrop-blur z-50">
+    <div
+      role="status"
+      aria-live="polite"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur"
+    >
       <div className="text-center">
         {/* Animated Logo */}
         <motion.div
@@ -36,7 +40,7 @@ export default function Loading() {
             duration: 1.5,
             repeat: Infinity,
           }}
-          className="text-2xl font-bold text-[#a66941]"
+          className="text-2xl font-bold text-brand-700"
         >
           Loading...
         </motion.p>
@@ -55,7 +59,7 @@ export default function Loading() {
                 repeat: Infinity,
                 delay: i * 0.2,
               }}
-              className="block w-3 h-3 rounded-full bg-[#c6895a]"
+              className="block h-3 w-3 rounded-full bg-brand-400"
             />
           ))}
         </div>
@@ -65,9 +69,9 @@ export default function Loading() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="mt-8 text-sm text-[#a66941]/70"
+          className="mt-8 text-sm text-brand-700/70"
         >
-          VET CMU RUN 2025
+          VET CMU RUN 2026
         </motion.p>
       </div>
     </div>

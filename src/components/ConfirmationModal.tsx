@@ -11,7 +11,7 @@ interface Props {
 const ConfirmationModal: FC<Props> = ({ formData, onConfirm, onEdit }) => {
   // สร้าง URL สำหรับแสดงรูปภาพ
   const [paymentImagePreview, setPaymentImagePreview] = useState<string | null>(
-    null
+    null,
   );
   const [confirmedData, setConfirmedData] = useState(false);
   const [acceptedRefundPolicy, setAcceptedRefundPolicy] = useState(false);
@@ -56,10 +56,10 @@ const ConfirmationModal: FC<Props> = ({ formData, onConfirm, onEdit }) => {
       initial={{ scale: 0.9, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.3 }}
-      className="bg-white rounded-xl shadow-xl p-6 w-full mx-auto"
+      className="mx-auto w-full bg-white p-1 sm:p-2"
     >
       <div className="flex items-center gap-3 mb-6 pb-3 border-b border-gray-200">
-        <span className="material-symbols-outlined text-3xl text-blue-600">
+        <span className="material-symbols-outlined text-3xl text-brand-600">
           check_circle
         </span>
         <h2 className="text-xl md:text-2xl font-bold text-gray-800">
@@ -69,7 +69,7 @@ const ConfirmationModal: FC<Props> = ({ formData, onConfirm, onEdit }) => {
 
       <div className="space-y-4">
         {/* Personal Information */}
-        <div className="bg-blue-50 p-4 rounded-xl">
+        <div className="rounded-md border border-brand-100 bg-brand-50 p-4">
           <h3 className="font-bold text-blue-700 flex items-center gap-2 mb-3">
             <span className="material-symbols-outlined">person</span>
             {t("step4.personal_info")}
@@ -122,8 +122,8 @@ const ConfirmationModal: FC<Props> = ({ formData, onConfirm, onEdit }) => {
                   label={t("step4.category")}
                   value={t(
                     `table_list.select_category.marathon.${getCategoryFromAge(
-                      formData.age
-                    )}`
+                      formData.age,
+                    )}`,
                   )}
                 />
               </>
@@ -142,7 +142,7 @@ const ConfirmationModal: FC<Props> = ({ formData, onConfirm, onEdit }) => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-rose-50 p-4 rounded-xl"
+            className="rounded-md border border-rose-100 bg-rose-50 p-4"
           >
             <h3 className="font-bold text-rose-700 flex items-center gap-2 mb-3">
               <span className="material-symbols-outlined">trophy</span>
@@ -182,7 +182,7 @@ const ConfirmationModal: FC<Props> = ({ formData, onConfirm, onEdit }) => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
-            className="bg-purple-50 p-4 rounded-xl"
+            className="rounded-md border border-brand-100 bg-brand-50 p-4"
           >
             <h3 className="font-bold text-purple-700 flex items-center gap-2 mb-3">
               <span className="material-symbols-outlined">pets</span>
@@ -232,7 +232,7 @@ const ConfirmationModal: FC<Props> = ({ formData, onConfirm, onEdit }) => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-green-50 p-4 rounded-xl"
+          className="rounded-md border border-green-100 bg-green-50 p-4"
         >
           <h3 className="font-bold text-green-700 flex items-center gap-2 mb-3">
             <span className="material-symbols-outlined">receipt</span>
@@ -266,7 +266,7 @@ const ConfirmationModal: FC<Props> = ({ formData, onConfirm, onEdit }) => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-yellow-50 p-4 rounded-xl"
+            className="rounded-md border border-amber-100 bg-amber-50 p-4"
           >
             <h3 className="font-bold text-yellow-700 flex items-center gap-2 mb-3">
               <span className="material-symbols-outlined">payments</span>
@@ -292,7 +292,7 @@ const ConfirmationModal: FC<Props> = ({ formData, onConfirm, onEdit }) => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35 }}
-            className="bg-gray-50 p-6 rounded-xl border border-gray-200"
+            className="rounded-md border border-gray-200 bg-gray-50 p-5 sm:p-6"
           >
             <h3 className="font-bold text-gray-700 flex items-center gap-2 mb-4">
               <span className="material-symbols-outlined">verified</span>
@@ -335,7 +335,7 @@ const ConfirmationModal: FC<Props> = ({ formData, onConfirm, onEdit }) => {
                   <span className="text-gray-600">
                     {t(
                       "form_confirm.checkbox_confirm.refund_policy_description",
-                      "คณะสัตวแพทยศาสตร์ มหาวิทยาลัยเชียงใหม่ ขอสงวนสิทธิ์ไม่คืนเงินค่าลงทะเบียนหลังจากชำระค่าลงทะเบียนเรียบร้อยแล้ว กรุณาตรวจสอบรายละเอียดการชำระเงินให้ละเอียดก่อนชำระเงิน"
+                      "คณะสัตวแพทยศาสตร์ มหาวิทยาลัยเชียงใหม่ ขอสงวนสิทธิ์ไม่คืนเงินค่าลงทะเบียนหลังจากชำระค่าลงทะเบียนเรียบร้อยแล้ว กรุณาตรวจสอบรายละเอียดการชำระเงินให้ละเอียดก่อนชำระเงิน",
                     )}
                   </span>
                 </label>
@@ -374,7 +374,7 @@ const ConfirmationModal: FC<Props> = ({ formData, onConfirm, onEdit }) => {
           onClick={onEdit}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="px-6 py-3 bg-gray-200 text-gray-700 rounded-xl flex items-center justify-center gap-2 shadow-sm hover:bg-gray-300"
+          className="flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-6 py-3 text-gray-700 shadow-sm hover:bg-gray-50"
         >
           <span className="material-symbols-outlined">edit</span>
           {t("step4.button.edit_data")}
@@ -388,7 +388,7 @@ const ConfirmationModal: FC<Props> = ({ formData, onConfirm, onEdit }) => {
           className={`px-6 py-3 rounded-xl flex items-center justify-center gap-2 shadow-sm ${
             isConfirmButtonDisabled
               ? "bg-gray-400 text-gray-200 cursor-not-allowed"
-              : "bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:from-green-600 hover:to-emerald-700"
+              : "bg-brand-700 text-white hover:bg-brand-800"
           }`}
         >
           <span className="material-symbols-outlined">check</span>

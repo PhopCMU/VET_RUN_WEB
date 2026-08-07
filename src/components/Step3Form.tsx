@@ -89,7 +89,7 @@ const Step3Form: FC<Props> = ({
   }, []);
 
   const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
   ) => {
     const { name, value, type } = e.target;
     const newValue =
@@ -211,7 +211,7 @@ const Step3Form: FC<Props> = ({
       />
 
       <motion.h2
-        className="text-2xl font-bold text-gray-800 flex md:flex-row flex-col  items-center gap-2"
+        className="flex flex-col items-center gap-2 text-xl font-bold text-brand-900 sm:text-2xl md:flex-row"
         initial={{ y: -10 }}
         animate={{ y: 0 }}
       >
@@ -237,6 +237,7 @@ const Step3Form: FC<Props> = ({
             </span>
             <input
               name="firstName"
+              aria-label={t("step3.form_personal.fristname")}
               placeholder={t("step3.form_personal.fristname")}
               className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               onChange={handleInputChange}
@@ -251,6 +252,7 @@ const Step3Form: FC<Props> = ({
             </span>
             <input
               name="lastName"
+              aria-label={t("step3.form_personal.lastname")}
               placeholder={t("step3.form_personal.lastname")}
               className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               onChange={handleInputChange}
@@ -265,6 +267,7 @@ const Step3Form: FC<Props> = ({
             <input
               name="email"
               type="email"
+              aria-label={t("step3.form_personal.email")}
               placeholder={t("step3.form_personal.email")}
               className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               onChange={handleInputChange}
@@ -279,6 +282,7 @@ const Step3Form: FC<Props> = ({
             <input
               name="phone"
               type="number"
+              aria-label={t("step3.form_personal.phone")}
               placeholder={t("step3.form_personal.phone")}
               className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               onChange={handleInputChange}
@@ -298,6 +302,7 @@ const Step3Form: FC<Props> = ({
             </span>
             <select
               name="sex"
+              aria-label={t("step3.form_personal.select_sex")}
               className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
               onChange={handleInputChange}
               defaultValue={formData.sex}
@@ -314,6 +319,7 @@ const Step3Form: FC<Props> = ({
                 cake
               </span>
               <select
+                aria-label={t("step3.form_personal.select_age_range")}
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
                 onChange={(e) => setAgeRange(e.target.value)}
               >
@@ -369,7 +375,7 @@ const Step3Form: FC<Props> = ({
                               {age}
                             </option>
                           );
-                        }
+                        },
                       )
                     : null}
                 </select>
@@ -383,6 +389,7 @@ const Step3Form: FC<Props> = ({
             </span>
             <select
               name="sizeId"
+              aria-label={t("step3.form_personal.select_size_shirt")}
               className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
               onChange={handleInputChange}
               defaultValue={formData.sizeId}
@@ -390,7 +397,7 @@ const Step3Form: FC<Props> = ({
               <option value="" className="text-gray-700 ">
                 {formData.sizeId
                   ? shirtSize?.filter(
-                      (shirt: any) => shirt.shirtId === formData.sizeId
+                      (shirt: any) => shirt.shirtId === formData.sizeId,
                     )[0].size
                   : t("step3.form_personal.select_size_shirt")}
               </option>
@@ -405,9 +412,9 @@ const Step3Form: FC<Props> = ({
                     className="text-gray-700 flex  gap-x-2 w-full"
                   >
                     {`${shirt.size} =  (${t(
-                      "step3.form_personal.shirt.chest_size"
+                      "step3.form_personal.shirt.chest_size",
                     )}:${shirt.s_width} ${t(
-                      "step3.form_personal.shirt.length_size"
+                      "step3.form_personal.shirt.length_size",
                     )}:${shirt.s_high})`}
                   </option>
                 ))}
@@ -436,6 +443,7 @@ const Step3Form: FC<Props> = ({
               </span>
               <input
                 name="dogName"
+                aria-label={t("step3.form_animal.name")}
                 placeholder={t("step3.form_animal.name")}
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 onChange={handleInputChange}
@@ -449,6 +457,7 @@ const Step3Form: FC<Props> = ({
               </span>
               <input
                 name="dogBreed"
+                aria-label={t("step3.form_animal.breed")}
                 placeholder={t("step3.form_animal.breed")}
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 onChange={handleInputChange}
@@ -462,6 +471,7 @@ const Step3Form: FC<Props> = ({
               </span>
               <input
                 name="dogWeight"
+                aria-label={t("step3.form_animal.weight")}
                 placeholder={t("step3.form_animal.weight")}
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 onChange={handleInputChange}
@@ -475,6 +485,7 @@ const Step3Form: FC<Props> = ({
               </span>
               <select
                 name="dogGender"
+                aria-label={t("step3.form_animal.sex.select_sex")}
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
                 onChange={handleInputChange}
                 defaultValue={formData.animal.sex}
@@ -663,7 +674,7 @@ const Step3Form: FC<Props> = ({
                         {formData.sizeId_2
                           ? shirtSize?.filter(
                               (shirt: any) =>
-                                shirt.shirtId === formData.sizeId_2
+                                shirt.shirtId === formData.sizeId_2,
                             )[0].size
                           : t("step3.form_personal.select_size_shirt")}
                       </option>
@@ -678,9 +689,9 @@ const Step3Form: FC<Props> = ({
                             className="text-gray-700"
                           >
                             {`${shirt.size} =  (${t(
-                              "step3.form_personal.shirt.chest_size"
+                              "step3.form_personal.shirt.chest_size",
                             )}:${shirt.s_width} ${t(
-                              "step3.form_personal.shirt.length_size"
+                              "step3.form_personal.shirt.length_size",
                             )}:${shirt.s_high})`}
                           </option>
                         ))}
@@ -743,7 +754,7 @@ const Step3Form: FC<Props> = ({
             transition={{ duration: 0.4 }}
             className="mt-4 md:mt-6"
           >
-            <div className="bg-gradient-to-br from-gray-50 to-white p-4 md:p-5 rounded-xl border border-gray-200 shadow-sm">
+            <div className="rounded-md border border-brand-100 bg-brand-50 p-4 shadow-sm md:p-5">
               {/* Header with icon */}
               <div className="flex items-center gap-2 mb-3 md:mb-4">
                 <span className="material-symbols-outlined text-blue-600 text-lg md:text-xl">
@@ -819,7 +830,7 @@ const Step3Form: FC<Props> = ({
                     className={`flex items-center justify-center gap-1 px-3 py-1.5 md:py-2 rounded-lg text-xs md:text-sm font-medium transition-all mt-2 sm:mt-0 ${
                       copied
                         ? "bg-green-100 text-green-800"
-                        : "bg-blue-600 text-white hover:bg-blue-700"
+                        : "bg-brand-700 text-white hover:bg-brand-800"
                     }`}
                     type="button"
                   >
@@ -857,7 +868,7 @@ const Step3Form: FC<Props> = ({
             </label>
             <div className="flex items-center gap-2">
               <label className="flex-1 cursor-pointer">
-                <div className="flex flex-col items-center justify-center px-4 py-6 border-2 border-dashed border-gray-300 rounded-lg hover:bg-gray-50">
+                <div className="flex flex-col items-center justify-center rounded-md border-2 border-dashed border-brand-200 px-4 py-6 transition-colors hover:bg-brand-50">
                   <span className="material-symbols-outlined text-gray-400 text-4xl">
                     upload
                   </span>
@@ -908,7 +919,7 @@ const Step3Form: FC<Props> = ({
           onClick={onNext}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg flex items-center gap-2 shadow-sm"
+          className="flex items-center gap-2 rounded-md bg-brand-700 px-6 py-3 text-white shadow-sm hover:bg-brand-800"
         >
           {t("step3.button.examine")}
           <span className="material-symbols-outlined">arrow_forward</span>

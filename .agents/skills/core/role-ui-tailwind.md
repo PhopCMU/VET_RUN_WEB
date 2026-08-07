@@ -21,4 +21,5 @@ export const Button: React.FC<{onClick?:()=>void}> = ({children, onClick}) => (
 ```
 
 Update notes
--
+- 2026-08-07: Loading guards in page components must `return <Loading />`; a bare JSX expression does not stop rendering.
+- 2026-08-07: Render sponsor levels from one ordered tier config so card size, grid density, and accents communicate sponsorship priority consistently.

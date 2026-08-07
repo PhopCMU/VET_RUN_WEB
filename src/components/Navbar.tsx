@@ -47,34 +47,40 @@ export default function Navbar() {
 
   return (
     <motion.nav
+      aria-label="Main navigation"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="bg-gradient-to-r from-[#a66941] via-[#c6895a] to-[#d79b65] p-4 shadow-lg sticky top-0 z-50"
+      className="sticky top-0 z-50 border-b border-brand-100 bg-white/95 px-4 py-3 shadow-[0_8px_30px_rgba(73,24,107,0.06)] backdrop-blur-xl"
     >
-      <div className="container mx-auto flex justify-between items-center">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
         {/* Logo and Brand Name */}
-        <div className="flex items-center space-x-2 md:space-x-4">
+        <button
+          type="button"
+          onClick={() => router("/")}
+          className="flex min-h-11 items-center gap-3 rounded-md text-left"
+          aria-label="VET CMU RUN 2026 home"
+        >
           <motion.img
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.5 }}
             src={images.logovetrun}
-            alt="Logo"
-            className="h-10 w-10 md:h-12 md:w-12 drop-shadow-lg rounded-full"
+            alt="VET CMU RUN 2026"
+            className="h-10 w-10 rounded-full border border-brand-100 object-cover md:h-11 md:w-11"
           />
           <motion.h1
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="text-white text-xl md:text-3xl font-bold tracking-tight hidden md:block"
+            className="hidden text-lg font-bold text-brand-900 sm:block md:text-xl"
           >
-            VET CMU RUN 2025
+            VET CMU RUN 2026
           </motion.h1>
-        </div>
+        </button>
 
         {/* Language Toggle Button */}
-        <div className="flex items-center gap-x-3">
+        <div className="flex items-center gap-2">
           {search == "participant" ||
           search == "register" ||
           search == "sale" ||
@@ -84,7 +90,7 @@ export default function Navbar() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => router("/")}
-                className="bg-[#8a5635] text-white px-4 py-2 rounded-full font-medium shadow-md hover:bg-[#6d452a] transition-colors flex items-center space-x-2"
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-brand-200 bg-white px-3 py-2 font-semibold text-brand-700 transition-colors hover:bg-brand-50 sm:px-4"
               >
                 <span className="material-symbols-outlined">
                   arrow_back_ios_new
@@ -103,7 +109,7 @@ export default function Navbar() {
             aria-label={`Switch to ${
               language === "en" ? "Thai" : "English"
             } language`}
-            className="bg-[#8a5635] text-white px-4 py-2 rounded-full font-medium shadow-md hover:bg-[#6d452a] transition-colors flex items-center space-x-2"
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-brand-700 px-3 py-2 font-semibold text-white shadow-sm transition-colors hover:bg-brand-800 sm:px-4"
           >
             <span className="material-symbols-outlined">language</span>
             <span className="font-bold">{language.toUpperCase()}</span>

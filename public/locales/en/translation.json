@@ -1,96 +1,101 @@
 {
-  "home": 
-    {
-      "title": "VET CMU RUN 2025",
-      "subtitle": "The event will begin on November 30, 2025, at the Faculty of Veterinary Medicine, Chiang Mai University.",
-      "register": "Register Now",
-       "checkstatus": " Check Registration Status",
-      "sponsors": "Sponsors",
-      "maps": "Running route map",
-      "contactTitle": "Further information please contact",
-      "contactMethods": [
-        "Facebook Inbox:  VET CMU RUN 2025",
-        "Phone: 0 5394 8009, 0 5394 008, 0 5394 028",
-        "Faculty of Veterinary Medicine, Chiang Mai University"
-      ],
-      "contactButton": "Facebook page",
-      "close_register": "Close Registration",
-      "announcement": "Sorry, registration is currently closed.",
-      "sale_shirt": "Buy a running shirt",
-      "close_sale_shirt": "Shirt orders are now closed.",
-      "trackeing": "Track your order"
-    },
+  "home": {
+    "title": "VET CMU RUN 2026",
+    "subtitle": "Get ready to run with us at the Faculty of Veterinary Medicine, Chiang Mai University.",
+    "register": "Register Now",
+    "checkstatus": " Check Registration Status",
+    "sponsors": "Sponsors",
+    "maps": "Running route map",
+    "contactTitle": "Further information please contact",
+    "contactMethods": [
+      "Facebook Inbox: VET CMU RUN 2026",
+      "Phone: 0 5394 8009, 0 5394 008, 0 5394 028",
+      "Faculty of Veterinary Medicine, Chiang Mai University"
+    ],
+    "contactButton": "Facebook page",
+    "close_register": "Close Registration",
+    "announcement": "Sorry, registration is currently closed.",
+    "sale_shirt": "Buy a running shirt",
+    "close_sale_shirt": "Shirt orders are now closed.",
+    "trackeing": "Track your order",
+    "ex_shirt": {
+      "RB": "Raspberry Red + Steel blue",
+      "PG": "Medium Purple + Lime Green",
+      "CF": "Colorful",
+      "VIP": "VIP Shirt"
+    }
+  },
   "table_list": {
-      "list_participants": "List of Participants",
-      "search": "Search by name or bib number",
-      "fullname": "Fullname",
-      "numberbib": "BIB Number",
-      "category": "Category",
-      "detail": "More Detail",
-      "not_found": "Not Found",
-      "arrow_back": "Back",
-      "try_different_filter": "Please try a different filter.",
-      "status_payment": "Payment Status",
-      "select_category": {
+    "list_participants": "List of Participants",
+    "search": "Search by name or bib number",
+    "fullname": "Fullname",
+    "numberbib": "BIB Number",
+    "category": "Category",
+    "detail": "More Detail",
+    "not_found": "Not Found",
+    "arrow_back": "Back",
+    "try_different_filter": "Please try a different filter.",
+    "status_payment": "Payment Status",
+    "select_category": {
+      "all": "All",
+      "vip": "VIP",
+      "funrun": {
         "all": "All",
-        "vip": "VIP",
-        "funrun": {
-          "all": "All",
-          "fr1": "FUN RUN 4 KM (with dog)",
-          "fr2": "FUN RUN 4 KM"
-        },
-        "marathon": {
-          "all": "MINI MARATHON (11 KM)",
-          "Y19": "Age not over 19 Yrs.",
-          "Y20": "Age 20 - 29 Yrs.",
-          "Y30": "Age 30 - 39 Yrs.",
-          "Y40": "Age 40 - 49 Yrs.",
-          "Y50": "Age over 50 Yrs"
-        },
-        "fancy": "FANCY"
-      }
-    },
-    "page": {
-      "title": "Registration Form for VET CMU RUN 2025",
-      "button": {
-        "ok": "OK"
+        "fr1": "FUN RUN 4 KM (with dog)",
+        "fr2": "FUN RUN 4 KM"
       },
-      "steps": {
-        "step": "Step",
-        "select_event": "Select Event",
-        "select_option": "Select Option",
-        "personal_info": "Personal Information",
-        "confirmation": "Confirmation"
+      "marathon": {
+        "all": "MINI MARATHON (11 KM)",
+        "Y19": "Age not over 19 Yrs.",
+        "Y20": "Age 20 - 29 Yrs.",
+        "Y30": "Age 30 - 39 Yrs.",
+        "Y40": "Age 40 - 49 Yrs.",
+        "Y50": "Age over 50 Yrs"
       },
-      "validation": {
-        "transfer_file": "Please upload your receipt.",
-        "required_fields": "Please fill in all required fields.",
-        "receipt_address": "Please fill in your receipt address.",
-        "dog_info": "Please fill in your dog's information."
-      },
-      "modal": {
-        "warning": "Warning",
-        "error": "Error",
-        "success": "Success"
-      }
+      "fancy": "FANCY"
+    }
+  },
+  "page": {
+    "title": "Registration Form for VET CMU RUN 2025",
+    "button": {
+      "ok": "OK"
     },
-    "step1": {
-      "title": "Registration Option",
-      "label_radio1": "VIP (Unlimited option)",
-      "label_radio2": "FUN RUN (4 KM) ",
-      "label_radio3": "MINI MARATHON (11 KM)",
-      "baht": "THB",
-      "next_button": "Next",
-      "back_button": "Back",
-      "tooltip": {
-        "tooltip_vip": "Registration",
-        "tooltip_funrun": "Registration",
-        "tooltip_marathon": "Registration"
-      }
+    "steps": {
+      "step": "Step",
+      "select_event": "Select Event",
+      "select_option": "Select Option",
+      "personal_info": "Personal Information",
+      "confirmation": "Confirmation"
     },
-    "step2": {
-     "select_option": "Select Option",
-     "option": {
+    "validation": {
+      "transfer_file": "Please upload your receipt.",
+      "required_fields": "Please fill in all required fields.",
+      "receipt_address": "Please fill in your receipt address.",
+      "dog_info": "Please fill in your dog's information."
+    },
+    "modal": {
+      "warning": "Warning",
+      "error": "Error",
+      "success": "Success"
+    }
+  },
+  "step1": {
+    "title": "Registration Option",
+    "label_radio1": "VIP (Unlimited option)",
+    "label_radio2": "FUN RUN (4 KM) ",
+    "label_radio3": "MINI MARATHON (11 KM)",
+    "baht": "THB",
+    "next_button": "Next",
+    "back_button": "Back",
+    "tooltip": {
+      "tooltip_vip": "Registration",
+      "tooltip_funrun": "Registration",
+      "tooltip_marathon": "Registration"
+    }
+  },
+  "step2": {
+    "select_option": "Select Option",
+    "option": {
       "vip": {
         "label_radio1": "VIP FUN RUN (without dog)",
         "label_radio2": "VIP FUN RUN (with dog)",
@@ -108,121 +113,119 @@
         "label_radio5": "Age over 50 yrs."
       },
       "close_register": "Registration is now closed"
-
-     }
+    }
+  },
+  "step3": {
+    "title_personal": "Applicant information",
+    "title_animal": "Dog information (1 Applicant per 1 Dog ONLY)",
+    "button": {
+      "examine": "Review Information",
+      "click_file": "Click to Select File"
     },
-     "step3": {
-      "title_personal": "Applicant information",
-      "title_animal": "Dog information (1 Applicant per 1 Dog ONLY)",
-      "button": {
-        "examine": "Review Information",
-        "click_file": "Click to Select File"
-      },
-      "form_personal": {
-        "fristname": "First Name",
-        "lastname": "Last Name",
-        "email": "Email",
-        "phone": "Phone Number",
-        "validation": {
-          "phone_invalid": "Please enter a valid phone number."
-        },
-        "select_reward": "Please select only one reward.",
-        "select_trophy": "Trophy",
-        "select_shirt_2": "Second running shirt",
-        "select_model_shrit": "Select your preferred shirt model",
-        
-        "select_sex": "Select Gender",
-        "select_age_range": "Select Age Range",
-        "select_size_shirt": "Select Shirt Size",
-        "needReceipt": "Request a Receipt",
-        "address": "Enter Address for Receipt Delivery",
-        "paymentFile": "Payment transaction/slip File size does not exceed 5 mb.",
-        "shirt": {
-          "chest_size": "Chest",
-          "length_size": "Length"
-        },
-        "sex": {
-          "male": "Male",
-          "female": "Female"
-        }
-      },
-      "form_animal": {
-        "name": "Pet's Name",
-        "breed": "Breed",
-        "weight": "Weight (kg)",
-        "select_sex": "Gender",
-        "select_contest": "Will you join the fancy dress contest or not?",
-        "closed": "Closed for fancy dress contest",
-        "sex": {
-          "select_sex": "Select Gender",
-          "male": "Male",
-          "female": "Female"
-        }
-      },
-      "card_payment": {
-        "title": "Payment method",
-        "account_name": "Account name:",
-        "account_name_detail": "CMU FUNRUN MINIMARATHON",
-        "bank_name": "Bank name:",
-        "bank_name_detail": "Siam Commercial Bank",
-        "branch": "Branch:",
-        "branch_detail": "Chiang Mai University",
-        "account_number": "Account number",
-        "button": {
-          "copy": "Copy",
-          "copied": "Copied"
-        }
-      }
-      
-    },
-    "step4": {
-      "personal_info": "Personal Information",
-      "animal_info": "Dog Information",
-      "receipt_info": "Receipt Information",
-      "title": "Check Information Before Confirmation",
-      "category": "Category",
-      "model": "Model",
-      "name": "Name",
+    "form_personal": {
+      "fristname": "First Name",
+      "lastname": "Last Name",
       "email": "Email",
       "phone": "Phone Number",
-      "size_shrit": "Size Shirt",
-      "need_receipt": "Request a Receipt",
-      "address": "Receipt Address",
-      "reward": "Selected reward",
-      "payment_title": "Payment Transaction Slip",
-      "age": "age",
-      "button": {
-        "confrim_send": "Confirma",
-        "edit_data": "Edit"
+      "validation": {
+        "phone_invalid": "Please enter a valid phone number."
+      },
+      "select_reward": "Please select only one reward.",
+      "select_trophy": "Trophy",
+      "select_shirt_2": "Second running shirt",
+      "select_model_shrit": "Select your preferred shirt model",
+
+      "select_sex": "Select Gender",
+      "select_age_range": "Select Age Range",
+      "select_size_shirt": "Select Shirt Size",
+      "needReceipt": "Request a Receipt",
+      "address": "Enter Address for Receipt Delivery",
+      "paymentFile": "Payment transaction/slip File size does not exceed 5 mb.",
+      "shirt": {
+        "chest_size": "Chest",
+        "length_size": "Length"
       },
       "sex": {
-        "sex_title": "Gender", 
-        "male": "Male",
-        "female": "Female"
-      },
-      "animal": {
-        "name": "Pet's Name",
-        "breed": "Breed",
-        "weight": "Weight (kg)",
-        "gender": "Gender",
-        "fancys": "Fancy Dress Contest",
-        "yes": "Yes",
-        "no": "No"
-      },
-      "animal_sex": {
         "male": "Male",
         "female": "Female"
       }
     },
+    "form_animal": {
+      "name": "Pet's Name",
+      "breed": "Breed",
+      "weight": "Weight (kg)",
+      "select_sex": "Gender",
+      "select_contest": "Will you join the fancy dress contest or not?",
+      "closed": "Closed for fancy dress contest",
+      "sex": {
+        "select_sex": "Select Gender",
+        "male": "Male",
+        "female": "Female"
+      }
+    },
+    "card_payment": {
+      "title": "Payment method",
+      "account_name": "Account name:",
+      "account_name_detail": "CMU FUNRUN MINIMARATHON",
+      "bank_name": "Bank name:",
+      "bank_name_detail": "Siam Commercial Bank",
+      "branch": "Branch:",
+      "branch_detail": "Chiang Mai University",
+      "account_number": "Account number",
+      "button": {
+        "copy": "Copy",
+        "copied": "Copied"
+      }
+    }
+  },
+  "step4": {
+    "personal_info": "Personal Information",
+    "animal_info": "Dog Information",
+    "receipt_info": "Receipt Information",
+    "title": "Check Information Before Confirmation",
+    "category": "Category",
+    "model": "Model",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone Number",
+    "size_shrit": "Size Shirt",
+    "need_receipt": "Request a Receipt",
+    "address": "Receipt Address",
+    "reward": "Selected reward",
+    "payment_title": "Payment Transaction Slip",
+    "age": "age",
+    "button": {
+      "confrim_send": "Confirma",
+      "edit_data": "Edit"
+    },
+    "sex": {
+      "sex_title": "Gender",
+      "male": "Male",
+      "female": "Female"
+    },
+    "animal": {
+      "name": "Pet's Name",
+      "breed": "Breed",
+      "weight": "Weight (kg)",
+      "gender": "Gender",
+      "fancys": "Fancy Dress Contest",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "animal_sex": {
+      "male": "Male",
+      "female": "Female"
+    }
+  },
   "process_loading": {
-      "message": {
-        "error": "An unexpected error has occurred.",
-        "success": "Your data has been successfully submitted.",
-        "pending": "Submitting your data. Please wait..."
-      },
-      "loading": "Loading data. Please wait...",
-      "please_wait": "Please wait while the system retrieves information from the database.",
-      "reload": "Refresh data"
+    "message": {
+      "error": "An unexpected error has occurred.",
+      "success": "Your data has been successfully submitted.",
+      "pending": "Submitting your data. Please wait..."
+    },
+    "loading": "Loading data. Please wait...",
+    "please_wait": "Please wait while the system retrieves information from the database.",
+    "reload": "Refresh data"
   },
 
   "form_sale": {
@@ -250,13 +253,13 @@
       "pick_up": {
         "title": "Self pick-up",
         "subtitle": "Pick up at Faculty of Veterinary Medicine, Chiang Mai University"
-      } ,
+      },
       "delivery": {
-        "title":  "Delivery",
+        "title": "Delivery",
         "subtitle": "Postal delivery",
         "delivery_address": {
           "title": "Delivery address",
-          "address": "Address" 
+          "address": "Address"
         }
       },
       "cost_summary": {
@@ -269,7 +272,7 @@
         "additional_shipping_fee": "Additional shipping fee",
         "total_amount": "Total amount",
         "info": "Shipping fee: First item 50 Baht, additional items 5 Baht each",
-         "info2": "Shipping starts from December 1, 2025 onward."
+        "info2": "Shipping starts from December 1, 2025 onward."
       },
       "payment_information": {
         "title": "Payment information",
@@ -281,10 +284,10 @@
         "click_upload": "Click to select a file or drag and drop it here",
         "image_file": "Image files supported",
         "confirm_order": "Confirma order"
-      } 
+      }
     }
   },
-    "form_confirm": {
+  "form_confirm": {
     "title": "Confirm Order Information",
     "subtitle": "Please verify your information before confirming",
     "data_detail": {
@@ -323,5 +326,4 @@
     "items": "Number of Items",
     "date": "Order Date"
   }
-   
 }

@@ -68,7 +68,7 @@ export default function Tracking() {
 
   if (error) {
     return (
-      <div className="flex items-center justify-center p-6">
+      <div className="page-frame flex items-center justify-center">
         <div className="bg-red-50 border border-red-200 rounded-xl p-4 max-w-md w-full">
           <div className="flex items-center gap-3 text-red-700">
             <span className="material-symbols-outlined text-xl">error</span>
@@ -82,7 +82,7 @@ export default function Tracking() {
 
   if (!data?.visitorId) {
     return (
-      <div className="flex items-center justify-center p-6">
+      <div className="page-frame flex items-center justify-center">
         <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 max-w-md w-full text-center">
           <span className="material-symbols-outlined text-blue-500 text-3xl mx-auto mb-2">
             fingerprint
@@ -98,10 +98,10 @@ export default function Tracking() {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="p-4 max-w-6xl mx-auto"
+      className="page-frame max-w-7xl"
     >
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl p-5 mb-6 text-white shadow-md">
+      <div className="mb-8 rounded-md bg-brand-700 p-5 text-white shadow-md sm:p-6">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined">local_shipping</span>
@@ -115,7 +115,7 @@ export default function Tracking() {
           onClick={() =>
             window.open("https://track.thailandpost.com/", "_blank")
           }
-          className="w-full bg-white/15 hover:bg-white/25 px-3 py-2 rounded-lg transition-colors flex items-center justify-between text-sm"
+          className="flex min-h-12 w-full items-center justify-between rounded-md border border-white/20 bg-white/10 px-4 py-3 text-sm transition-colors hover:bg-white/20"
         >
           <span>ตรวจสอบพัสดุ Thailand Post</span>
           <span className="material-symbols-outlined text-sm">open_in_new</span>
@@ -123,7 +123,7 @@ export default function Tracking() {
       </div>
 
       {/* Search Input with Gradient Background */}
-      <div className="mb-8">
+      <div className="content-panel mb-8 p-4 sm:p-5">
         <label
           htmlFor="search"
           className=" text-sm font-medium text-gray-700 mb-3 ml-1 flex items-center gap-2"
@@ -146,21 +146,17 @@ export default function Tracking() {
             type="text"
             placeholder={t(
               "tracking.searchPlaceholder",
-              "พิมพ์ชื่อ, เบอร์โทร หรืออีเมล..."
+              "พิมพ์ชื่อ, เบอร์โทร หรืออีเมล...",
             )}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-12 pr-11 py-3.5 bg-gradient-to-br from-white to-gray-50 
-                border border-gray-200 rounded-2xl 
-                focus:ring-4 focus:ring-blue-100 focus:border-blue-400 
-                shadow-sm hover:shadow-md transition-all duration-300
-                placeholder-gray-400 text-gray-700 outline-none
-                hover:border-blue-300"
+            className="w-full py-3.5 pl-12 pr-11"
           />
 
           {searchTerm && (
             <button
               onClick={() => setSearchTerm("")}
+              aria-label="Clear search"
               className="absolute inset-y-0 right-0 flex items-center pr-4 
                   text-gray-400 hover:text-red-400 transition-all duration-200
                   hover:scale-110"
@@ -173,11 +169,11 @@ export default function Tracking() {
 
       {/* Table or No Data */}
       {filteredData.length > 0 ? (
-        <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
+        <div className="content-panel overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full">
               <thead>
-                <tr className="bg-gradient-to-r from-gray-50 to-gray-100">
+                <tr className="bg-brand-50">
                   <th className="py-4 px-6 text-left text-sm font-semibold text-gray-700 border-b border-gray-200">
                     <div className="flex items-center gap-2">
                       <span className="material-symbols-outlined text-lg">
@@ -232,7 +228,7 @@ export default function Tracking() {
                 {filteredData.map((item, index) => (
                   <tr
                     key={index}
-                    className="hover:bg-blue-50/30 transition-all duration-200 even:bg-gray-50/50"
+                    className="transition-colors hover:bg-brand-50 even:bg-gray-50/60"
                   >
                     <td className="py-4 px-6 border-b border-gray-100">
                       <div className="flex flex-col gap-1.5">
@@ -267,7 +263,7 @@ export default function Tracking() {
                         </span>
                         {t(
                           item.payment ? "ชำระเงินสำเร็จ" : "รอตรวจสอบสลิป",
-                          item.payment ? "ชำระเงินสำเร็จ" : "รอตรวจสอบสลิป"
+                          item.payment ? "ชำระเงินสำเร็จ" : "รอตรวจสอบสลิป",
                         )}
                       </div>
                     </td>
@@ -283,7 +279,7 @@ export default function Tracking() {
                           `collection.${item.sh_collection_method}`,
                           item.sh_collection_method === "pickup"
                             ? "รับเอง"
-                            : "จัดส่ง"
+                            : "จัดส่ง",
                         )}
                       </div>
                     </td>
@@ -337,7 +333,7 @@ export default function Tracking() {
           </div>
         </div>
       ) : (
-        <div className="text-center py-16 bg-white rounded-2xl shadow-lg border border-gray-100">
+        <div className="content-panel py-16 text-center">
           <span className="material-symbols-outlined text-gray-300 text-6xl mb-4">
             search_off
           </span>

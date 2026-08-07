@@ -131,12 +131,12 @@ export default function Lists_participants() {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="page-frame">
       <motion.h1
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="text-3xl font-bold mb-6 text-center text-[#a66941]"
+        className="mb-8 text-center text-2xl font-extrabold text-brand-900 sm:text-3xl md:text-4xl"
       >
         {t("table_list.list_participants")}
       </motion.h1>
@@ -146,7 +146,7 @@ export default function Lists_participants() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.5 }}
-        className="mb-6 space-y-4"
+        className="content-panel mb-8 space-y-4 p-4 sm:p-5"
       >
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -156,10 +156,11 @@ export default function Lists_participants() {
           </div>
           <input
             type="text"
+            aria-label={t("table_list.search")}
             placeholder={t("table_list.search")}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 p-2 border rounded-md focus:ring-2 focus:ring-[#a66941] focus:border-[#a66941] transition-all"
+            className="w-full p-3 pl-11"
           />
         </div>
         <div className="flex flex-wrap gap-4">
@@ -172,7 +173,8 @@ export default function Lists_participants() {
             <select
               value={category}
               onChange={handleCategoryChange}
-              className="w-full pl-10 p-2 border rounded-md focus:ring-2 focus:ring-[#a66941] focus:border-[#a66941] appearance-none bg-white"
+              aria-label={t("table_list.select_category.all")}
+              className="w-full appearance-none bg-white p-3 pl-11"
             >
               <option value="">
                 -- {t("table_list.select_category.all")} --
@@ -205,7 +207,8 @@ export default function Lists_participants() {
               <select
                 value={subCategory}
                 onChange={(e) => setSubCategory(e.target.value)}
-                className="w-full pl-10 p-2 border rounded-md focus:ring-2 focus:ring-[#a66941] focus:border-[#a66941] appearance-none bg-white"
+                aria-label={t("table_list.select_category.all")}
+                className="w-full appearance-none bg-white p-3 pl-11"
               >
                 <option value="">
                   -- {t("table_list.select_category.all")} --
@@ -263,7 +266,7 @@ export default function Lists_participants() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.4, duration: 0.5 }}
-        className="rounded-lg shadow-md"
+        className="rounded-md"
       >
         {/* Mobile Cards View */}
         <div className="lg:hidden space-y-3">
@@ -280,7 +283,7 @@ export default function Lists_participants() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm"
+                  className="rounded-md border border-brand-100 bg-white p-4 shadow-sm"
                 >
                   <div className="flex items-start justify-between">
                     <div>
@@ -288,10 +291,10 @@ export default function Lists_participants() {
                         {participant.firstName} {participant.lastName}
                       </h3>
                       <div className="mt-1 flex items-center gap-2">
-                        <span className="material-symbols-outlined text-sm text-[#a66941]">
+                        <span className="material-symbols-outlined text-sm text-brand-600">
                           sell
                         </span>
-                        <span className="font-mono font-bold text-[#a66941] text-sm">
+                        <span className="font-mono text-sm font-bold text-brand-700">
                           {participant.nameBib}
                           {participant.numberBib}
                         </span>
@@ -318,13 +321,13 @@ export default function Lists_participants() {
                             displayCategory === "VIP"
                               ? "bg-purple-100 text-purple-800"
                               : displayCategory === "FUNRUN" ||
-                                displayCategory === "FUNRUN_WITH_DOG"
-                              ? "bg-blue-100 text-blue-800"
-                              : displayCategory === "MARATHON"
-                              ? "bg-green-100 text-green-800"
-                              : displayCategory === "FANCY"
-                              ? "bg-pink-100 text-pink-800"
-                              : "bg-gray-100 text-gray-800"
+                                  displayCategory === "FUNRUN_WITH_DOG"
+                                ? "bg-blue-100 text-blue-800"
+                                : displayCategory === "MARATHON"
+                                  ? "bg-green-100 text-green-800"
+                                  : displayCategory === "FANCY"
+                                    ? "bg-pink-100 text-pink-800"
+                                    : "bg-gray-100 text-gray-800"
                           }`}
                         >
                           {displayCategory === "MARATHON"
@@ -383,7 +386,7 @@ export default function Lists_participants() {
         {/* Desktop Table View */}
         <div className="hidden lg:block overflow-hidden rounded-xl border border-gray-200 shadow-sm">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-[#a66941]">
+            <thead className="bg-brand-700">
               <tr>
                 <th className="py-3.5 pl-6 pr-3 text-left text-sm font-semibold text-white">
                   <div className="flex items-center gap-2">
@@ -446,7 +449,7 @@ export default function Lists_participants() {
                       <td className="whitespace-nowrap py-4 pl-6 pr-3 text-sm font-medium text-gray-900">
                         {participant.firstName} {participant.lastName}
                       </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm font-mono font-bold text-[#a66941]">
+                      <td className="whitespace-nowrap px-3 py-4 font-mono text-sm font-bold text-brand-700">
                         {participant.nameBib}
                         {participant.numberBib}
                       </td>
@@ -470,13 +473,13 @@ export default function Lists_participants() {
                               displayCategory === "VIP"
                                 ? "bg-purple-100 text-purple-800"
                                 : displayCategory === "FUNRUN" ||
-                                  displayCategory === "FUNRUN_WITH_DOG"
-                                ? "bg-blue-100 text-blue-800"
-                                : displayCategory === "MARATHON"
-                                ? "bg-green-100 text-green-800"
-                                : displayCategory === "FANCY"
-                                ? "bg-pink-100 text-pink-800"
-                                : "bg-gray-100 text-gray-800"
+                                    displayCategory === "FUNRUN_WITH_DOG"
+                                  ? "bg-blue-100 text-blue-800"
+                                  : displayCategory === "MARATHON"
+                                    ? "bg-green-100 text-green-800"
+                                    : displayCategory === "FANCY"
+                                      ? "bg-pink-100 text-pink-800"
+                                      : "bg-gray-100 text-gray-800"
                             }`}
                           >
                             {displayCategory === "MARATHON"

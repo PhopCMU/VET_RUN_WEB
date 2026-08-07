@@ -83,7 +83,7 @@ const SaleShirt = () => {
     options?: {
       title?: string;
       type?: "success" | "warning" | "error";
-    }
+    },
   ): Promise<void> => {
     return new Promise((resolve) => {
       const { title = t("page.modal.warning"), type = "warning" } =
@@ -169,7 +169,7 @@ const SaleShirt = () => {
   // };
 
   const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
   ) => {
     const { name, value, type } = e.target;
     const checked = (e.target as HTMLInputElement).checked;
@@ -195,12 +195,12 @@ const SaleShirt = () => {
   const handleShirtChange = (
     index: number,
     field: "type" | "size",
-    value: string
+    value: string,
   ) => {
     setShirts((prev) =>
       prev.map((shirt, i) =>
-        i === index ? { ...shirt, [field]: value } : shirt
-      )
+        i === index ? { ...shirt, [field]: value } : shirt,
+      ),
     );
   };
 
@@ -290,8 +290,8 @@ const SaleShirt = () => {
   };
 
   return (
-    <div className="w-full flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-8 px-4">
-      <div className="w-full max-w-2xl">
+    <div className="page-frame flex items-start justify-center">
+      <div className="w-full max-w-3xl">
         {step === "form" ? (
           <AnimatePresence mode="wait">
             <motion.div
@@ -299,16 +299,16 @@ const SaleShirt = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
-              className="bg-white rounded-2xl shadow-xl p-5 sm:p-7 md:p-9 mb-6"
+              className="content-panel mb-6 p-5 sm:p-7 md:p-9"
             >
               {/* Header */}
               <div className="flex flex-col items-center mb-6">
-                <div className="flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
-                  <span className="material-symbols-outlined text-blue-600 text-3xl">
+                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-md bg-brand-100">
+                  <span className="material-symbols-outlined text-3xl text-brand-700">
                     point_of_sale
                   </span>
                 </div>
-                <h1 className="text-2xl md:text-3xl font-bold text-center text-gray-800">
+                <h1 className="text-center text-2xl font-extrabold text-brand-900 md:text-3xl">
                   {t("form_sale.title")}
                 </h1>
                 <p className="text-gray-500 mt-2 text-sm">
@@ -451,7 +451,7 @@ const SaleShirt = () => {
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: index * 0.1 }}
-                          className="p-5 border border-gray-200 rounded-xl bg-gradient-to-br from-gray-50 to-white shadow-sm space-y-4"
+                          className="space-y-4 rounded-md border border-brand-100 bg-brand-50 p-5 shadow-sm"
                         >
                           <div className="flex items-center">
                             <div className="flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-600 rounded-full mr-3">
@@ -478,7 +478,7 @@ const SaleShirt = () => {
                                   handleShirtChange(
                                     index,
                                     "type",
-                                    e.target.value
+                                    e.target.value,
                                   )
                                 }
                                 className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition appearance-none"
@@ -515,7 +515,7 @@ const SaleShirt = () => {
                                   handleShirtChange(
                                     index,
                                     "size",
-                                    e.target.value
+                                    e.target.value,
                                   )
                                 }
                                 className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition appearance-none"
@@ -529,9 +529,9 @@ const SaleShirt = () => {
                                     value={shirt.shirtId}
                                   >
                                     {`${shirt.size} = (${t(
-                                      "step3.form_personal.shirt.chest_size"
+                                      "step3.form_personal.shirt.chest_size",
                                     )}:${shirt.s_width} ${t(
-                                      "step3.form_personal.shirt.length_size"
+                                      "step3.form_personal.shirt.length_size",
                                     )}:${shirt.s_high})`}
                                   </option>
                                 ))}
@@ -542,7 +542,7 @@ const SaleShirt = () => {
                             </div>
                           </div>
                         </motion.div>
-                      )
+                      ),
                     )}
                   </div>
                 </div>
@@ -563,9 +563,9 @@ const SaleShirt = () => {
                   <motion.div
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className={`p-4 border-2 rounded-xl cursor-pointer transition ${
+                    className={`cursor-pointer rounded-md border-2 p-4 transition ${
                       !openAddress
-                        ? "border-blue-500 bg-blue-50"
+                        ? "border-brand-500 bg-brand-50"
                         : "border-gray-200 hover:border-gray-300"
                     }`}
                     onClick={() => setOpenAddress(false)}
@@ -595,9 +595,9 @@ const SaleShirt = () => {
                   <motion.div
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className={`p-4 border-2 rounded-xl cursor-pointer transition ${
+                    className={`cursor-pointer rounded-md border-2 p-4 transition ${
                       openAddress
-                        ? "border-blue-500 bg-blue-50"
+                        ? "border-brand-500 bg-brand-50"
                         : "border-gray-200 hover:border-gray-300"
                     }`}
                     onClick={() => setOpenAddress(true)}
@@ -635,7 +635,7 @@ const SaleShirt = () => {
                     </span>
                     <h2 className="text-xl font-semibold text-gray-800">
                       {t(
-                        "form_sale.data_method.delivery.delivery_address.title"
+                        "form_sale.data_method.delivery.delivery_address.title",
                       )}
                     </h2>
                   </div>
@@ -647,7 +647,7 @@ const SaleShirt = () => {
                     <textarea
                       name="address"
                       placeholder={t(
-                        "form_sale.data_method.delivery.delivery_address.address"
+                        "form_sale.data_method.delivery.delivery_address.address",
                       )}
                       value={formData.address}
                       onChange={handleInputChange}
@@ -664,7 +664,7 @@ const SaleShirt = () => {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="mb-8 p-5 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100 shadow-sm"
+                  className="mb-8 rounded-md border border-brand-100 bg-brand-50 p-5 shadow-sm"
                 >
                   <div className="flex items-center gap-2 mb-4">
                     <div className="flex items-center justify-center w-10 h-10 bg-blue-100 rounded-full">
@@ -708,7 +708,7 @@ const SaleShirt = () => {
                             <span>
                               {" "}
                               {t(
-                                "form_sale.data_method.cost_summary.shipping_fee_f"
+                                "form_sale.data_method.cost_summary.shipping_fee_f",
                               )}
                             </span>
                           </div>
@@ -725,7 +725,7 @@ const SaleShirt = () => {
                               </span>
                               <span>
                                 {t(
-                                  "form_sale.data_method.cost_summary.additional_shipping_fee"
+                                  "form_sale.data_method.cost_summary.additional_shipping_fee",
                                 )}{" "}
                                 ({parseInt(formData.quantity) - 1}{" "}
                                 {t("form_sale.data_shirts.shirts")})
@@ -747,7 +747,7 @@ const SaleShirt = () => {
                           </span>
                           <span>
                             {t(
-                              "form_sale.data_method.cost_summary.shipping_fee"
+                              "form_sale.data_method.cost_summary.shipping_fee",
                             )}
                           </span>
                         </div>
@@ -803,7 +803,7 @@ const SaleShirt = () => {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
-                  className="bg-gradient-to-br from-blue-50 to-indigo-50 p-5 rounded-xl border border-blue-100 shadow-sm"
+                  className="rounded-md border border-brand-100 bg-brand-50 p-5 shadow-sm"
                 >
                   <div className="flex items-center gap-2 mb-4">
                     <div className="flex items-center justify-center w-10 h-10 bg-blue-100 rounded-full">
@@ -874,7 +874,7 @@ const SaleShirt = () => {
                         className={`flex items-center justify-center gap-1 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                           copied
                             ? "bg-green-100 text-green-800"
-                            : "bg-blue-600 text-white hover:bg-blue-700"
+                            : "bg-brand-700 text-white hover:bg-brand-800"
                         }`}
                         type="button"
                       >
@@ -914,7 +914,7 @@ const SaleShirt = () => {
                   <label className="flex-1 cursor-pointer">
                     <motion.div
                       whileHover={{ scale: 1.01 }}
-                      className="flex flex-col items-center justify-center px-4 py-6 border-2 border-dashed border-gray-300 rounded-lg hover:bg-gray-50 transition"
+                      className="flex flex-col items-center justify-center rounded-md border-2 border-dashed border-brand-200 px-4 py-6 transition hover:bg-brand-50"
                     >
                       <span className="material-symbols-outlined text-gray-400 text-3xl mb-2">
                         {formData.transferFile ? "check_circle" : "upload"}
@@ -927,7 +927,7 @@ const SaleShirt = () => {
                         ) : (
                           <span>
                             {t(
-                              "form_sale.data_method.upload_transfer.click_upload"
+                              "form_sale.data_method.upload_transfer.click_upload",
                             )}
                           </span>
                         )}
@@ -988,7 +988,7 @@ const SaleShirt = () => {
                   }
                   setStep("confirm");
                 }}
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3.5 rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 transition shadow-md flex items-center justify-center gap-2"
+                className="flex w-full items-center justify-center gap-2 rounded-md bg-brand-700 py-3.5 font-semibold text-white shadow-md transition hover:bg-brand-800"
               >
                 <span className="material-symbols-outlined">point_of_sale</span>
                 {t("form_sale.data_method.upload_transfer.confirm_order")}

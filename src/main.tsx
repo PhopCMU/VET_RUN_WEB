@@ -22,8 +22,14 @@ createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <App>
         <I18nProvider>
+          <a
+            href="#main-content"
+            className="fixed left-4 top-4 z-[100] -translate-y-24 rounded-md bg-brand-700 px-4 py-3 font-semibold text-white shadow-lg transition-transform focus:translate-y-0"
+          >
+            Skip to content
+          </a>
           <Navbar />
-          <div className="container mx-auto p-4">
+          <main id="main-content">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/page/registration" element={<Page />} />
@@ -31,7 +37,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/sale/shirt" element={<SaleShirt />} />
               <Route path="/sale/shirt/tracking" element={<Tracking />} />
             </Routes>
-          </div>
+          </main>
         </I18nProvider>
       </App>
     </BrowserRouter>

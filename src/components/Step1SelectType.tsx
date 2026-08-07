@@ -19,33 +19,33 @@ const Step1SelectType: React.FC<Props> = ({ onSelect }) => {
       label: t("step1.label_radio1"),
       price: "1,500 " + t("step1.baht"),
       icon: "stars",
-      color: "bg-purple-100",
-      borderColor: "border-purple-500",
-      hoverColor: "hover:border-purple-400",
+      color: "bg-brand-50",
+      borderColor: "border-brand-500",
+      hoverColor: "hover:border-brand-300",
     },
     {
       value: "FUNRUN",
       label: t("step1.label_radio2"),
       price: "500 " + t("step1.baht"),
       icon: "directions_run",
-      color: "bg-blue-100",
-      borderColor: "border-blue-500",
-      hoverColor: "hover:border-blue-400",
+      color: "bg-brand-50",
+      borderColor: "border-brand-500",
+      hoverColor: "hover:border-brand-300",
     },
     {
       value: "MARATHON",
       label: t("step1.label_radio3"),
       price: "500 " + t("step1.baht"),
       icon: "sprint",
-      color: "bg-green-100",
-      borderColor: "border-green-500",
-      hoverColor: "hover:border-green-400",
+      color: "bg-brand-50",
+      borderColor: "border-brand-500",
+      hoverColor: "hover:border-brand-300",
     },
   ];
 
   return (
-    <div className="space-y-4 w-full  mx-auto">
-      <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
+    <div className="mx-auto w-full space-y-6">
+      <h2 className="text-center text-xl font-bold text-brand-900 sm:text-2xl">
         {t("step1.title")}
       </h2>
 
@@ -59,7 +59,7 @@ const Step1SelectType: React.FC<Props> = ({ onSelect }) => {
             onHoverEnd={() => setHovered(null)}
           >
             <label
-              className={`block p-4 border-2 rounded-xl cursor-pointer transition-all duration-200 ${
+              className={`block cursor-pointer rounded-md border-2 p-4 transition-all duration-200 ${
                 selected === opt.value
                   ? `${opt.borderColor} ${opt.color} shadow-md`
                   : `border-gray-200 ${opt.hoverColor}`
@@ -125,7 +125,7 @@ const Step1SelectType: React.FC<Props> = ({ onSelect }) => {
                       animate={{ scale: 1 }}
                       className={`w-2 h-2 rounded-full ${opt.borderColor.replace(
                         "border",
-                        "bg"
+                        "bg",
                       )}`}
                     />
                   )}
@@ -143,8 +143,8 @@ const Step1SelectType: React.FC<Props> = ({ onSelect }) => {
         whileTap={selected ? { scale: 0.98 } : {}}
         className={`mt-6 px-6 py-3 rounded-xl text-white font-medium w-full transition-all ${
           selected
-            ? "bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg hover:shadow-xl"
-            : "bg-gray-300 cursor-not-allowed"
+            ? "bg-brand-700 shadow-md hover:bg-brand-800"
+            : "cursor-not-allowed bg-gray-200 text-gray-500"
         }`}
       >
         <div className="flex items-center justify-center space-x-2">
@@ -161,7 +161,7 @@ const Step1SelectType: React.FC<Props> = ({ onSelect }) => {
         <div className="grid grid-cols-2 gap-4">
           <motion.div
             whileHover={{ scale: 1.03 }}
-            className="bg-white flex flex-col justify-center items-center p-4 rounded-xl shadow-md border border-gray-200"
+            className="flex flex-col items-center justify-center rounded-md border border-brand-100 bg-white p-4 shadow-sm"
           >
             <img
               src={images.fun}
@@ -172,7 +172,7 @@ const Step1SelectType: React.FC<Props> = ({ onSelect }) => {
           </motion.div>
           <motion.div
             whileHover={{ scale: 1.03 }}
-            className="bg-white flex flex-col justify-center items-center p-4 rounded-xl shadow-md border border-gray-200"
+            className="flex flex-col items-center justify-center rounded-md border border-brand-100 bg-white p-4 shadow-sm"
           >
             <img
               src={images.mini}

@@ -95,12 +95,12 @@ const ConfirmationSale = ({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3 }}
-      className="bg-white rounded-2xl shadow-xl p-6 md:p-8 max-w-3xl mx-auto"
+      className="content-panel mx-auto max-w-3xl p-5 sm:p-6 md:p-8"
     >
       {/* Header */}
       <div className="text-center mb-8">
         <div className="flex justify-center mb-4">
-          <div className="flex items-center justify-center w-16 h-16 bg-green-100 rounded-full">
+          <div className="flex h-14 w-14 items-center justify-center rounded-md bg-green-100">
             <span className="material-symbols-outlined text-green-600 text-3xl">
               fact_check
             </span>
@@ -113,7 +113,7 @@ const ConfirmationSale = ({
       </div>
 
       {/* ข้อมูลผู้ซื้อ */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-100 mb-7">
+      <div className="mb-7 rounded-md border border-brand-100 bg-brand-50 p-5 sm:p-6">
         <div className="flex items-center gap-2 mb-4">
           <span className="material-symbols-outlined text-blue-600">
             person
@@ -175,7 +175,7 @@ const ConfirmationSale = ({
       </div>
 
       {/* รายละเอียดเสื้อแต่ละตัว */}
-      <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-xl border border-purple-100 mb-7">
+      <div className="mb-7 rounded-md border border-brand-100 bg-white p-5 sm:p-6">
         <div className="flex items-center gap-2 mb-4">
           <span className="material-symbols-outlined text-purple-600">
             checkroom
@@ -257,7 +257,7 @@ const ConfirmationSale = ({
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-white p-4 rounded-lg border border-purple-200 shadow-sm"
+                className="rounded-md border border-brand-100 bg-brand-50 p-4 shadow-sm"
               >
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center">
@@ -317,7 +317,7 @@ const ConfirmationSale = ({
       </div>
 
       {/* แสดงยอดชำระ */}
-      <div className="bg-gradient-to-r from-green-50 to-teal-50 p-6 rounded-xl border border-green-200 mb-7">
+      <div className="mb-7 rounded-md border border-green-200 bg-green-50 p-5 sm:p-6">
         <div className="flex items-center gap-2 mb-4">
           <span className="material-symbols-outlined text-green-600">
             receipt_long
@@ -391,7 +391,7 @@ const ConfirmationSale = ({
       </div>
 
       {/* วิธีรับเสื้อ */}
-      <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-6 rounded-xl border border-amber-100 mb-7">
+      <div className="mb-7 rounded-md border border-amber-100 bg-amber-50 p-5 sm:p-6">
         <div className="flex items-center gap-2 mb-4">
           <span className="material-symbols-outlined text-amber-600">
             local_shipping
@@ -429,7 +429,7 @@ const ConfirmationSale = ({
 
       {/* สลิปการโอน */}
       {formData.transferFile && (
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-100 mb-7">
+        <div className="mb-7 rounded-md border border-brand-100 bg-brand-50 p-5 sm:p-6">
           <div className="flex items-center gap-2 mb-4">
             <span className="material-symbols-outlined text-blue-600">
               receipt
@@ -515,7 +515,7 @@ const ConfirmationSale = ({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35 }}
-          className="bg-gray-50 p-6 rounded-xl border border-gray-200"
+          className="rounded-md border border-gray-200 bg-gray-50 p-5 sm:p-6"
         >
           <h3 className="font-bold text-gray-700 flex items-center gap-2 mb-4">
             <span className="material-symbols-outlined">verified</span>
@@ -558,7 +558,7 @@ const ConfirmationSale = ({
                 <span className="text-gray-600">
                   {t(
                     "form_confirm.checkbox_confirm.refund_policy_description",
-                    "คณะสัตวแพทยศาสตร์ มหาวิทยาลัยเชียงใหม่ ขอสงวนสิทธิ์ไม่คืนเงินค่าลงทะเบียนหลังจากชำระค่าลงทะเบียนเรียบร้อยแล้ว กรุณาตรวจสอบรายละเอียดการชำระเงินให้ละเอียดก่อนชำระเงิน"
+                    "คณะสัตวแพทยศาสตร์ มหาวิทยาลัยเชียงใหม่ ขอสงวนสิทธิ์ไม่คืนเงินค่าลงทะเบียนหลังจากชำระค่าลงทะเบียนเรียบร้อยแล้ว กรุณาตรวจสอบรายละเอียดการชำระเงินให้ละเอียดก่อนชำระเงิน",
                   )}
                 </span>
               </label>
@@ -594,7 +594,7 @@ const ConfirmationSale = ({
           type="button"
           onClick={onEdit}
           disabled={isLoading}
-          className="flex items-center justify-center gap-2 px-6 py-3 border border-gray-300 rounded-xl text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 transition"
+          className="flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-6 py-3 text-gray-700 transition hover:bg-gray-50 disabled:opacity-50"
         >
           <span className="material-symbols-outlined text-sm">edit</span>
           {t("form_confirm.button_edit")}
@@ -608,7 +608,7 @@ const ConfirmationSale = ({
           disabled={!agreed || isLoading}
           className={`flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium text-white transition-all ${
             agreed && !isLoading
-              ? "bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 shadow-md"
+              ? "bg-brand-700 shadow-md hover:bg-brand-800"
               : "bg-gray-400 cursor-not-allowed"
           }`}
         >

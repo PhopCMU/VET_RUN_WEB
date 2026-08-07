@@ -8,9 +8,7 @@ interface AppProps {
 const App: React.FC<AppProps> = ({ children }) => {
   return (
     <OpenProjectProvider>
-      <div className="min-h-screen bg-gradient-to-br from-[#a66941]/10 via-[#d79b65]/20 to-[#c6895a]/30">
-        {children}
-      </div>
+      <div className="app-shell theme-scope">{children}</div>
     </OpenProjectProvider>
   );
 };

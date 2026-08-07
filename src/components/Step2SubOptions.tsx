@@ -104,13 +104,13 @@ const Step2SubOptions: React.FC<Props> = ({
       transition={{ duration: 0.3 }}
       className="w-full " // Increased max width
     >
-      <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-        <span className="material-symbols-outlined text-blue-600">
+      <h2 className="mb-6 flex items-center gap-2 text-xl font-bold text-brand-900 sm:text-2xl">
+        <span className="material-symbols-outlined text-brand-600">
           {type === "VIP"
             ? "star"
             : type === "FUNRUN"
-            ? "directions_run"
-            : "flag"}
+              ? "directions_run"
+              : "flag"}
         </span>
         {t("step2.select_option")} {type}
       </h2>
@@ -135,12 +135,12 @@ const Step2SubOptions: React.FC<Props> = ({
                 whileHover={{ scale: isDisabled ? 1 : 1.02 }}
               >
                 <label
-                  className={`block p-4 border-2 rounded-xl transition-all duration-200 ${
+                  className={`block rounded-md border-2 p-4 transition-all duration-200 ${
                     isDisabled
                       ? "opacity-60 cursor-not-allowed"
                       : selected === opt.label
-                      ? `${opt.borderColor} ${opt.color} shadow-md cursor-pointer`
-                      : "border-gray-200 hover:border-gray-300 cursor-pointer"
+                        ? `${opt.borderColor} ${opt.color} shadow-md cursor-pointer`
+                        : "border-gray-200 hover:border-gray-300 cursor-pointer"
                   }`}
                 >
                   <div className="flex flex-col items-center">
@@ -171,7 +171,7 @@ const Step2SubOptions: React.FC<Props> = ({
                               animate={{ scale: 1 }}
                               className={`w-2 h-2 rounded-full ${opt.borderColor.replace(
                                 "border",
-                                "bg"
+                                "bg",
                               )}`}
                             />
                           )}
@@ -227,8 +227,8 @@ const Step2SubOptions: React.FC<Props> = ({
               whileTap={{ scale: selected ? 0.95 : 1 }}
               className={`mt-6 px-6 py-3 rounded-xl text-white font-medium w-full transition-all ${
                 selected
-                  ? "bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg hover:shadow-xl  w-full"
-                  : "bg-gray-300 cursor-not-allowed w-full"
+                  ? "w-full bg-brand-700 shadow-md hover:bg-brand-800"
+                  : "w-full cursor-not-allowed bg-gray-200 text-gray-500"
               }`}
             >
               <div className="flex items-center justify-center space-x-2">

@@ -59,22 +59,31 @@ export const AlertModal: React.FC<AlertModalProps> = ({
     <AnimatePresence>
       <motion.div
         key="alert-modal"
+        role="presentation"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         className="fixed inset-0 bg-black/20 backdrop-filter backdrop-blur-sm bg-opacity-50 flex items-center justify-center z-50 p-4"
       >
         <motion.div
+          role="alertdialog"
+          aria-modal="true"
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-message"
           initial={{ scale: 0.9 }}
           animate={{ scale: 1 }}
           exit={{ scale: 0.9 }}
           transition={{ duration: 0.2 }}
-          className={`w-full max-w-md rounded-lg shadow-xl overflow-hidden ${getBgColor()}`}
+          className={`w-full max-w-md overflow-hidden rounded-md border border-white/60 shadow-xl ${getBgColor()}`}
         >
           <div className="p-6 text-center">
             <div className="flex justify-center mb-4">{getIcon()}</div>
-            <h3 className="text-xl font-bold mb-2">{title}</h3>
-            <p className="text-gray-700 mb-6">{message}</p>
+            <h3 id="alert-dialog-title" className="mb-2 text-xl font-bold">
+              {title}
+            </h3>
+            <p id="alert-dialog-message" className="mb-6 text-gray-700">
+              {message}
+            </p>
             <div className="flex justify-center gap-4">
               <button
                 onClick={onConfirm || onClose}
@@ -82,8 +91,8 @@ export const AlertModal: React.FC<AlertModalProps> = ({
                   type === "success"
                     ? "bg-green-600 hover:bg-green-700"
                     : type === "error"
-                    ? "bg-red-600 hover:bg-red-700"
-                    : "bg-yellow-600 hover:bg-yellow-700"
+                      ? "bg-red-600 hover:bg-red-700"
+                      : "bg-yellow-600 hover:bg-yellow-700"
                 } text-white transition`}
               >
                 {confirmText}

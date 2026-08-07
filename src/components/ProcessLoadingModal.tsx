@@ -15,11 +15,14 @@ export const ProcressLoadingModal: React.FC<ProcressLoadingModalProps> = ({
   errorMessage,
   onClose,
 }) => {
-  if (!isOpen) return null;
   const { t } = useTranslation();
+  if (!isOpen) return null;
 
   return (
     <motion.div
+      role="dialog"
+      aria-modal="true"
+      aria-live="polite"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -35,7 +38,7 @@ export const ProcressLoadingModal: React.FC<ProcressLoadingModalProps> = ({
           stiffness: 300,
           mass: 0.5,
         }}
-        className="bg-gradient-to-br from-[#1a1a1a] to-[#2d2d2d] p-8 rounded-3xl shadow-2xl max-w-xl w-full mx-4 border border-white/10 relative overflow-hidden"
+        className="relative mx-4 w-full max-w-xl overflow-hidden rounded-md border border-brand-200 bg-brand-900 p-8 shadow-2xl"
       >
         {/* Background Decorations */}
         <div className="absolute inset-0 overflow-hidden rounded-3xl">

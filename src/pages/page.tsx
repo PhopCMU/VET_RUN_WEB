@@ -83,7 +83,7 @@ const Page = () => {
     options?: {
       title?: string;
       type?: "success" | "warning" | "error";
-    }
+    },
   ): Promise<void> => {
     return new Promise((resolve) => {
       const { title = t("page.modal.warning"), type = "warning" } =
@@ -283,7 +283,7 @@ const Page = () => {
     try {
       const response = await RegisterRouterCryptoJS(
         dataToSend,
-        setUploadProgress
+        setUploadProgress,
       );
 
       if (response.success) {
@@ -337,7 +337,7 @@ const Page = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-brfrom-[#a66941] via-[#c6895a] to-[#d79b65] flex flex-col justify-center items-center p-4 md:p-8">
+    <div className="page-frame flex flex-col items-center">
       {/* Custom Alert Modal */}
       <AlertModal
         isOpen={alertState.isOpen}
@@ -376,20 +376,20 @@ const Page = () => {
 
       {/* Header Section */}
       <motion.div
-        className="w-full max-w-4xl mb-4 md:mb-6 "
+        className="mb-6 w-full max-w-4xl md:mb-8"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <h1 className="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-2">
+        <h1 className="mb-2 text-center text-2xl font-extrabold text-brand-900 md:text-4xl">
           {t("page.title")}
         </h1>
 
         {/* Progress Bar - Hidden on mobile */}
         <div className="hidden sm:block relative pt-1 mb-4 md:mb-8 mt-5">
           <div className="flex items-center justify-between mb-2">
-            <div className="flex-1 bg-[#f0e6d9] rounded-full h-3 overflow-hidden shadow-inner">
+            <div className="h-2 flex-1 overflow-hidden rounded-full bg-brand-100">
               <motion.div
-                className="h-full bg-gradient-to-r from-[#a66941] via-[#c6895a] to-[#d79b65] rounded-full shadow-md"
+                className="h-full rounded-full bg-brand-700"
                 initial={{ width: "0%" }}
                 animate={{ width: `${((step - 1) / 3) * 100}%` }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
@@ -404,10 +404,10 @@ const Page = () => {
                 <motion.div
                   className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center relative z-10 border-2 ${
                     step > stepNumber
-                      ? "bg-[#a66941] border-[#a66941] text-white shadow-md"
+                      ? "bg-brand-700 border-brand-700 text-white shadow-md"
                       : step === stepNumber
-                      ? "bg-white border-[#d79b65] text-[#a66941] shadow-lg"
-                      : "bg-white border-[#f0e6d9] text-[#c6895a]"
+                        ? "bg-white border-brand-500 text-brand-700 shadow-lg"
+                        : "bg-white border-brand-100 text-gray-400"
                   }`}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
@@ -422,7 +422,7 @@ const Page = () => {
                 </motion.div>
                 <motion.span
                   className={`text-xs mt-1 md:mt-2 text-center font-medium ${
-                    step >= stepNumber ? "text-[#a66941]" : "text-[#c6895a]"
+                    step >= stepNumber ? "text-brand-700" : "text-gray-400"
                   }`}
                 >
                   {stepTitles[stepNumber - 1]}
@@ -451,7 +451,7 @@ const Page = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: step > formData.prevStep ? -50 : 50 }}
             transition={{ duration: 0.3 }}
-            className="bg-white rounded-xl shadow-lg p-4 sm:p-6 md:p-8 mb-4 md:mb-6"
+            className="content-panel mb-4 p-4 sm:p-6 md:mb-6 md:p-8"
           >
             {step === 1 && (
               <Step1SelectType
