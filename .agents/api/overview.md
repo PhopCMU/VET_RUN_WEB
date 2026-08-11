@@ -11,7 +11,7 @@
 | GET | `/role/project/projectId` | `FunctionOpenProject`; fixed project ID query parameter |
 | GET | `/vetrun/size/shirt` | `FunctionMenuSizeShirt` |
 | GET | `/vetrun/limit/animal` | `FunctionLimitAnimal` |
-| GET | `/vetrun/participant/all` | `FunctionGetParticipantAll` |
+| GET | `/vetrun/participant/email?email=<email>` | `FunctionGetParticipantByEmail`; called only after the registration-status form is submitted |
 | GET | `/vetrun/sponsors` | `FunctionGetSponsorAll` |
 | GET | `/vetrun/tracking` | `FunctionGetTrackingAll`; sends `X-Visitor-Id` |
 
@@ -26,5 +26,5 @@ Both POST helpers use `CryptoJS.AES`, `VITE_SECRET_KEY_CRYPTO_FRONTEND`, and a s
 
 ## Contract Gaps
 
-Exact response schemas, HTTP status matrix, authentication, rate limits, server-side validation, and backend encryption-key handling are not defined in this repository. `ApiResponse.data` is typed as `any`.
+Exact response schemas, HTTP status matrix, authentication, rate limits, server-side validation, and backend encryption-key handling are not defined in this repository. `ApiResponse.data` is typed as `any`; the participant email lookup UI accepts either one participant object or an array.
 

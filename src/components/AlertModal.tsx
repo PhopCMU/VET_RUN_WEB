@@ -17,41 +17,33 @@ export const AlertModal: React.FC<AlertModalProps> = ({
   message,
   onClose,
   onConfirm,
-  confirmText = "ตกลง",
+  confirmText = "ตรวจสอบข้อมูลลงทะเบียน",
 }) => {
-  const getIcon = () => {
-    switch (type) {
-      case "success":
-        return (
-          <span className="material-symbols-outlined text-green-500 text-4xl">
-            check_circle
-          </span>
-        );
-      case "error":
-        return (
-          <span className="material-symbols-outlined text-red-500 text-4xl">
-            error
-          </span>
-        );
-      case "warning":
-        return (
-          <span className="material-symbols-outlined text-yellow-500 text-4xl">
-            warning
-          </span>
-        );
-    }
+  const styles = {
+    success: {
+      icon: "check_circle",
+      accent: "bg-emerald-500",
+      iconFrame: "bg-emerald-50 text-emerald-600 ring-emerald-100",
+      button:
+        "bg-emerald-600 shadow-emerald-600/20 hover:bg-emerald-700 focus-visible:outline-emerald-600",
+    },
+    error: {
+      icon: "error",
+      accent: "bg-rose-500",
+      iconFrame: "bg-rose-50 text-rose-600 ring-rose-100",
+      button:
+        "bg-rose-600 shadow-rose-600/20 hover:bg-rose-700 focus-visible:outline-rose-600",
+    },
+    warning: {
+      icon: "warning",
+      accent: "bg-amber-400",
+      iconFrame: "bg-amber-50 text-amber-600 ring-amber-100",
+      button:
+        "bg-amber-500 shadow-amber-500/20 hover:bg-amber-600 focus-visible:outline-amber-500",
+    },
   };
 
-  const getBgColor = () => {
-    switch (type) {
-      case "success":
-        return "bg-gradient-to-br from-emerald-200 to-emerald-100";
-      case "error":
-        return "bg-gradient-to-br from-rose-200 to-rose-100";
-      case "warning":
-        return "bg-gradient-to-br from-amber-200 to-amber-100";
-    }
-  };
+  const currentStyle = styles[type];
 
   if (!isOpen) return null;
 
@@ -63,37 +55,52 @@ export const AlertModal: React.FC<AlertModalProps> = ({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 bg-black/20 backdrop-filter backdrop-blur-sm bg-opacity-50 flex items-center justify-center z-50 p-4"
+        transition={{ duration: 0.18 }}
+        className="fixed inset-0 z-50 flex items-center justify-center bg-gray-950/45 p-4 backdrop-blur-[2px] sm:p-6"
       >
         <motion.div
           role="alertdialog"
           aria-modal="true"
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-message"
-          initial={{ scale: 0.9 }}
-          animate={{ scale: 1 }}
-          exit={{ scale: 0.9 }}
-          transition={{ duration: 0.2 }}
-          className={`w-full max-w-md overflow-hidden rounded-md border border-white/60 shadow-xl ${getBgColor()}`}
+          initial={{ opacity: 0, y: 16, scale: 0.97 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 10, scale: 0.98 }}
+          transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+          className="relative w-full max-w-md overflow-hidden rounded-lg border border-gray-200 bg-white shadow-[0_24px_70px_rgba(17,24,39,0.22)]"
         >
-          <div className="p-6 text-center">
-            <div className="flex justify-center mb-4">{getIcon()}</div>
-            <h3 id="alert-dialog-title" className="mb-2 text-xl font-bold">
+          <div className={`h-1.5 w-full ${currentStyle.accent}`} />
+
+          <div className="px-5 pb-5 pt-6 text-center sm:px-7 sm:pb-7 sm:pt-7">
+            <div
+              className={`mx-auto mb-5 flex size-16 items-center justify-center rounded-full ring-8 ${currentStyle.iconFrame}`}
+            >
+              <span
+                aria-hidden="true"
+                className="material-symbols-outlined text-[34px]"
+              >
+                {currentStyle.icon}
+              </span>
+            </div>
+
+            <h3
+              id="alert-dialog-title"
+              className="mb-2 text-xl font-bold text-gray-900 sm:text-2xl"
+            >
               {title}
             </h3>
-            <p id="alert-dialog-message" className="mb-6 text-gray-700">
+            <p
+              id="alert-dialog-message"
+              className="mx-auto mb-6 max-h-[45vh] overflow-y-auto whitespace-pre-line px-1 text-left text-[15px] leading-7 text-gray-600 sm:text-base"
+            >
               {message}
             </p>
-            <div className="flex justify-center gap-4">
+
+            <div className="border-t border-gray-100 pt-5">
               <button
+                type="button"
                 onClick={onConfirm || onClose}
-                className={`px-4 py-2 rounded-md ${
-                  type === "success"
-                    ? "bg-green-600 hover:bg-green-700"
-                    : type === "error"
-                      ? "bg-red-600 hover:bg-red-700"
-                      : "bg-yellow-600 hover:bg-yellow-700"
-                } text-white transition`}
+                className={`min-h-11 w-full rounded-md px-5 py-2.5 font-semibold text-white shadow-lg transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 sm:w-auto sm:min-w-48 ${currentStyle.button}`}
               >
                 {confirmText}
               </button>

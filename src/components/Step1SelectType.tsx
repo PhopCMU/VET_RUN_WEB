@@ -164,8 +164,8 @@ const Step1SelectType: React.FC<Props> = ({ onSelect }) => {
             className="flex flex-col items-center justify-center rounded-md border border-brand-100 bg-white p-4 shadow-sm"
           >
             <img
-              src={images.fun}
-              alt="Shirt VIP 1"
+              src={images.funRunShirt}
+              alt="Fun Run Map"
               className="w-full h-auto object-contain"
             />
             <p className="text-center mt-2 text-sm text-gray-600">FUN RUN</p>
@@ -175,8 +175,8 @@ const Step1SelectType: React.FC<Props> = ({ onSelect }) => {
             className="flex flex-col items-center justify-center rounded-md border border-brand-100 bg-white p-4 shadow-sm"
           >
             <img
-              src={images.mini}
-              alt="Shirt VIP 2"
+              src={images.miniMarathonShirt}
+              alt="Mini Marathon Map"
               className="w-full h-auto object-contain"
             />
             <p className="text-center mt-2 text-sm text-gray-600">

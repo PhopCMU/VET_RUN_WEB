@@ -10,6 +10,7 @@ import { FunctionMenuSizeShirt } from "../routers/GetRouter";
 import { useTranslation } from "react-i18next";
 import { AlertModal } from "./AlertModal";
 import type { limitAnimal } from "../types/OpenProject";
+import vipShirtImage from "../assets/images/shirts/03-01.jpg";
 
 interface Props {
   type: string;
@@ -40,12 +41,11 @@ const Step3Form: FC<Props> = ({
   const { t } = useTranslation();
   const hasShirt = useRef(false);
   const [receipt, setReceipt] = useState(formData.needReceipt || false);
-  const [selectItem, setSelectItem] = useState<boolean | null>(null);
 
   const [ageRange, setAgeRange] = useState("");
   const [shirtSize, setShirtSize] = useState<ShirtSize[]>();
 
-  const safeSubOption = subOption ? subOption : "MINI MARATHON (11 KM)";
+  const safeSubOption = subOption ? subOption : "MINI MARATHON (9 KM)";
   const isDogEvent =
     subOption.includes("FUN RUN 4 KM (มีสุนัข)") ||
     subOption.includes("FUN RUN 4 KM (with dog)") ||
@@ -77,7 +77,7 @@ const Step3Form: FC<Props> = ({
   const listMenuShrit = async () => {
     const response = await FunctionMenuSizeShirt();
     if (response.success) {
-      setShirtSize(response.data);
+      setShirtSize(response.data.size);
     }
   };
 
@@ -140,24 +140,6 @@ const Step3Form: FC<Props> = ({
           shirtSizeLabel_2: "",
         });
       }
-    } else if (name === "items" && type === "radio") {
-      if (value === "shirt_2") {
-        setSelectItem(true);
-        localStorage.setItem("items", "true");
-        updateFormData({
-          items: value,
-        });
-      }
-      if (value === "trophy") {
-        setSelectItem(false);
-        localStorage.setItem("items", "false");
-        updateFormData({
-          sizeId_2: "",
-          model_shirt: "",
-          shirtSizeLabel_2: "",
-          items: value,
-        });
-      }
     } else {
       updateFormData({ [name]: newValue });
     }
@@ -179,6 +161,15 @@ const Step3Form: FC<Props> = ({
       updateFormData({ hasDog: isDogEvent });
     }
   }, [subOption]);
+
+  useEffect(() => {
+    if (
+      type === "VIP" &&
+      (formData.items !== "shirt_2" || formData.model_shirt)
+    ) {
+      updateFormData({ items: "shirt_2", model_shirt: "" });
+    }
+  }, [type, formData.items, formData.model_shirt]);
 
   const accountNumber = "667-411644-1";
   const [copied, setCopied] = useState(false);
@@ -535,173 +526,61 @@ const Step3Form: FC<Props> = ({
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
           >
-            {/* Selection Card */}
             <motion.div
-              className="flex flex-col gap-4 p-5 bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl hover:shadow-md transition-all"
+              className="flex flex-col gap-4 rounded-md border border-gray-200 bg-white p-4 shadow-sm sm:p-5"
               whileHover={{ y: -2 }}
             >
-              {/* Header */}
-              <div className="flex items-center gap-2 p-2 bg-blue-50 rounded-lg">
+              <div className="flex items-center gap-2 rounded-md bg-blue-50 p-3">
                 <span className="material-symbols-outlined text-blue-600">
-                  editor_choice
+                  apparel
                 </span>
                 <span className="font-medium text-gray-800">
-                  {t("step3.form_personal.select_reward")}
+                  {t("step3.form_personal.select_shirt_2")}
                 </span>
               </div>
 
-              {/* Trophy Option */}
-              <motion.label
-                className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50/50 cursor-pointer transition-colors"
-                whileHover={{ x: 5 }}
-              >
-                <div className="relative flex items-center">
-                  <input
-                    type="radio"
-                    value={"trophy"}
-                    name="items"
-                    onChange={handleInputChange}
-                    checked={localStorage.getItem("items") === "false"} // เพิ่ม checked attribute
-                    className="absolute opacity-0 h-0 w-0"
-                  />
-                  <div
-                    className={`flex items-center justify-center w-5 h-5 border-2 rounded-full 
-          ${
-            localStorage.getItem("items") === "false"
-              ? "border-blue-500"
-              : "border-gray-300"
-          }`}
-                  >
-                    <div
-                      className={`w-3 h-3 rounded-full ${
-                        localStorage.getItem("items") === "false"
-                          ? "bg-blue-500"
-                          : "bg-transparent"
-                      }`}
-                    ></div>
-                  </div>
-                </div>
-                <span className="material-symbols-outlined text-yellow-500 bg-yellow-100 p-2 rounded-full">
-                  trophy
-                </span>
-                <span className="text-gray-700">
-                  {t("step3.form_personal.select_trophy")}
-                </span>
-              </motion.label>
+              <img
+                src={vipShirtImage}
+                alt={t("step3.form_personal.shirt_image_alt")}
+                className="aspect-[4/3] w-full rounded-md border border-gray-200 object-cover"
+              />
 
-              {/* Shirt Option */}
-              <motion.label
-                className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50/50 cursor-pointer transition-colors"
-                whileHover={{ x: 5 }}
-              >
-                <div className="relative flex items-center">
-                  <input
-                    type="radio"
-                    value={"shirt_2"}
-                    name="items"
-                    onChange={handleInputChange}
-                    checked={localStorage.getItem("items") === "true"} // เพิ่ม checked attribute
-                    className="absolute opacity-0 h-0 w-0"
-                  />
-                  <div
-                    className={`flex items-center justify-center w-5 h-5 border-2 rounded-full 
-          ${
-            localStorage.getItem("items") === "true" || selectItem
-              ? "border-blue-500"
-              : "border-gray-300"
-          }`}
-                  >
-                    <div
-                      className={`w-3 h-3 rounded-full ${
-                        localStorage.getItem("items") === "true"
-                          ? "bg-blue-500"
-                          : "bg-transparent"
-                      }`}
-                    ></div>
-                  </div>
-                </div>
-                <span className="material-symbols-outlined text-blue-500 bg-blue-100 p-2 rounded-full">
-                  apparel
+              <div className="relative">
+                <span className="material-symbols-outlined absolute left-3 top-3 z-10 text-gray-500">
+                  straighten
                 </span>
-                <span className="text-gray-700">
-                  {t("step3.form_personal.select_shirt_2")}
-                </span>
-              </motion.label>
-
-              {/* Shirt Selection (Conditional) */}
-              {localStorage.getItem("items") === "true" && (
-                <motion.div
-                  className="space-y-4 mt-3 p-4 bg-gray-50 rounded-lg border border-gray-200"
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  transition={{ duration: 0.3 }}
+                <select
+                  name="sizeId_2"
+                  aria-label={t("step3.form_personal.select_size_shirt")}
+                  className="w-full appearance-none rounded-md border border-gray-300 bg-white py-3 pl-12 pr-10 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                  onChange={handleInputChange}
+                  defaultValue=""
                 >
-                  {/* Shirt Model Selection */}
-                  <div className="relative">
-                    <span className="material-symbols-outlined absolute left-3 top-3 text-gray-500 z-10">
-                      style
-                    </span>
-                    <select
-                      name="model_shirt"
-                      className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white shadow-sm"
-                      onChange={handleInputChange}
-                      required
-                      defaultValue={formData.model_shirt}
+                  <option value="" className="text-gray-500">
+                    {formData.sizeId_2
+                      ? formData.shirtSizeLabel_2
+                      : t("step3.form_personal.select_size_shirt")}
+                  </option>
+                  {shirtSize?.map((shirt) => (
+                    <option
+                      key={shirt.shirtId}
+                      value={JSON.stringify({
+                        id_2: shirt.shirtId,
+                        size_2: shirt.size,
+                      })}
                     >
-                      <option value="" className="text-gray-500">
-                        {t("step3.form_personal.select_model_shrit")}
-                      </option>
-                      <option value={"Shirt4KM"}>4 KM</option>
-                      <option value={"Shirt11KM"}>11 KM</option>
-                    </select>
-                    <span className="material-symbols-outlined absolute right-3 top-3 text-gray-400 pointer-events-none">
-                      expand_more
-                    </span>
-                  </div>
-
-                  {/* Shirt Size Selection */}
-                  <div className="relative">
-                    <span className="material-symbols-outlined absolute left-3 top-3 text-gray-500 z-10">
-                      straighten
-                    </span>
-                    <select
-                      name="sizeId_2"
-                      className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white shadow-sm"
-                      onChange={handleInputChange}
-                      defaultValue={formData.sizeId_2}
-                    >
-                      <option value="" className="text-gray-500">
-                        {formData.sizeId_2
-                          ? shirtSize?.filter(
-                              (shirt: any) =>
-                                shirt.shirtId === formData.sizeId_2,
-                            )[0].size
-                          : t("step3.form_personal.select_size_shirt")}
-                      </option>
-                      {shirtSize &&
-                        shirtSize.map((shirt: any) => (
-                          <option
-                            key={shirt.shirtId}
-                            value={JSON.stringify({
-                              id_2: shirt.shirtId,
-                              size_2: shirt.size,
-                            })}
-                            className="text-gray-700"
-                          >
-                            {`${shirt.size} =  (${t(
-                              "step3.form_personal.shirt.chest_size",
-                            )}:${shirt.s_width} ${t(
-                              "step3.form_personal.shirt.length_size",
-                            )}:${shirt.s_high})`}
-                          </option>
-                        ))}
-                    </select>
-                    <span className="material-symbols-outlined absolute right-3 top-3 text-gray-400 pointer-events-none">
-                      expand_more
-                    </span>
-                  </div>
-                </motion.div>
-              )}
+                      {`${shirt.size} = (${t(
+                        "step3.form_personal.shirt.chest_size",
+                      )}: ${shirt.s_width} ${t(
+                        "step3.form_personal.shirt.length_size",
+                      )}: ${shirt.s_high})`}
+                    </option>
+                  ))}
+                </select>
+                <span className="material-symbols-outlined pointer-events-none absolute right-3 top-3 text-gray-400">
+                  expand_more
+                </span>
+              </div>
             </motion.div>
           </motion.div>
         )}

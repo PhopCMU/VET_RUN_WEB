@@ -342,7 +342,7 @@ export default function Home() {
                 2026 Collection
               </p>
               <h2 className="text-3xl font-black text-brand-900 sm:text-4xl md:text-5xl">
-                VET CMU RUN 2026 Running Shirt
+                VET CMU RUN 2026
               </h2>
             </div>
           </div>
@@ -424,10 +424,6 @@ export default function Home() {
                   {t("home.sponsors")}
                 </h2>
               </div>
-              <p className="max-w-md text-sm leading-7 text-gray-600 md:text-right">
-                ขอบคุณทุกพลังสนับสนุนที่ร่วมสร้างพื้นที่แห่งสุขภาพ
-                และส่งต่อความสุขให้กับนักวิ่งทุกคน
-              </p>
             </div>
 
             <div className="space-y-12 md:space-y-16">

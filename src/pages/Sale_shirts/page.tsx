@@ -7,6 +7,7 @@ import { AlertModal } from "../../components/AlertModal";
 import { ProcressLoadingModal } from "../../components/ProcessLoadingModal";
 import { SalesRouterCryptoJS } from "../../routers/PostRouter";
 import { useNavigate } from "react-router-dom";
+import images from "../../constant/images";
 
 interface ShirtSize {
   shirtId: string;
@@ -17,14 +18,15 @@ interface ShirtSize {
 
 interface ShirtItem {
   type: string; // shirtModelId
+  color: string; // shirtColorId
   size: string; // sizeId (shirtId)
+  quantity: number;
 }
 
 type FormData = {
   fullName: string;
   phone: string;
   email: string;
-  quantity: string;
   address: string;
   transferFile: File | null;
 };
@@ -35,34 +37,46 @@ const SaleShirt = () => {
   const [step, setStep] = useState<"form" | "confirm">("form");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [activeShirt, setActiveShirt] = useState(0);
+  const [shirtModels, setShirtModels] = useState<any[]>([]);
+  const [shirtColors, setShirtColors] = useState<any[]>([]);
   const [shirtSize, setShirtSize] = useState<ShirtSize[]>([]);
   const [formData, setFormData] = useState<FormData>({
     fullName: "",
     phone: "",
     email: "",
-    quantity: "",
     address: "",
     transferFile: null,
   });
 
-  const [shirts, setShirts] = useState<ShirtItem[]>([]);
-  const [totalPrice, setTotalPrice] = useState<number>(0);
-  const [shirtModels] = useState<
-    { id: string; name: string; color: string; price: number }[]
-  >([
-    {
-      id: "1298b333-6577-437b-b9d1-076b11716e01",
-      name: "4 KM",
-      color: "Brownish Pink",
-      price: 350,
-    },
-    {
-      id: "a4574514-b16b-4fc7-9330-146d0cb6e647",
-      name: "11 KM",
-      color: "Brownish Blue",
-      price: 350,
-    },
+  const [shirts, setShirts] = useState<ShirtItem[]>([
+    { type: "", color: "", size: "", quantity: 1 },
   ]);
+  const [totalPrice, setTotalPrice] = useState<number>(0);
+  const MAX_SHIRTS = 999;
+  const SHIRT_PRICE =
+    shirtModels.find((model) => model.shirtmodelId === shirts[0]?.type)
+      ?.price || 1000;
+  const shirtGallery = [
+    {
+      image: images.familyShirtsBlue,
+      label: "",
+      distance: t("home.ex_shirt.RB"),
+      accent: "#",
+    },
+    {
+      image: images.familyShirtsGreen,
+      label: "",
+      distance: t("home.ex_shirt.PG"),
+      accent: "#",
+    },
+    {
+      image: images.familyShirtsAlternate,
+      label: "",
+      distance: t("home.ex_shirt.CF"),
+      accent: "#",
+    },
+  ];
 
   const hasShirt = useRef(false);
   const [alertState, setAlertState] = useState<{
@@ -104,12 +118,12 @@ const SaleShirt = () => {
   };
   const [openAddress, setOpenAddress] = useState(false);
 
-  const quantityOptions = Array.from({ length: 10 }, (_, i) => i + 1);
-
   const listMenuShrit = async () => {
     const response = await FunctionMenuSizeShirt();
     if (response.success) {
-      setShirtSize(response.data);
+      setShirtSize(response.data.size);
+      setShirtModels(response.data.shirtModel);
+      setShirtColors(response.data.shirtColor);
     }
   };
 
@@ -120,23 +134,22 @@ const SaleShirt = () => {
     }
   }, []);
 
+  const selectedQuantity = shirts.reduce(
+    (total, shirt) => total + shirt.quantity,
+    0,
+  );
+
   // คำนวณยอดรวม
   useEffect(() => {
-    const qty = parseInt(formData.quantity) || 0;
-    if (qty === 0) {
-      setTotalPrice(0);
-      return;
-    }
-
-    let price = qty * 350;
+    let price = selectedQuantity * SHIRT_PRICE;
     if (openAddress) {
       const shippingFirst = 50;
-      const shippingAdditional = Math.max(0, qty - 1) * 5;
+      const shippingAdditional = Math.max(0, selectedQuantity - 1) * 5;
       price += shippingFirst + shippingAdditional;
     }
 
     setTotalPrice(price);
-  }, [formData.quantity, openAddress]);
+  }, [selectedQuantity, openAddress]);
 
   const accountNumber = "667-411644-1";
   const [copied, setCopied] = useState(false);
@@ -146,71 +159,63 @@ const SaleShirt = () => {
       await navigator.clipboard.writeText(accountNumber.replace(/-/g, ""));
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error("Failed to copy text: ", err);
+    } catch (error) {
+      console.error("Failed to copy text: ", error);
     }
   };
 
-  // const handleInputChange = (
-  //   e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  // ) => {
-  //   const { name, value, type } = e.target;
-  //   const checked = (e.target as HTMLInputElement).checked;
-
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     [name]: type === "checkbox" || type === "radio" ? checked : value,
-  //   }));
-
-  //   if (name === "quantity") {
-  //     const qty = parseInt(value) || 0;
-  //     setShirts(Array.from({ length: qty }, () => ({ type: "", size: "" })));
-  //   }
-  // };
-
   const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
+    event: ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
   ) => {
-    const { name, value, type } = e.target;
-    const checked = (e.target as HTMLInputElement).checked;
+    const { name, value, type } = event.target;
+    const checked = (event.target as HTMLInputElement).checked;
     if (name === "phone") {
-      const numericValue = value.replace(/\D/g, ""); // \D = ไม่ใช่ตัวเลข
-      const limitedValue = numericValue.slice(0, 10);
       setFormData((prev) => ({
         ...prev,
-        phone: limitedValue,
+        phone: value.replace(/\D/g, "").slice(0, 10),
       }));
       return;
     }
+
     setFormData((prev) => ({
       ...prev,
       [name]: type === "checkbox" || type === "radio" ? checked : value,
     }));
-    if (name === "quantity") {
-      const qty = parseInt(value) || 0;
-      setShirts(Array.from({ length: qty }, () => ({ type: "", size: "" })));
-    }
   };
 
   const handleShirtChange = (
     index: number,
-    field: "type" | "size",
-    value: string,
+    field: keyof ShirtItem,
+    value: string | number,
   ) => {
     setShirts((prev) =>
-      prev.map((shirt, i) =>
-        i === index ? { ...shirt, [field]: value } : shirt,
+      prev.map((shirt, shirtIndex) =>
+        shirtIndex === index ? { ...shirt, [field]: value } : shirt,
       ),
     );
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFormData((prev) => ({ ...prev, transferFile: e.target.files![0] }));
+  const addShirtLine = () => {
+    if (selectedQuantity >= MAX_SHIRTS) return;
+    setShirts((prev) => [
+      ...prev,
+      { type: "", color: "", size: "", quantity: 1 },
+    ]);
+  };
+
+  const removeShirtLine = (index: number) => {
+    setShirts((prev) => prev.filter((_, shirtIndex) => shirtIndex !== index));
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setFormData((prev) => ({ ...prev, transferFile: file }));
     }
   };
 
-  // สร้าง sizeMap เพื่อดึงข้อมูลขนาดจาก shirtId
   const sizeMap = useMemo(() => {
     const map: Record<string, ShirtSize> = {};
     shirtSize.forEach((size) => {
@@ -219,12 +224,12 @@ const SaleShirt = () => {
     return map;
   }, [shirtSize]);
 
-  const selectedQuantity = parseInt(formData.quantity) || 0;
-
   const handleSubmit = async () => {
-    const qty = parseInt(formData.quantity) || 0;
-
-    if (qty === 0 || shirts.some((s) => !s.type || !s.size)) {
+    if (
+      selectedQuantity === 0 ||
+      selectedQuantity > MAX_SHIRTS ||
+      shirts.some((shirt) => !shirt.type || !shirt.color || !shirt.size)
+    ) {
       showCustomAlert("กรุณากรอกข้อมูลเสื้อทุกตัวให้ครบ", {
         title: "กรุณากรอกข้อมูลเสื้อทุกตัวให้ครบ",
         type: "warning",
@@ -232,50 +237,42 @@ const SaleShirt = () => {
       return;
     }
 
-    // ✅ สร้าง orderItems จาก shirts
-    const orderItems = shirts.map((shirt) => ({
-      shirtModelId: shirt.type,
-      sizeId: shirt.size,
-    }));
-
-    // ✅ สร้าง object ใหม่ที่รวมข้อมูลที่จะส่ง (ไม่ใช้ setFormData เพื่อรอ state update)
+    const orderItems = shirts.flatMap((shirt) =>
+      Array.from({ length: shirt.quantity }, () => ({
+        shirtModelId: shirt.type,
+        shirtColorId: shirt.color,
+        sizeId: shirt.size,
+      })),
+    );
     const updatedFormData = {
       ...formData,
+      quantity: String(selectedQuantity),
       sh_collection_method: openAddress ? "delivery" : "pickup",
       total_amount: totalPrice,
-      orderItems: {
-        create: orderItems,
-      },
+      orderItems: { create: orderItems },
     };
 
     setIsLoading(true);
     setUploadProgress(0);
-
     const dataToSend = new FormData();
 
     Object.entries(updatedFormData).forEach(([key, value]) => {
       if (value === null || value === undefined) return;
-
-      // หาก value เป็น object → แปลงเป็น JSON string
       if (typeof value === "object" && !(value instanceof File)) {
         dataToSend.append(key, JSON.stringify(value));
       } else {
-        // หากเป็น File หรือ primitive type
         dataToSend.append(key, value instanceof File ? value : String(value));
       }
     });
 
     try {
-      // console.log("Sending payload:", Object.fromEntries(dataToSend)); // ใช้ Object.fromEntries เพื่อดูข้อมูล
-      // console.log("Updated form data:", updatedFormData);
       const response = await SalesRouterCryptoJS(dataToSend, setUploadProgress);
-
       if (response.success) {
         showCustomAlert(t("process_loading.message.success"), {
           title: t("page.modal.success"),
           type: "success",
         });
-      } else if (response?.success === false) {
+      } else {
         showCustomAlert(response?.message as string, {
           title: t("page.modal.warning"),
           type: "warning",
@@ -291,7 +288,7 @@ const SaleShirt = () => {
 
   return (
     <div className="page-frame flex items-start justify-center">
-      <div className="w-full max-w-3xl">
+      <div className="w-full max-w-7xl">
         {step === "form" ? (
           <AnimatePresence mode="wait">
             <motion.div
@@ -388,165 +385,308 @@ const SaleShirt = () => {
                 </div>
               </div>
 
-              {/* จำนวนเสื้อ */}
+              {/* Ex.เสื้อที่ระลึก */}
+              <section id="shirts" className="overflow-hidden  mb-8">
+                <div className="mx-auto ">
+                  <div className="grid gap-5 ">
+                    <motion.div
+                      key={activeShirt}
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.35 }}
+                      className="relative min-h-[330px] overflow-hidden rounded-md bg-[#242424] "
+                    >
+                      <img
+                        src={shirtGallery[activeShirt].image}
+                        alt={`${shirtGallery[activeShirt].label} ${shirtGallery[activeShirt].distance}`}
+                        className="absolute inset-0 h-full w-full object-contain object-center"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-black/85 to-transparent px-5 pb-5 pt-20 text-white sm:px-7 sm:pb-7">
+                        <div>
+                          <p className="text-sm font-semibold text-white/70">
+                            {shirtGallery[activeShirt].label}
+                          </p>
+                          <p className="mt-1 text-3xl font-black">
+                            {shirtGallery[activeShirt].distance}
+                          </p>
+                        </div>
+                        <span
+                          className="h-3 w-16"
+                          style={{
+                            backgroundColor: shirtGallery[activeShirt].accent,
+                          }}
+                        />
+                      </div>
+                    </motion.div>
+
+                    <div className="grid grid-cols-3 gap-2 lg:grid-cols-2">
+                      {shirtGallery.map((shirt, index) => (
+                        <button
+                          key={shirt.image}
+                          onClick={() => setActiveShirt(index)}
+                          aria-label={`ดูแบบเสื้อ ${shirt.label} ${shirt.distance}`}
+                          aria-pressed={activeShirt === index}
+                          className={`relative min-h-24 overflow-hidden rounded-md border-2 bg-[#242424] transition-all sm:min-h-32 lg:min-h-0 ${
+                            activeShirt === index
+                              ? "border-brand-600 shadow-[0_8px_24px_rgba(73,24,107,0.18)]"
+                              : "border-transparent opacity-65 hover:opacity-100"
+                          }`}
+                        >
+                          <img
+                            src={shirt.image}
+                            alt=""
+                            className="absolute inset-0 h-full w-full object-cover object-center"
+                            loading="lazy"
+                          />
+                          <span className="absolute bottom-2 left-2 bg-black/75 px-2 py-1 text-[10px] font-bold text-white backdrop-blur-sm">
+                            {shirt.distance}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <div className="mb-4 flex items-center justify-between gap-4 rounded-md border border-brand-200 bg-brand-50 p-4">
+                <div className="flex items-center gap-3">
+                  <span className="material-symbols-outlined text-brand-700">
+                    inventory
+                  </span>
+                  <div>
+                    <p className="text-sm text-gray-600">
+                      {t("form_sale.data_shirts.total_selected")}
+                    </p>
+                    <p className="font-bold text-brand-900">
+                      {selectedQuantity}/{MAX_SHIRTS}{" "}
+                      {t("form_sale.data_shirts.shirts")}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={addShirtLine}
+                  disabled={selectedQuantity >= MAX_SHIRTS}
+                  className="flex items-center gap-2 rounded-md bg-brand-700 px-3 py-2 text-sm font-semibold text-white transition hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-45"
+                >
+                  <span className="material-symbols-outlined text-lg">add</span>
+                  {t("form_sale.data_shirts.add_line")}
+                </button>
+              </div>
+
+              {/* รายการเสื้อแบบแยกรุ่น สี ไซส์ และจำนวน */}
               <div className="mb-8">
                 <div className="flex items-center mb-4">
                   <span className="material-symbols-outlined text-blue-600 mr-2">
-                    inventory
+                    checklist
                   </span>
                   <h2 className="text-xl font-semibold text-gray-800">
-                    {t("form_sale.data_shirts.title")}
+                    {t("form_sale.data_shirts.title_details")}
                   </h2>
                 </div>
 
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t("form_sale.data_shirts.subtitle")}
-                </label>
-                <div className="relative">
-                  <span className="material-symbols-outlined absolute left-3 top-3 text-gray-400 text-sm">
-                    numbers
-                  </span>
-                  <select
-                    name="quantity"
-                    value={formData.quantity}
-                    onChange={handleInputChange}
-                    className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition appearance-none"
-                  >
-                    <option value="">
-                      -- {t("form_sale.data_shirts.select_quantity")} --
-                    </option>
-                    {quantityOptions.map((num) => (
-                      <option key={num} value={num}>
-                        {num} {t("form_sale.data_shirts.shirts")}
-                      </option>
-                    ))}
-                  </select>
-                  <span className="material-symbols-outlined absolute right-3 top-3 text-gray-400 pointer-events-none">
-                    expand_more
-                  </span>
+                <p className="text-sm text-gray-600 mb-4">
+                  {t("form_sale.data_shirts.group_hint")}
+                </p>
+
+                <div className="space-y-4">
+                  {shirts.map((shirt, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="space-y-4 rounded-md border border-brand-100 bg-brand-50 p-5 shadow-sm"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center">
+                          <div className="flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-600 rounded-full mr-3">
+                            {index + 1}
+                          </div>
+                          <h3 className="text-lg font-medium text-gray-800">
+                            {t("form_sale.data_shirts.order_line")} {index + 1}
+                          </h3>
+                        </div>
+                        {shirts.length > 1 && (
+                          <button
+                            type="button"
+                            onClick={() => removeShirtLine(index)}
+                            aria-label={t("form_sale.data_shirts.remove_line")}
+                            title={t("form_sale.data_shirts.remove_line")}
+                            className="flex h-9 w-9 items-center justify-center rounded-md text-red-600 hover:bg-red-50 focus:ring-2 focus:ring-red-300"
+                          >
+                            <span className="material-symbols-outlined">
+                              delete
+                            </span>
+                          </button>
+                        )}
+                      </div>
+
+                      {/* เลือกสีเสื้อ */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          {t("form_sale.data_shirts.shirt_color")}
+                        </label>
+                        <div className="relative">
+                          <span className="material-symbols-outlined absolute left-3 top-3 text-gray-400 text-sm">
+                            style
+                          </span>
+                          <select
+                            value={shirt.color}
+                            onChange={(e) =>
+                              handleShirtChange(index, "color", e.target.value)
+                            }
+                            className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition appearance-none"
+                          >
+                            <option value="">
+                              -- {t("form_sale.data_shirts.shirt_color")} --
+                            </option>
+                            {shirtColors.map((s) => (
+                              <option
+                                key={s.shirtcolorId}
+                                value={s.shirtcolorId}
+                              >
+                                {s.name} {"["}
+                                {s.name_en}
+                                {"]"}
+                              </option>
+                            ))}
+                          </select>
+                          <span className="material-symbols-outlined absolute right-3 top-3 text-gray-400 pointer-events-none">
+                            expand_more
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* เลือกรุ่นเสื้อ */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          {t("form_sale.data_shirts.shirt_model")}
+                        </label>
+                        <div className="relative">
+                          <span className="material-symbols-outlined absolute left-3 top-3 text-gray-400 text-sm">
+                            style
+                          </span>
+                          <select
+                            value={shirt.type}
+                            onChange={(e) =>
+                              handleShirtChange(index, "type", e.target.value)
+                            }
+                            className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition appearance-none"
+                          >
+                            <option value="">
+                              -- {t("form_sale.data_shirts.shirt_model")} --
+                            </option>
+                            {shirtModels.map((s) => (
+                              <option
+                                key={s.shirtmodelId}
+                                value={s.shirtmodelId}
+                              >
+                                {s.name} {"["}
+                                {s.name_en}
+                                {"]"}
+                              </option>
+                            ))}
+                          </select>
+                          <span className="material-symbols-outlined absolute right-3 top-3 text-gray-400 pointer-events-none">
+                            expand_more
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* เลือกไซส์เสื้อ */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          {t("form_sale.data_shirts.shirt_size")}
+                        </label>
+                        <div className="relative">
+                          <span className="material-symbols-outlined absolute left-3 top-3 text-gray-400 text-sm">
+                            straighten
+                          </span>
+                          <select
+                            value={shirt.size}
+                            onChange={(e) =>
+                              handleShirtChange(index, "size", e.target.value)
+                            }
+                            className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition appearance-none"
+                          >
+                            <option value="">
+                              -- {t("form_sale.data_shirts.shirt_size")} --
+                            </option>
+                            {shirtSize.map((shirt) => (
+                              <option key={shirt.shirtId} value={shirt.shirtId}>
+                                {`${shirt.size} = (${t(
+                                  "step3.form_personal.shirt.chest_size",
+                                )}:${shirt.s_width} ${t(
+                                  "step3.form_personal.shirt.length_size",
+                                )}:${shirt.s_high})`}
+                              </option>
+                            ))}
+                          </select>
+                          <span className="material-symbols-outlined absolute right-3 top-3 text-gray-400 pointer-events-none">
+                            expand_more
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col gap-3 border-t border-brand-100 pt-4 sm:flex-row sm:items-end sm:justify-between">
+                        <div>
+                          <span className="mb-2 block text-sm font-medium text-gray-700">
+                            {t("form_sale.data_shirts.line_quantity")}
+                          </span>
+                          <div className="grid h-11 w-36 grid-cols-[44px_1fr_44px] overflow-hidden rounded-md border border-gray-300 bg-white">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                handleShirtChange(
+                                  index,
+                                  "quantity",
+                                  Math.max(1, shirt.quantity - 1),
+                                )
+                              }
+                              disabled={shirt.quantity === 1}
+                              className="flex items-center justify-center border-r border-gray-200 disabled:opacity-35"
+                              aria-label={t("form_sale.data_shirts.decrease")}
+                            >
+                              <span className="material-symbols-outlined">
+                                remove
+                              </span>
+                            </button>
+                            <span className="flex items-center justify-center font-bold">
+                              {shirt.quantity}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() =>
+                                handleShirtChange(
+                                  index,
+                                  "quantity",
+                                  shirt.quantity + 1,
+                                )
+                              }
+                              disabled={selectedQuantity >= MAX_SHIRTS}
+                              className="flex items-center justify-center border-l border-gray-200 disabled:opacity-35"
+                              aria-label={t("form_sale.data_shirts.increase")}
+                            >
+                              <span className="material-symbols-outlined">
+                                add
+                              </span>
+                            </button>
+                          </div>
+                        </div>
+                        <p className="text-right text-sm text-gray-600">
+                          {shirt.quantity} × {SHIRT_PRICE} ={" "}
+                          <strong className="text-base text-brand-900">
+                            {(shirt.quantity * SHIRT_PRICE).toLocaleString()}{" "}
+                            {t("form_sale.data_method.cost_summary.bath")}
+                          </strong>
+                        </p>
+                      </div>
+                    </motion.div>
+                  ))}
                 </div>
               </div>
-
-              {/* รายการเสื้อแต่ละตัว */}
-              {selectedQuantity > 0 && (
-                <div className="mb-8">
-                  <div className="flex items-center mb-4">
-                    <span className="material-symbols-outlined text-blue-600 mr-2">
-                      checklist
-                    </span>
-                    <h2 className="text-xl font-semibold text-gray-800">
-                      {t("form_sale.data_shirts.shirt_number")}
-                    </h2>
-                  </div>
-
-                  <p className="text-sm text-gray-600 mb-4">
-                    {t("form_sale.data_shirts.subtitle_details")}
-                  </p>
-
-                  <div className="space-y-4">
-                    {Array.from({ length: selectedQuantity }).map(
-                      (_, index) => (
-                        <motion.div
-                          key={index}
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: index * 0.1 }}
-                          className="space-y-4 rounded-md border border-brand-100 bg-brand-50 p-5 shadow-sm"
-                        >
-                          <div className="flex items-center">
-                            <div className="flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-600 rounded-full mr-3">
-                              {index + 1}
-                            </div>
-                            <h3 className="text-lg font-medium text-gray-800">
-                              {t("form_sale.data_shirts.shirt_number")}{" "}
-                              {index + 1}
-                            </h3>
-                          </div>
-
-                          {/* เลือกรุ่นเสื้อ */}
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                              {t("form_sale.data_shirts.shirt_model")}
-                            </label>
-                            <div className="relative">
-                              <span className="material-symbols-outlined absolute left-3 top-3 text-gray-400 text-sm">
-                                style
-                              </span>
-                              <select
-                                value={shirts[index]?.type || ""}
-                                onChange={(e) =>
-                                  handleShirtChange(
-                                    index,
-                                    "type",
-                                    e.target.value,
-                                  )
-                                }
-                                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition appearance-none"
-                              >
-                                <option value="">
-                                  -- {t("form_sale.data_shirts.shirt_model")} --
-                                </option>
-                                {shirtModels.map((s) => (
-                                  <option key={s.id} value={s.id}>
-                                    {s.name} {"["}
-                                    {s.color}
-                                    {"]"}
-                                  </option>
-                                ))}
-                              </select>
-                              <span className="material-symbols-outlined absolute right-3 top-3 text-gray-400 pointer-events-none">
-                                expand_more
-                              </span>
-                            </div>
-                          </div>
-
-                          {/* เลือกไซส์เสื้อ */}
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                              {t("form_sale.data_shirts.shirt_size")}
-                            </label>
-                            <div className="relative">
-                              <span className="material-symbols-outlined absolute left-3 top-3 text-gray-400 text-sm">
-                                straighten
-                              </span>
-                              <select
-                                value={shirts[index]?.size || ""}
-                                onChange={(e) =>
-                                  handleShirtChange(
-                                    index,
-                                    "size",
-                                    e.target.value,
-                                  )
-                                }
-                                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition appearance-none"
-                              >
-                                <option value="">
-                                  -- {t("form_sale.data_shirts.shirt_size")} --
-                                </option>
-                                {shirtSize.map((shirt) => (
-                                  <option
-                                    key={shirt.shirtId}
-                                    value={shirt.shirtId}
-                                  >
-                                    {`${shirt.size} = (${t(
-                                      "step3.form_personal.shirt.chest_size",
-                                    )}:${shirt.s_width} ${t(
-                                      "step3.form_personal.shirt.length_size",
-                                    )}:${shirt.s_high})`}
-                                  </option>
-                                ))}
-                              </select>
-                              <span className="material-symbols-outlined absolute right-3 top-3 text-gray-400 pointer-events-none">
-                                expand_more
-                              </span>
-                            </div>
-                          </div>
-                        </motion.div>
-                      ),
-                    )}
-                  </div>
-                </div>
-              )}
 
               {/* วิธีรับเสื้อ */}
               <div className="mb-8">
@@ -686,13 +826,12 @@ const SaleShirt = () => {
                         </span>
                         <span>
                           {t("form_sale.data_method.cost_summary.shirt")}{" "}
-                          {formData.quantity}{" "}
-                          {t("form_sale.data_shirts.shirts")} × 350{" "}
-                          {t("form_sale.data_method.cost_summary.bath")}
+                          {selectedQuantity} {t("form_sale.data_shirts.shirts")}{" "}
+                          × 350 {t("form_sale.data_method.cost_summary.bath")}
                         </span>
                       </div>
                       <span className="font-medium">
-                        {parseInt(formData.quantity) * 350}{" "}
+                        {selectedQuantity * SHIRT_PRICE}{" "}
                         {t("form_sale.data_method.cost_summary.bath")}
                       </span>
                     </div>
@@ -717,7 +856,7 @@ const SaleShirt = () => {
                           </span>
                         </div>
 
-                        {parseInt(formData.quantity) > 1 && (
+                        {selectedQuantity > 1 && (
                           <div className="flex justify-between items-center py-2 border-b border-blue-100">
                             <div className="flex items-center">
                               <span className="material-symbols-outlined text-blue-500 text-sm mr-2">
@@ -727,13 +866,12 @@ const SaleShirt = () => {
                                 {t(
                                   "form_sale.data_method.cost_summary.additional_shipping_fee",
                                 )}{" "}
-                                ({parseInt(formData.quantity) - 1}{" "}
+                                ({selectedQuantity - 1}{" "}
                                 {t("form_sale.data_shirts.shirts")})
                               </span>
                             </div>
                             <span className="font-medium">
-                              +
-                              {Math.max(0, parseInt(formData.quantity) - 1) * 5}{" "}
+                              +{Math.max(0, selectedQuantity - 1) * 5}{" "}
                               {t("form_sale.data_method.cost_summary.bath")}
                             </span>
                           </div>
@@ -964,15 +1102,8 @@ const SaleShirt = () => {
                     });
                     return;
                   }
-                  if (shirts.length !== selectedQuantity) {
-                    showCustomAlert("กรุณาเลือกรายละเอียดเสื้อให้ครบตามจำนวน", {
-                      title: "",
-                      type: "warning",
-                    });
-                    return;
-                  }
-                  if (shirts.some((s) => !s.type || !s.size)) {
-                    showCustomAlert("กรุณาเลือกรุ่นและไซส์ให้ครบทุกตัว", {
+                  if (shirts.some((s) => !s.type || !s.color || !s.size)) {
+                    showCustomAlert("กรุณาเลือกสี รุ่น และไซส์ให้ครบทุกตัว", {
                       title: "",
                       type: "warning",
                     });
@@ -1003,7 +1134,10 @@ const SaleShirt = () => {
             deliveryType={openAddress ? "delivery" : "pickup"}
             onEdit={() => setStep("form")}
             onSubmit={handleSubmit}
+            isLoading={isLoading}
             sizeMap={sizeMap} // ถ้าต้องการให้ ConfirmationSale แสดงข้อมูล size, s_width, s_high
+            shirtModels={shirtModels}
+            shirtColors={shirtColors}
           />
         )}
       </div>

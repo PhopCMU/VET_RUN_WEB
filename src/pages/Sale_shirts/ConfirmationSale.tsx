@@ -11,7 +11,15 @@ interface ShirtSize {
 
 interface ShirtItem {
   type: string; // shirtModelId (UUID)
-  size: string; // sizeId (shirtId)
+  color: string; // shirtColorId (UUID)
+  size: string; // sizeId (shirtSizeId)
+  quantity: number;
+}
+
+interface NamedOption {
+  id: string;
+  name: string;
+  name_en?: string;
 }
 
 interface ConfirmationProps {
@@ -19,7 +27,6 @@ interface ConfirmationProps {
     fullName: string;
     phone: string;
     email: string;
-    quantity: string;
     address: string;
     transferFile: File | null;
   };
@@ -30,6 +37,8 @@ interface ConfirmationProps {
   onSubmit: () => void;
   isLoading?: boolean;
   sizeMap: Record<string, ShirtSize>; // เพิ่ม sizeMap เพื่อดึงข้อมูลขนาด
+  shirtModels: NamedOption[];
+  shirtColors: NamedOption[];
 }
 
 const ConfirmationSale = ({
@@ -41,6 +50,8 @@ const ConfirmationSale = ({
   deliveryType,
   isLoading = false,
   sizeMap,
+  shirtModels,
+  shirtColors,
 }: ConfirmationProps) => {
   const { t } = useTranslation();
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -52,6 +63,12 @@ const ConfirmationSale = ({
 
   // ตรวจสอบว่าทั้ง 3 checkbox ถูกเลือก
   const agreed = confirmedData && acceptedRefundPolicy && acceptedPDPA;
+  const totalQuantity = shirts.reduce(
+    (total, shirt) => total + shirt.quantity,
+    0,
+  );
+
+  console.log("ConfirmationSale: shirts", shirts);
 
   // สร้าง preview เมื่อมีการอัปโหลดไฟล์
   useEffect(() => {
@@ -74,13 +91,21 @@ const ConfirmationSale = ({
     };
   }, [formData.transferFile, previewUrl]);
 
-  // แปลง shirtModelId เป็น label
+  // แปลง shirtModelId เป็น label จากข้อมูลจริงที่ดึงมาจาก backend
   const getShirtLabel = (type: string) => {
-    const map: Record<string, string> = {
-      "1298b333-6577-437b-b9d1-076b11716e01": "4 KM",
-      "a4574514-b16b-4fc7-9330-146d0cb6e647": "11 KM",
-    };
-    return map[type] || "ไม่ทราบ";
+    const model = shirtModels.find((m: any) => m.shirtmodelId === type);
+    console.log("getShirtLabel", type);
+    if (!model) return "ไม่ทราบ";
+    return model.name_en ? `${model.name} [${model.name_en}]` : model.name;
+  };
+
+  // แปลง shirtColorId เป็น label
+  const getColorLabel = (color: string) => {
+    const colorItem = shirtColors.find((c: any) => c.shirtcolorId === color);
+    if (!colorItem) return "ไม่ทราบ";
+    return colorItem.name_en
+      ? `${colorItem.name} [${colorItem.name_en}]`
+      : colorItem.name;
   };
 
   // ดึงข้อมูลขนาดจาก sizeMap
@@ -95,7 +120,7 @@ const ConfirmationSale = ({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3 }}
-      className="content-panel mx-auto max-w-3xl p-5 sm:p-6 md:p-8"
+      className="content-panel mx-auto max-w-7xl p-5 sm:p-6 md:p-8"
     >
       {/* Header */}
       <div className="text-center mb-8">
@@ -169,7 +194,8 @@ const ConfirmationSale = ({
             {t("form_sale.data_shirts.title")}
           </p>
           <p className="text-gray-800 text-lg font-semibold">
-            {formData.quantity} {t("form_sale.data_shirts.shirts")}
+            {totalQuantity} {t("form_sale.data_shirts.shirts")} ·{" "}
+            {shirts.length} {t("form_sale.data_shirts.variants")}
           </p>
         </div>
       </div>
@@ -197,7 +223,16 @@ const ConfirmationSale = ({
                   {t("form_confirm.data_detail.shirt_model")}
                 </th>
                 <th className="p-3 text-left text-purple-800 font-semibold">
+                  {t("form_confirm.data_detail.shirt_color")}
+                </th>
+                <th className="p-3 text-left text-purple-800 font-semibold">
                   {t("form_confirm.data_detail.size")}
+                </th>
+                <th className="p-3 text-center text-purple-800 font-semibold">
+                  {t("form_sale.data_shirts.line_quantity")}
+                </th>
+                <th className="p-3 text-right text-purple-800 font-semibold">
+                  {t("form_confirm.data_detail.subtotal")}
                 </th>
               </tr>
             </thead>
@@ -235,10 +270,25 @@ const ConfirmationSale = ({
                     <td className="p-3 border-b border-purple-100">
                       <div className="flex items-center">
                         <span className="material-symbols-outlined text-gray-500 text-sm mr-2">
+                          palette
+                        </span>
+                        {getColorLabel(shirt.color)}
+                      </div>
+                    </td>
+                    <td className="p-3 border-b border-purple-100">
+                      <div className="flex items-center">
+                        <span className="material-symbols-outlined text-gray-500 text-sm mr-2">
                           straighten
                         </span>
                         {sizeDetail?.size || "ไม่ทราบ"}
                       </div>
+                    </td>
+                    <td className="p-3 text-center border-b border-purple-100 font-semibold">
+                      {shirt.quantity}
+                    </td>
+                    <td className="p-3 text-right border-b border-purple-100 font-semibold">
+                      {(shirt.quantity * 350).toLocaleString()}{" "}
+                      {t("form_sale.data_method.cost_summary.bath")}
                     </td>
                   </motion.tr>
                 );
@@ -271,7 +321,7 @@ const ConfirmationSale = ({
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div className="bg-gray-50 p-2 rounded-md">
+                  <div className="bg-gray-50 p-2 rounded-md col-span-2">
                     <div className="flex items-center text-gray-600 mb-1">
                       <span className="material-symbols-outlined text-sm mr-1">
                         style
@@ -280,6 +330,18 @@ const ConfirmationSale = ({
                     </div>
                     <div className="font-medium text-gray-800">
                       {getShirtLabel(shirt.type)}
+                    </div>
+                  </div>
+
+                  <div className="bg-gray-50 p-2 rounded-md">
+                    <div className="flex items-center text-gray-600 mb-1">
+                      <span className="material-symbols-outlined text-sm mr-1">
+                        palette
+                      </span>
+                      <span>{t("form_confirm.data_detail.shirt_color")}</span>
+                    </div>
+                    <div className="font-medium text-gray-800">
+                      {getColorLabel(shirt.color)}
                     </div>
                   </div>
 
@@ -309,6 +371,16 @@ const ConfirmationSale = ({
                       </div>
                     </div>
                   )}
+                  <div className="col-span-2 flex items-center justify-between rounded-md bg-white p-3 text-sm">
+                    <span className="text-gray-600">
+                      {t("form_sale.data_shirts.line_quantity")}:{" "}
+                      {shirt.quantity}
+                    </span>
+                    <strong className="text-brand-900">
+                      {(shirt.quantity * 350).toLocaleString()}{" "}
+                      {t("form_sale.data_method.cost_summary.bath")}
+                    </strong>
+                  </div>
                 </div>
               </motion.div>
             );
@@ -334,12 +406,12 @@ const ConfirmationSale = ({
                 checkroom
               </span>
               <span>
-                {t("form_confirm.data_detail.sh_price")} {formData.quantity}{" "}
+                {t("form_confirm.data_detail.sh_price")} {totalQuantity}{" "}
                 {t("form_sale.data_shirts.shirts")} × 350{" "}
                 {t("form_sale.data_method.cost_summary.bath")}
               </span>
               <span className="font-medium ml-5">
-                {parseInt(formData.quantity) * 350}{" "}
+                {totalQuantity * 350}{" "}
                 {t("form_sale.data_method.cost_summary.bath")}
               </span>
             </div>
@@ -352,12 +424,10 @@ const ConfirmationSale = ({
                 <span>
                   {t("form_sale.data_method.cost_summary.shipping_fee")}
                 </span>
-                {parseInt(formData.quantity) > 1 && (
-                  <span className="font-medium ml-5">
-                    +{Math.max(0, parseInt(formData.quantity) - 1) * 5 + 50}{" "}
-                    {t("form_sale.data_method.cost_summary.bath")}
-                  </span>
-                )}
+                <span className="font-medium ml-5">
+                  +{50 + Math.max(0, totalQuantity - 1) * 5}{" "}
+                  {t("form_sale.data_method.cost_summary.bath")}
+                </span>
               </div>
             )}
 

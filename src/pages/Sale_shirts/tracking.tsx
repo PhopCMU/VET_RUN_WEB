@@ -1,97 +1,45 @@
 import { useTranslation } from "react-i18next";
-import { useI18nReady } from "../../i18n";
-import { useEffect, useRef, useState, useMemo } from "react";
-import Loading from "../../components/Loading";
-import { useVisitorData } from "@fingerprintjs/fingerprintjs-pro-react";
+import { useState, type FormEvent } from "react";
+
 import { FunctionGetTrackingAll } from "../../routers/GetRouter";
 import { motion } from "framer-motion";
 
 export default function Tracking() {
   const [dataTracking, setDataTracking] = useState<any[]>([]);
-  const [searchTerm, setSearchTerm] = useState(""); // สถานะสำหรับการค้นหา
+  const [email, setEmail] = useState("");
+  const [hasSearched, setHasSearched] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const { t } = useTranslation();
-  const isI18nReady = useI18nReady();
-  const hasFetched = useRef(false);
-  const { data, isLoading, error } = useVisitorData({ extendedResult: true });
 
-  const fetchData = async () => {
-    if (!data?.visitorId) {
-      console.error("Visitor ID is missing");
-      return;
-    }
+  const fetchData = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const normalizedEmail = email.trim().toLowerCase();
+
+    setIsLoading(true);
+    setHasSearched(true);
+    setErrorMessage("");
+    setDataTracking([]);
 
     try {
-      const response = await FunctionGetTrackingAll({
-        visitorId: data.visitorId,
-      });
-      if (response?.success && Array.isArray(response.data)) {
-        setDataTracking(response.data);
+      const response = await FunctionGetTrackingAll(normalizedEmail);
+      if (response.success && response.data) {
+        setDataTracking(
+          Array.isArray(response.data) ? response.data : [response.data],
+        );
       } else {
-        console.log("No tracking data found or invalid format");
-        setDataTracking([]);
+        setErrorMessage(
+          response.message || t("tracking.notFound", "ไม่พบข้อมูลออเดอร์"),
+        );
       }
-    } catch (err) {
-      console.error("Error fetching tracking data:", err);
-      setDataTracking([]);
+    } catch {
+      setErrorMessage(
+        t("tracking.error", "ไม่สามารถค้นหาข้อมูลได้ กรุณาลองอีกครั้ง"),
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
-
-  // ดึงข้อมูลเมื่อ visitorId พร้อม และยังไม่เคยดึง
-  useEffect(() => {
-    if (data?.visitorId && !hasFetched.current) {
-      hasFetched.current = true;
-      fetchData();
-    }
-  }, [data]);
-
-  // ใช้ useMemo เพื่อ filter ข้อมูลตามคำค้น
-  const filteredData = useMemo(() => {
-    if (!searchTerm.trim()) return dataTracking;
-
-    const term = searchTerm.toLowerCase().trim();
-
-    return dataTracking.filter((item) => {
-      const fullName = item.fullname?.toLowerCase() || "";
-      const phone = item.phone?.toLowerCase() || "";
-      const email = item.email?.toLowerCase() || "";
-
-      return (
-        fullName.includes(term) || phone.includes(term) || email.includes(term)
-      );
-    });
-  }, [dataTracking, searchTerm]);
-
-  // แสดง loading ระหว่างรอ
-  if (isLoading || !isI18nReady) {
-    return <Loading />;
-  }
-
-  if (error) {
-    return (
-      <div className="page-frame flex items-center justify-center">
-        <div className="bg-red-50 border border-red-200 rounded-xl p-4 max-w-md w-full">
-          <div className="flex items-center gap-3 text-red-700">
-            <span className="material-symbols-outlined text-xl">error</span>
-            <h3 className="font-semibold">FingerprintJS Error</h3>
-          </div>
-          <p className="mt-2 text-red-600 text-sm">{error.message}</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!data?.visitorId) {
-    return (
-      <div className="page-frame flex items-center justify-center">
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 max-w-md w-full text-center">
-          <span className="material-symbols-outlined text-blue-500 text-3xl mx-auto mb-2">
-            fingerprint
-          </span>
-          <p className="text-blue-700">Unable to retrieve visitor ID</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <motion.div
@@ -122,53 +70,77 @@ export default function Tracking() {
         </button>
       </div>
 
-      {/* Search Input with Gradient Background */}
       <div className="content-panel mb-8 p-4 sm:p-5">
-        <label
-          htmlFor="search"
-          className=" text-sm font-medium text-gray-700 mb-3 ml-1 flex items-center gap-2"
-        >
-          <span className="material-symbols-outlined text-blue-500 text-base">
-            search
-          </span>
-          {t("tracking.search", "ค้นหาออเดอร์ (ชื่อ, เบอร์โทร, อีเมล)")}
-        </label>
-
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 flex items-center pl-4 z-10">
-            <span className="material-symbols-outlined text-gray-400 text-lg">
-              search
+        <form onSubmit={fetchData} className="space-y-3">
+          <label
+            htmlFor="tracking-email"
+            className="ml-1 flex items-center gap-2 text-sm font-medium text-gray-700"
+          >
+            <span className="material-symbols-outlined text-base text-blue-500">
+              mail
             </span>
+            {t("tracking.emailLabel", "อีเมลที่ใช้สั่งซื้อ")}
+          </label>
+
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <div className="relative flex-1">
+              <div className="pointer-events-none absolute inset-y-0 left-0 z-10 flex items-center pl-4">
+                <span className="material-symbols-outlined text-lg text-gray-400">
+                  mail
+                </span>
+              </div>
+
+              <input
+                id="tracking-email"
+                type="email"
+                autoComplete="email"
+                required
+                aria-describedby="tracking-email-hint"
+                placeholder={t(
+                  "tracking.searchPlaceholder",
+                  "name@example.com",
+                )}
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                className="w-full py-3.5 pl-12 pr-4"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-brand-700 px-5 font-semibold text-white transition-colors hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <span className="material-symbols-outlined text-xl">
+                {isLoading ? "progress_activity" : "search"}
+              </span>
+              {isLoading
+                ? t("tracking.searching", "กำลังค้นหา...")
+                : t("tracking.searchButton", "ค้นหาออเดอร์")}
+            </button>
           </div>
 
-          <input
-            id="search"
-            type="text"
-            placeholder={t(
-              "tracking.searchPlaceholder",
-              "พิมพ์ชื่อ, เบอร์โทร หรืออีเมล...",
+          <p id="tracking-email-hint" className="text-sm text-gray-500">
+            {t(
+              "tracking.emailHint",
+              "กรอกอีเมลเดียวกับที่ใช้สั่งซื้อเพื่อตรวจสอบสถานะ",
             )}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full py-3.5 pl-12 pr-11"
-          />
+          </p>
+        </form>
 
-          {searchTerm && (
-            <button
-              onClick={() => setSearchTerm("")}
-              aria-label="Clear search"
-              className="absolute inset-y-0 right-0 flex items-center pr-4 
-                  text-gray-400 hover:text-red-400 transition-all duration-200
-                  hover:scale-110"
-            >
-              <span className="material-symbols-outlined text-lg">close</span>
-            </button>
-          )}
-        </div>
+        {errorMessage && (
+          <div
+            role="alert"
+            className="mt-4 flex items-start gap-2 rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700"
+          >
+            <span className="material-symbols-outlined text-xl">error</span>
+            <span>{errorMessage}</span>
+          </div>
+        )}
       </div>
 
       {/* Table or No Data */}
-      {filteredData.length > 0 ? (
+      {dataTracking.length > 0 ? (
         <div className="content-panel overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full">
@@ -225,7 +197,7 @@ export default function Tracking() {
                 </tr>
               </thead>
               <tbody>
-                {filteredData.map((item, index) => (
+                {dataTracking.map((item, index) => (
                   <tr
                     key={index}
                     className="transition-colors hover:bg-brand-50 even:bg-gray-50/60"
@@ -332,7 +304,7 @@ export default function Tracking() {
             </table>
           </div>
         </div>
-      ) : (
+      ) : hasSearched && !isLoading && !errorMessage ? (
         <div className="content-panel py-16 text-center">
           <span className="material-symbols-outlined text-gray-300 text-6xl mb-4">
             search_off
@@ -340,11 +312,8 @@ export default function Tracking() {
           <h3 className="text-lg font-medium text-gray-700 mb-2">
             {t("tracking.noData", "ไม่พบข้อมูลการติดตามออเดอร์")}
           </h3>
-          <p className="text-gray-500 text-sm">
-            {searchTerm ? `ไม่พบข้อมูลที่ตรงกับคำค้น: "${searchTerm}"` : ``}
-          </p>
         </div>
-      )}
+      ) : null}
     </motion.div>
   );
 }

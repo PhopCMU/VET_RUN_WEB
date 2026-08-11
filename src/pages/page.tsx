@@ -94,7 +94,7 @@ const Page = () => {
         message,
         title,
         type,
-        confirmText: t("page.button.ok"),
+        confirmText: type === "success" ? t("page.button.ok") : t("page.button.warning"),
         onConfirm: () => {
           setAlertState((prev) => ({ ...prev, isOpen: false }));
           resolve(); // resolve เมื่อกด OK
@@ -210,7 +210,7 @@ const Page = () => {
       return false;
     }
 
-    if (formData.subOption === "MINI MARATHON (11 KM)") {
+    if (formData.subOption === "MINI MARATHON (9 KM)") {
       const { firstName, lastName, email, phone, sex, age, sizeId } = formData;
       if (
         !firstName ||
@@ -321,7 +321,7 @@ const Page = () => {
     let subOption = "";
 
     if (type === "MARATHON") {
-      subOption = "MINI MARATHON (11 KM)";
+      subOption = "MINI MARATHON (9 KM)";
     }
 
     updateFormData({

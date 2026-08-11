@@ -20,4 +20,5 @@ export async function getCurrentUser() { return (await api.get('/me')).data; }
 ```
 
 Update notes
--
+- 2026-08-10 — For personal registration lookups, query a server endpoint with the submitted email instead of downloading all participants and filtering in the browser.
+- 2026-08-11 — For order tracking lookups, pass the normalized email as an API query parameter and keep request failures out of the browser console.

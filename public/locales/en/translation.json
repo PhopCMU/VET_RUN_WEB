@@ -15,8 +15,8 @@
     "contactButton": "Facebook page",
     "close_register": "Close Registration",
     "announcement": "Sorry, registration is currently closed.",
-    "sale_shirt": "Buy a running shirt",
-    "close_sale_shirt": "Shirt orders are now closed.",
+    "sale_shirt": "Souvenir Shirt Order",
+    "close_sale_shirt": "Souvenir shirt orders are now closed.",
     "trackeing": "Track your order",
     "ex_shirt": {
       "RB": "Raspberry Red + Steel blue",
@@ -26,8 +26,14 @@
     }
   },
   "table_list": {
-    "list_participants": "List of Participants",
+    "list_participants": "Check Registration Status",
     "search": "Search by name or bib number",
+    "email_label": "Registration email",
+    "email_placeholder": "name@example.com",
+    "email_hint": "Enter the email used during registration to view your information.",
+    "check_registration": "Check registration",
+    "searching": "Checking...",
+    "enter_email": "Enter your email to check your registration",
     "fullname": "Fullname",
     "numberbib": "BIB Number",
     "category": "Category",
@@ -35,6 +41,7 @@
     "not_found": "Not Found",
     "arrow_back": "Back",
     "try_different_filter": "Please try a different filter.",
+    "try_different_email": "Check the email address and try again.",
     "status_payment": "Payment Status",
     "select_category": {
       "all": "All",
@@ -45,7 +52,7 @@
         "fr2": "FUN RUN 4 KM"
       },
       "marathon": {
-        "all": "MINI MARATHON (11 KM)",
+        "all": "MINI MARATHON (9 KM)",
         "Y19": "Age not over 19 Yrs.",
         "Y20": "Age 20 - 29 Yrs.",
         "Y30": "Age 30 - 39 Yrs.",
@@ -56,9 +63,10 @@
     }
   },
   "page": {
-    "title": "Registration Form for VET CMU RUN 2025",
+    "title": "Registration Form for VET CMU RUN 2026",
     "button": {
-      "ok": "OK"
+      "ok": "Check Registration Status",
+      "warning": "OK"
     },
     "steps": {
       "step": "Step",
@@ -76,14 +84,14 @@
     "modal": {
       "warning": "Warning",
       "error": "Error",
-      "success": "Success"
+      "success": "Check Registration Information"
     }
   },
   "step1": {
     "title": "Registration Option",
     "label_radio1": "VIP (Unlimited option)",
     "label_radio2": "FUN RUN (4 KM) ",
-    "label_radio3": "MINI MARATHON (11 KM)",
+    "label_radio3": "MINI MARATHON (9 KM)",
     "baht": "THB",
     "next_button": "Next",
     "back_button": "Back",
@@ -99,7 +107,7 @@
       "vip": {
         "label_radio1": "VIP FUN RUN (without dog)",
         "label_radio2": "VIP FUN RUN (with dog)",
-        "label_radio3": "VIP MINI MARATHON (11 KM)"
+        "label_radio3": "VIP MINI MARATHON (9 KM)"
       },
       "funrun": {
         "label_radio1": "FUN RUN 4 KM (without dog)",
@@ -132,8 +140,10 @@
       },
       "select_reward": "Please select only one reward.",
       "select_trophy": "Trophy",
-      "select_shirt_2": "Second running shirt",
-      "select_model_shrit": "Select your preferred shirt model",
+      "select_shirt_2": "VIP Shirt (Collected After Finish)",
+      "select_color_shirt": "Select preferred shirt color",
+      "select_model_shrit": "Select preferred souvenir shirt",
+      "shirt_image_alt": "Front and back of the black VIP running shirt",
 
       "select_sex": "Select Gender",
       "select_age_range": "Select Age Range",
@@ -198,6 +208,11 @@
       "confrim_send": "Confirma",
       "edit_data": "Edit"
     },
+    "registration_notice": {
+      "title": "Review your information before confirming",
+      "message": "You must verify that all information is correct and click Confirm and Submit for registration to be completed. If any information is incorrect, return and edit it before confirming.\n\nAfter registering, always check your registration status using the email address you registered with via the ‘Check Registration Status’ button on the home page. If your name is not listed, contact staff immediately at 053-948-078.",
+      "confirm": "Understood, review information"
+    },
     "sex": {
       "sex_title": "Gender",
       "male": "Male",
@@ -220,7 +235,7 @@
   "process_loading": {
     "message": {
       "error": "An unexpected error has occurred.",
-      "success": "Your data has been successfully submitted.",
+      "success": "Registration submitted successfully. Click “Check Registration Status” to view your result.",
       "pending": "Submitting your data. Please wait..."
     },
     "loading": "Loading data. Please wait...",
@@ -245,8 +260,24 @@
       "title_details": "Shirt details",
       "subtitle_details": "Please select the details for each shirt",
       "shirt_number": "Shirt number",
-      "shirt_model": "Select shirt model",
-      "shirt_size": "Select shirt size"
+      "shirt_color": "Select preferred shirt color",
+      "shirt_model": "Select preferred souvenir shirt",
+      "shirt_size": "Select shirt size",
+      "group_hint": "Choose a model/color, size, and quantity for each item",
+      "total_selected": "Total selected",
+      "order_line": "Item",
+      "line_quantity": "Quantity",
+      "add_line": "Add ",
+      "remove_line": "Remove item",
+      "increase": "Increase quantity",
+      "decrease": "Decrease quantity",
+      "variants": "items",
+      "checkbox_confirm": {
+        "title": "Confirm Information",
+        "subtitle": "I have reviewed and confirmed that the information is complete and accurate. I understand that the order will only be completed after I click Confirm to submit the information and verify the order result using the email address provided for the order. If my name is not found, I will promptly contact the staff at 053-948-008.",
+        "refund_policy_description": "The Faculty of Veterinary Medicine, Chiang Mai University reserves the right not to refund any order payment after the payment has been completed. Please carefully review the payment details before making payment.",
+        "pdpa": "In accordance with the Personal Data Protection Act (PDPA), I consent to the collection, use, and disclosure of my personal data for the purposes related to the operations specified. I understand my legal rights and may withdraw this consent as permitted by law."
+      }
     },
     "data_method": {
       "title": "Shirt collection method",
@@ -294,7 +325,10 @@
       "title": "Shirt Details",
       "no": "No.",
       "shirt_model": "Shirt Model",
+      "shirt_color": "Shirt Color",
       "size": "Size",
+      "size_detail": "Size Detail",
+      "subtotal": "Subtotal",
       "sh": "Shirt",
       "total": "Total Payment",
       "delivery_address": "Delivery Address",
@@ -308,7 +342,7 @@
     },
     "checkbox_confirm": {
       "title": "Confirmation",
-      "subtitle": "I confirm that the information provided is accurate and complete, and I accept full responsibility for all submitted data",
+      "subtitle": "I have verified that the information is accurate and complete, and understand that registration is complete only after I click Confirm and Submit. After registering, I will check my status using the email address I registered with and contact staff immediately at 053-948-078 if my name is not listed.",
       "refund_policy_description": "The Faculty of Veterinary Medicine, Chiang Mai University, reserves the right not to issue refunds after the registration fee has been paid. Please carefully review the payment details before making your payment.",
       "pdpa": "Under the Personal Data Protection Act (PDPA), I consent to the collection, use, and disclosure of my personal data for purposes related to the specified operations. I understand my rights under the law and can withdraw this consent as permitted by law"
     },
@@ -317,8 +351,14 @@
   },
   "tracking": {
     "title": "Track Order Status",
-    "search": "Search Order (Name, Phone, Email)",
-    "searchPlaceholder": "Enter name, phone, or email...",
+    "emailLabel": "Order email",
+    "emailHint": "Enter the same email used for your order to check its status.",
+    "searchPlaceholder": "name@example.com",
+    "searchButton": "Find order",
+    "searching": "Searching...",
+    "notFound": "No order was found.",
+    "noData": "No order tracking information was found.",
+    "error": "Unable to search right now. Please try again.",
     "fullname": "Customer Information",
     "payment": "Payment Information",
     "collection": "Delivery Method",

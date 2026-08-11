@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useState, type FC } from "react";
 import { useTranslation } from "react-i18next";
+import { AlertModal } from "./AlertModal";
 
 interface Props {
   formData: any;
@@ -16,6 +17,8 @@ const ConfirmationModal: FC<Props> = ({ formData, onConfirm, onEdit }) => {
   const [confirmedData, setConfirmedData] = useState(false);
   const [acceptedRefundPolicy, setAcceptedRefundPolicy] = useState(false);
   const [acceptedPDPA, setAcceptedPDPA] = useState(false);
+  const [isRegistrationNoticeOpen, setIsRegistrationNoticeOpen] =
+    useState(true);
 
   const { t } = useTranslation();
 
@@ -58,6 +61,16 @@ const ConfirmationModal: FC<Props> = ({ formData, onConfirm, onEdit }) => {
       transition={{ duration: 0.3 }}
       className="mx-auto w-full bg-white p-1 sm:p-2"
     >
+      <AlertModal
+        isOpen={isRegistrationNoticeOpen}
+        type="warning"
+        title={t("step4.registration_notice.title")}
+        message={t("step4.registration_notice.message")}
+        confirmText={t("step4.registration_notice.confirm")}
+        onClose={() => setIsRegistrationNoticeOpen(false)}
+        onConfirm={() => setIsRegistrationNoticeOpen(false)}
+      />
+
       <div className="flex items-center gap-3 mb-6 pb-3 border-b border-gray-200">
         <span className="material-symbols-outlined text-3xl text-brand-600">
           check_circle
@@ -157,20 +170,11 @@ const ConfirmationModal: FC<Props> = ({ formData, onConfirm, onEdit }) => {
                 />
               )}
               {formData.items === "shirt_2" && (
-                <>
-                  <InfoItem
-                    icon="apparel"
-                    label={t("step3.form_personal.select_shirt_2")}
-                    value={
-                      formData.model_shirt === "Shirt4KM" ? "4 KM" : "11 KM"
-                    }
-                  />
-                  <InfoItem
-                    icon="checkroom"
-                    label={t("step4.size_shrit")}
-                    value={formData.shirtSizeLabel_2}
-                  />
-                </>
+                <InfoItem
+                  icon="checkroom"
+                  label={t("step3.form_personal.select_shirt_2")}
+                  value={formData.shirtSizeLabel_2}
+                />
               )}
             </div>
           </motion.div>

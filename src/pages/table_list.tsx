@@ -1,31 +1,51 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import { FunctionGetParticipantAll } from "../routers/GetRouter";
+import { FunctionGetParticipantByEmail } from "../routers/GetRouter";
+
+interface Participant {
+  participantId?: string;
+  firstName?: string;
+  lastName?: string;
+  numberBib?: string;
+  nameBib?: string;
+  typeBib?: string;
+  payment?: boolean;
+}
 
 export default function Lists_participants() {
   const { t } = useTranslation();
-  const [searchTerm, setSearchTerm] = useState("");
+  const [email, setEmail] = useState("");
   const [category, setCategory] = useState("");
   const [subCategory, setSubCategory] = useState("");
-  const hasParticipant = useRef(false);
-  const [participants, setParticipants] = useState<any>([]);
+  const [participants, setParticipants] = useState<Participant[]>([]);
+  const [hasSearched, setHasSearched] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const fetchDataParticipant = async () => {
-    const response = await FunctionGetParticipantAll();
-    if (response.success) {
-      setParticipants(response.data); // สมมติว่า API return เป็น { success: true, data: [...] }
+  const fetchDataParticipant = async (event: React.FormEvent) => {
+    event.preventDefault();
+    const normalizedEmail = email.trim().toLowerCase();
+
+    setIsLoading(true);
+    setHasSearched(true);
+    setErrorMessage("");
+    setParticipants([]);
+    setCategory("");
+    setSubCategory("");
+
+    const response = await FunctionGetParticipantByEmail(normalizedEmail);
+    if (response.success && response.data) {
+      setParticipants(
+        Array.isArray(response.data) ? response.data : [response.data],
+      );
+    } else if (!response.success && response.message) {
+      setErrorMessage(response.message);
     }
+    setIsLoading(false);
   };
 
-  useEffect(() => {
-    if (!hasParticipant.current) {
-      fetchDataParticipant();
-      hasParticipant.current = true;
-    }
-  }, []);
-
-  const getCategoryFromNameBib = (nameBib: string) => {
+  const getCategoryFromNameBib = (nameBib?: string) => {
     if (!nameBib) return { category: "", subCategory: "" };
 
     if (
@@ -87,13 +107,7 @@ export default function Lists_participants() {
     return { category: "", subCategory: "" };
   };
 
-  const filteredParticipants = participants.filter((participant: any) => {
-    const matchesSearch =
-      participant.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      participant.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      participant.numberBib.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      participant.nameBib.toLowerCase().includes(searchTerm.toLowerCase());
-
+  const filteredParticipants = participants.filter((participant) => {
     const {
       category: participantCategory,
       subCategory: participantSubCategory,
@@ -121,7 +135,7 @@ export default function Lists_participants() {
       matchesCategory = participantSubCategory === subCategory;
     }
 
-    return matchesSearch && matchesCategory;
+    return matchesCategory;
   });
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -141,124 +155,169 @@ export default function Lists_participants() {
         {t("table_list.list_participants")}
       </motion.h1>
 
-      {/* Search & Filter */}
+      {/* Email verification and filters */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.5 }}
         className="content-panel mb-8 space-y-4 p-4 sm:p-5"
       >
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <span className="material-symbols-outlined text-gray-400">
-              search
-            </span>
-          </div>
-          <input
-            type="text"
-            aria-label={t("table_list.search")}
-            placeholder={t("table_list.search")}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full p-3 pl-11"
-          />
-        </div>
-        <div className="flex flex-wrap gap-4">
-          <div className="relative flex-1 min-w-[200px]">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <span className="material-symbols-outlined text-gray-400">
-                filter_alt
-              </span>
+        <form onSubmit={fetchDataParticipant} className="space-y-3">
+          <label
+            htmlFor="participant-email"
+            className="block text-sm font-semibold text-gray-800"
+          >
+            {t("table_list.email_label")}
+          </label>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <div className="relative flex-1">
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                <span className="material-symbols-outlined text-gray-400">
+                  mail
+                </span>
+              </div>
+              <input
+                id="participant-email"
+                type="email"
+                autoComplete="email"
+                required
+                aria-describedby="participant-email-hint"
+                placeholder={t("table_list.email_placeholder")}
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                className="w-full p-3 pl-11"
+              />
             </div>
-            <select
-              value={category}
-              onChange={handleCategoryChange}
-              aria-label={t("table_list.select_category.all")}
-              className="w-full appearance-none bg-white p-3 pl-11"
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-brand-700 px-5 font-semibold text-white transition-colors hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              <option value="">
-                -- {t("table_list.select_category.all")} --
-              </option>
-              <option value="VIP">VIP</option>
-              <option value="FUNRUN">FUN RUN</option>
-              <option value="MARATHON">MINI MARATHON</option>
-              <option value="FANCY">FANCY</option>
-            </select>
+              <span className="material-symbols-outlined text-xl">
+                {isLoading ? "progress_activity" : "search"}
+              </span>
+              {isLoading
+                ? t("table_list.searching")
+                : t("table_list.check_registration")}
+            </button>
           </div>
+          <p id="participant-email-hint" className="text-sm text-gray-500">
+            {t("table_list.email_hint")}
+          </p>
+        </form>
 
-          {(category === "FUNRUN" || category === "MARATHON") && (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3 }}
-              className="relative flex-1 min-w-[200px]"
-            >
+        {errorMessage && (
+          <div
+            role="alert"
+            className="flex items-start gap-2 rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700"
+          >
+            <span className="material-symbols-outlined text-xl">error</span>
+            <span>{errorMessage}</span>
+          </div>
+        )}
+
+        {participants.length > 1 && (
+          <div className="flex flex-wrap gap-4 border-t border-gray-200 pt-4">
+            <div className="relative flex-1 min-w-[200px]">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                {category === "FUNRUN" ? (
-                  <span className="material-symbols-outlined text-gray-400">
-                    pets
-                  </span>
-                ) : (
-                  <span className="material-symbols-outlined text-gray-400">
-                    groups
-                  </span>
-                )}
+                <span className="material-symbols-outlined text-gray-400">
+                  filter_alt
+                </span>
               </div>
               <select
-                value={subCategory}
-                onChange={(e) => setSubCategory(e.target.value)}
+                value={category}
+                onChange={handleCategoryChange}
                 aria-label={t("table_list.select_category.all")}
                 className="w-full appearance-none bg-white p-3 pl-11"
               >
                 <option value="">
                   -- {t("table_list.select_category.all")} --
                 </option>
-                {category === "FUNRUN" ? (
-                  <>
-                    <option value={t("table_list.select_category.funrun.fr2")}>
-                      {t("table_list.select_category.funrun.fr2")}
-                    </option>
-                    <option value={t("table_list.select_category.funrun.fr1")}>
-                      {t("table_list.select_category.funrun.fr1")}
-                    </option>
-                  </>
-                ) : (
-                  <>
-                    <option
-                      value={t("table_list.select_category.marathon.Y19")}
-                    >
-                      {t("table_list.select_category.marathon.Y19")}
-                    </option>
-                    <option
-                      value={t("table_list.select_category.marathon.Y20")}
-                    >
-                      {" "}
-                      {t("table_list.select_category.marathon.Y20")}
-                    </option>
-                    <option
-                      value={t("table_list.select_category.marathon.Y30")}
-                    >
-                      {" "}
-                      {t("table_list.select_category.marathon.Y30")}
-                    </option>
-                    <option
-                      value={t("table_list.select_category.marathon.Y40")}
-                    >
-                      {" "}
-                      {t("table_list.select_category.marathon.Y40")}
-                    </option>
-                    <option
-                      value={t("table_list.select_category.marathon.Y50")}
-                    >
-                      {" "}
-                      {t("table_list.select_category.marathon.Y50")}
-                    </option>
-                  </>
-                )}
+                <option value="VIP">VIP</option>
+                <option value="FUNRUN">FUN RUN</option>
+                <option value="MARATHON">MINI MARATHON</option>
+                <option value="FANCY">FANCY</option>
               </select>
-            </motion.div>
-          )}
-        </div>
+            </div>
+
+            {(category === "FUNRUN" || category === "MARATHON") && (
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3 }}
+                className="relative flex-1 min-w-[200px]"
+              >
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  {category === "FUNRUN" ? (
+                    <span className="material-symbols-outlined text-gray-400">
+                      pets
+                    </span>
+                  ) : (
+                    <span className="material-symbols-outlined text-gray-400">
+                      groups
+                    </span>
+                  )}
+                </div>
+                <select
+                  value={subCategory}
+                  onChange={(e) => setSubCategory(e.target.value)}
+                  aria-label={t("table_list.select_category.all")}
+                  className="w-full appearance-none bg-white p-3 pl-11"
+                >
+                  <option value="">
+                    -- {t("table_list.select_category.all")} --
+                  </option>
+                  {category === "FUNRUN" ? (
+                    <>
+                      <option
+                        value={t("table_list.select_category.funrun.fr2")}
+                      >
+                        {t("table_list.select_category.funrun.fr2")}
+                      </option>
+                      <option
+                        value={t("table_list.select_category.funrun.fr1")}
+                      >
+                        {t("table_list.select_category.funrun.fr1")}
+                      </option>
+                    </>
+                  ) : (
+                    <>
+                      <option
+                        value={t("table_list.select_category.marathon.Y19")}
+                      >
+                        {t("table_list.select_category.marathon.Y19")}
+                      </option>
+                      <option
+                        value={t("table_list.select_category.marathon.Y20")}
+                      >
+                        {" "}
+                        {t("table_list.select_category.marathon.Y20")}
+                      </option>
+                      <option
+                        value={t("table_list.select_category.marathon.Y30")}
+                      >
+                        {" "}
+                        {t("table_list.select_category.marathon.Y30")}
+                      </option>
+                      <option
+                        value={t("table_list.select_category.marathon.Y40")}
+                      >
+                        {" "}
+                        {t("table_list.select_category.marathon.Y40")}
+                      </option>
+                      <option
+                        value={t("table_list.select_category.marathon.Y50")}
+                      >
+                        {" "}
+                        {t("table_list.select_category.marathon.Y50")}
+                      </option>
+                    </>
+                  )}
+                </select>
+              </motion.div>
+            )}
+          </div>
+        )}
       </motion.div>
 
       {/* Table */}
@@ -362,7 +421,7 @@ export default function Lists_participants() {
                 </motion.div>
               );
             })
-          ) : (
+          ) : !isLoading && !errorMessage ? (
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -373,14 +432,22 @@ export default function Lists_participants() {
               </span>
               <div className="space-y-1">
                 <p className="text-lg font-medium text-gray-500">
-                  {t("table_list.not_found")}
+                  {t(
+                    hasSearched
+                      ? "table_list.not_found"
+                      : "table_list.enter_email",
+                  )}
                 </p>
                 <p className="text-sm text-gray-400">
-                  {t("table_list.try_different_filter")}
+                  {t(
+                    hasSearched
+                      ? "table_list.try_different_email"
+                      : "table_list.email_hint",
+                  )}
                 </p>
               </div>
             </motion.div>
-          )}
+          ) : null}
         </div>
 
         {/* Desktop Table View */}
@@ -510,7 +577,7 @@ export default function Lists_participants() {
                     </motion.tr>
                   );
                 })
-              ) : (
+              ) : !isLoading && !errorMessage ? (
                 <tr>
                   <td colSpan={5} className="py-12 text-center">
                     <motion.div
@@ -523,16 +590,24 @@ export default function Lists_participants() {
                       </span>
                       <div className="space-y-1">
                         <p className="text-lg font-medium text-gray-500">
-                          {t("table_list.not_found")}
+                          {t(
+                            hasSearched
+                              ? "table_list.not_found"
+                              : "table_list.enter_email",
+                          )}
                         </p>
                         <p className="text-sm text-gray-400">
-                          {t("table_list.try_different_filter")}
+                          {t(
+                            hasSearched
+                              ? "table_list.try_different_email"
+                              : "table_list.email_hint",
+                          )}
                         </p>
                       </div>
                     </motion.div>
                   </td>
                 </tr>
-              )}
+              ) : null}
             </tbody>
           </table>
         </div>
