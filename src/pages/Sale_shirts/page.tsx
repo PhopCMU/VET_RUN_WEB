@@ -49,14 +49,30 @@ const SaleShirt = () => {
     transferFile: null,
   });
 
+  const listMenuShrit = async () => {
+    const response = await FunctionMenuSizeShirt();
+    if (response.success) {
+      setShirtSize(response.data.size);
+      setShirtModels(response.data.shirtModel);
+      setShirtColors(response.data.shirtColor);
+    }
+  };
+
+  useEffect(() => {
+    if (!hasShirt.current) {
+      hasShirt.current = true;
+      listMenuShrit();
+    }
+  }, []);
+
   const [shirts, setShirts] = useState<ShirtItem[]>([
     { type: "", color: "", size: "", quantity: 1 },
   ]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  const MAX_SHIRTS = 999;
+  const MAX_SHIRTS = 100;
   const SHIRT_PRICE =
     shirtModels.find((model) => model.shirtmodelId === shirts[0]?.type)
-      ?.price || 1000;
+      ?.price || 0;
   const shirtGallery = [
     {
       image: images.familyShirtsBlue,
@@ -117,22 +133,6 @@ const SaleShirt = () => {
     });
   };
   const [openAddress, setOpenAddress] = useState(false);
-
-  const listMenuShrit = async () => {
-    const response = await FunctionMenuSizeShirt();
-    if (response.success) {
-      setShirtSize(response.data.size);
-      setShirtModels(response.data.shirtModel);
-      setShirtColors(response.data.shirtColor);
-    }
-  };
-
-  useEffect(() => {
-    if (!hasShirt.current) {
-      hasShirt.current = true;
-      listMenuShrit();
-    }
-  }, []);
 
   const selectedQuantity = shirts.reduce(
     (total, shirt) => total + shirt.quantity,

@@ -244,7 +244,7 @@
   },
 
   "form_sale": {
-    "title": "Running shirts only",
+    "title": "Order Souvenir Shirt for VET CMU RUN 2026",
     "subtitle": "Please fill in the information below to proceed with your order",
     "data_user": {
       "title": "Buyer information",
@@ -299,11 +299,11 @@
         "shirt": "Running shirt",
         "shipping_fee": "Shipping fee",
         "shipping_fee_f": "Shipping fee (first item)",
-        "free": "Free of charge (Pick up at the Faculty on November 28–29, 2025, between 9:00 AM and 4:30 PM)",
+        "free": "Free of charge (self-pickup at the Faculty from December 6, 2023 onwards, 09:00–16:30)",
         "additional_shipping_fee": "Additional shipping fee",
         "total_amount": "Total amount",
         "info": "Shipping fee: First item 50 Baht, additional items 5 Baht each",
-        "info2": "Shipping starts from December 1, 2025 onward."
+        "info2": "Shipping starts from December 6, 2023 onwards."
       },
       "payment_information": {
         "title": "Payment information",

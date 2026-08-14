@@ -68,8 +68,6 @@ const ConfirmationSale = ({
     0,
   );
 
-  console.log("ConfirmationSale: shirts", shirts);
-
   // สร้าง preview เมื่อมีการอัปโหลดไฟล์
   useEffect(() => {
     if (fileRef.current === formData.transferFile && previewUrl) return;
@@ -94,7 +92,7 @@ const ConfirmationSale = ({
   // แปลง shirtModelId เป็น label จากข้อมูลจริงที่ดึงมาจาก backend
   const getShirtLabel = (type: string) => {
     const model = shirtModels.find((m: any) => m.shirtmodelId === type);
-    console.log("getShirtLabel", type);
+
     if (!model) return "ไม่ทราบ";
     return model.name_en ? `${model.name} [${model.name_en}]` : model.name;
   };
