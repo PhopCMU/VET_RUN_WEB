@@ -563,105 +563,112 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section className="relative bg-brand-900 px-4 py-12 text-white md:py-16">
+      <section className="relative overflow-hidden bg-brand-900 px-4 py-16 text-white md:py-24">
+        <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(255,255,255,0.06)_1px,transparent_1px)] bg-[size:36px_36px] opacity-60" />
+        <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#efc75e]/10 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-brand-400/10 blur-3xl" />
+        <span
+          aria-hidden
+          className="material-symbols-outlined pointer-events-none absolute -right-6 top-6 select-none text-[220px] leading-none text-white/[0.04] sm:text-[280px]"
+        >
+          forum
+        </span>
+
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.6 }}
-          className="max-w-7xl mx-auto"
+          className="relative mx-auto max-w-4xl"
         >
-          {/* Section Header */}
-          <div className="text-center mb-10 md:mb-12">
-            <motion.h2
-              whileInView={{
-                scale: [0.95, 1.03, 1],
-                y: [-10, 0],
-              }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-2xl md:text-3xl font-bold mb-4 flex items-center justify-center"
-            >
-              <span className="material-symbols-outlined mr-2 text-brand-200">
-                contact_support
+          {/* Single Card */}
+          <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 md:p-10 shadow-2xl">
+            {/* Section Header */}
+            <div className="mb-8 flex items-end gap-4 border-b border-white/10 pb-6">
+              <span className="text-5xl font-black leading-none text-white/10 sm:text-6xl md:text-7xl">
+                03
               </span>
-              {t("home.contactTitle")}
-            </motion.h2>
-          </div>
+              <div>
+                <p className="mb-1 text-xs font-bold uppercase tracking-[0.3em] text-[#efc75e]">
+                  Stay Connected
+                </p>
+                <h2 className="text-2xl font-black sm:text-3xl md:text-4xl">
+                  {t("home.contactTitle")}
+                </h2>
+              </div>
+            </div>
 
-          {/* Contact Methods */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-10">
-            {isArrayOfStrings(contactMethods) ? (
-              contactMethods.map((method, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{
-                    y: -5,
-                    backgroundColor: "rgba(255,255,255,0.15)",
-                  }}
-                  className="rounded-md border border-white/15 bg-white/10 p-4 backdrop-blur-sm transition-colors hover:border-white/30 md:p-5"
-                >
-                  <div className="flex items-center gap-3 ">
-                    <span
-                      className={`material-symbols-outlined p-2 rounded-full flex-shrink-0 ${
-                        index === 0
-                          ? "bg-white/15 text-white"
-                          : index === 1
-                            ? "bg-brand-400/20 text-brand-200"
-                            : "bg-brand-300/20 text-brand-100"
-                      }`}
-                    >
+            {/* Contact Methods — inline grid inside card */}
+            <div className="mb-10 grid grid-cols-1 gap-px overflow-hidden rounded-lg border border-white/10 bg-white/10 sm:grid-cols-3">
+              {isArrayOfStrings(contactMethods) ? (
+                contactMethods.map((method, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    className="group relative flex flex-col justify-between bg-brand-900/80 p-5 transition-colors hover:bg-white/[0.08] md:p-6"
+                  >
+                    <span className="material-symbols-outlined absolute right-3 top-3 text-3xl text-white/[0.06] transition-colors group-hover:text-[#efc75e]/20">
                       {index === 0
                         ? "mail"
                         : index === 1
                           ? "call"
                           : "location_on"}
                     </span>
-                    <p className="text-base md:text-lg font-medium break-words">
+                    <p className="relative mb-4 text-[10px] font-bold uppercase tracking-[0.25em] text-white/40">
+                      {index === 0
+                        ? "Email"
+                        : index === 1
+                          ? "Phone"
+                          : "Location"}
+                    </p>
+                    <p className="relative break-words text-base font-bold text-white md:text-lg">
                       {method}
                     </p>
-                  </div>
-                </motion.div>
-              ))
-            ) : (
-              <div className="col-span-full text-center py-8">
-                <span className="material-symbols-outlined text-4xl text-white/50 mb-2">
-                  error
-                </span>
-                <p className="text-white/70">
-                  Contact methods are not available
+                    <span className="relative mt-4 block h-[3px] w-8 bg-[#efc75e] transition-all duration-300 group-hover:w-14" />
+                  </motion.div>
+                ))
+              ) : (
+                <div className="col-span-full py-8 text-center">
+                  <span className="material-symbols-outlined mb-2 text-4xl text-white/50">
+                    error
+                  </span>
+                  <p className="text-white/70">
+                    Contact methods are not available
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Contact CTA — inside card */}
+            <div className="flex flex-col items-center justify-between gap-5 rounded-xl bg-[#efc75e] px-5 py-6 text-center sm:flex-row sm:text-left md:px-8 md:py-7">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.25em] text-brand-900/60">
+                  Follow our page
+                </p>
+                <p className="mt-1 text-lg font-black text-brand-900 md:text-xl">
+                  VET CMU RUN 2026
                 </p>
               </div>
-            )}
-          </div>
-
-          {/* Contact Button */}
-          <div className="text-center">
-            <motion.button
-              whileHover={{
-                scale: 1.05,
-                backgroundColor: "#fff",
-                color: "#49186b",
-                boxShadow: "0 4px 20px rgba(255,255,255,0.2)",
-              }}
-              onClick={() =>
-                window.open(
-                  "https://www.facebook.com/VetCMURun.VMCMU/",
-                  "_blank",
-                )
-              }
-              whileTap={{ scale: 0.95 }}
-              className="mx-auto flex min-h-12 items-center gap-2 rounded-md bg-white px-6 py-2 text-sm font-bold text-brand-700 shadow-md transition-shadow hover:shadow-lg md:px-8 md:py-3 md:text-base"
-            >
-              <span className="material-symbols-outlined text-lg">
-                ads_click
-              </span>
-              {t("home.contactButton")}
-            </motion.button>
+              <motion.button
+                whileHover={{
+                  scale: 1.04,
+                  boxShadow: "0 10px 30px -8px rgba(50,18,71,0.5)",
+                }}
+                whileTap={{ scale: 0.96 }}
+                onClick={() =>
+                  window.open(
+                    "https://www.facebook.com/VetCMURun.VMCMU/",
+                    "_blank",
+                  )
+                }
+                className="flex min-h-10 shrink-0 items-center gap-2 rounded-lg bg-brand-900 px-5 py-2.5 text-sm font-bold text-white shadow-md transition-shadow md:px-7 md:text-base"
+              >
+                {t("home.contactButton")}
+              </motion.button>
+            </div>
           </div>
         </motion.div>
       </section>
