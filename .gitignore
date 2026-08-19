@@ -33,6 +33,7 @@ dist-ssr
 src/configs/**
 
 **/config/
+
 /config.js
 **/config.js
 
