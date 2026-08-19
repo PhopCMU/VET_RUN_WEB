@@ -6,6 +6,7 @@ Only rules directly observable in the client are listed. Server-side rules remai
 
 - Home registration and shirt-sale actions navigate only when fetched project `status === true`.
 - Project lookup uses a fixed project ID in `FunctionOpenProject`.
+- Non-production environment warnings are client-side gates only: `DEV` displays a non-dismissible development notice, `TEST` displays a dismissible testing notice, and `PROD` shows no environment notice.
 
 ## Participant Registration
 
@@ -25,4 +26,3 @@ Only rules directly observable in the client are listed. Server-side rules remai
 
 - Tracking requests require a non-empty string visitor ID and send it as `X-Visitor-Id`.
 - Client-side filtering searches fullname, phone, or email; payment, collection, tracking number, item count, and date are rendered from API data.
-

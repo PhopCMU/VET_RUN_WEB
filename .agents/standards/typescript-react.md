@@ -12,11 +12,13 @@
 - API functions live in `src/routers`; URL selection is centralized in `src/configs/conf.tsx`.
 - User-facing strings are primarily read through `react-i18next`; translations are in `public/locales/{en,th}/translation.json`.
 - Tailwind utility classes are used in JSX; global CSS imports Tailwind, Material Symbols, and Noto Sans Thai.
-- Material Symbols provide UI icons; Framer Motion supplies animation.\n- Global accessibility conventions include a skip-to-content link, semantic landmarks, dialog/status ARIA attributes, visible `:focus-visible` styles, minimum interactive control sizes, and reduced-motion handling in `src/index.css`.\n- The visual theme is centralized in Tailwind v4 `@theme` tokens and shared CSS classes such as `.app-shell`, `.page-frame`, and `.content-panel`.
+- Material Symbols provide UI icons; Framer Motion supplies animation.
+- Global accessibility conventions include a skip-to-content link, semantic landmarks, dialog/status ARIA attributes, visible `:focus-visible` styles, minimum interactive control sizes, and reduced-motion handling in `src/index.css`.
+- Shared alert dialogs use `AlertModal`; its `dismissible` prop controls whether the confirmation button is rendered.
+- The visual theme is centralized in Tailwind v4 `@theme` tokens and shared CSS classes such as `.app-shell`, `.page-frame`, and `.content-panel`.
 
 ## Gaps
 
 - Several API response values are typed as `any`.
 - No test framework or test files were found.
 - The client includes an encryption-secret environment variable; its security model and backend contract are undocumented.
-

@@ -20,3 +20,6 @@
 
 `src/i18n.ts` initializes i18next with `en` fallback, reads `localStorage.language`, and loads both public translation JSON files at startup.
 
+## Environment Notices
+
+`src/App.tsx` displays a warning `AlertModal` when the resolved app environment is not `PROD`. `DEV` shows a non-dismissible development notice that blocks acknowledgement, while `TEST` shows a dismissible testing notice. `PROD` does not show an environment notice.

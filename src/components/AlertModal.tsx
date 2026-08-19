@@ -8,6 +8,7 @@ interface AlertModalProps {
   onClose: () => void;
   onConfirm?: () => void;
   confirmText?: string;
+  dismissible?: boolean;
 }
 
 export const AlertModal: React.FC<AlertModalProps> = ({
@@ -18,6 +19,7 @@ export const AlertModal: React.FC<AlertModalProps> = ({
   onClose,
   onConfirm,
   confirmText = "ตรวจสอบข้อมูลลงทะเบียน",
+  dismissible = true,
 }) => {
   const styles = {
     success: {
@@ -96,15 +98,17 @@ export const AlertModal: React.FC<AlertModalProps> = ({
               {message}
             </p>
 
-            <div className="border-t border-gray-100 pt-5">
-              <button
-                type="button"
-                onClick={onConfirm || onClose}
-                className={`min-h-11 w-full rounded-md px-5 py-2.5 font-semibold text-white shadow-lg transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 sm:w-auto sm:min-w-48 ${currentStyle.button}`}
-              >
-                {confirmText}
-              </button>
-            </div>
+            {dismissible && (
+              <div className="border-t border-gray-100 pt-5">
+                <button
+                  type="button"
+                  onClick={onConfirm || onClose}
+                  className={`min-h-11 w-full rounded-md px-5 py-2.5 font-semibold text-white shadow-lg transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 sm:w-auto sm:min-w-48 ${currentStyle.button}`}
+                >
+                  {confirmText}
+                </button>
+              </div>
+            )}
           </div>
         </motion.div>
       </motion.div>
