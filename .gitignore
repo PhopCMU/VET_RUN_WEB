@@ -35,3 +35,5 @@ src/configs/**
 **/config/
 /config.js
 **/config.js
+
+/configs
