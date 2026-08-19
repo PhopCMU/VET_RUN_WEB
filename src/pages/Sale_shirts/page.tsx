@@ -149,7 +149,7 @@ const SaleShirt = () => {
     }
 
     setTotalPrice(price);
-  }, [selectedQuantity, openAddress]);
+  }, [selectedQuantity, openAddress, SHIRT_PRICE, totalPrice]);
 
   const accountNumber = "667-411644-1";
   const [copied, setCopied] = useState(false);
@@ -420,23 +420,23 @@ const SaleShirt = () => {
                       </div>
                     </motion.div>
 
-                    <div className="grid grid-cols-3 gap-2 lg:grid-cols-2">
+                    <div className="grid grid-cols-3 gap-2 lg:grid-cols-3">
                       {shirtGallery.map((shirt, index) => (
                         <button
                           key={shirt.image}
                           onClick={() => setActiveShirt(index)}
                           aria-label={`ดูแบบเสื้อ ${shirt.label} ${shirt.distance}`}
                           aria-pressed={activeShirt === index}
-                          className={`relative min-h-24 overflow-hidden rounded-md border-2 bg-[#242424] transition-all sm:min-h-32 lg:min-h-0 ${
+                          className={`relative min-h-24 overflow-hidden rounded-md border-2 bg-[#242424] transition-all sm:min-h-32 lg:min-h-0 p-10 ${
                             activeShirt === index
-                              ? "border-brand-600 shadow-[0_8px_24px_rgba(73,24,107,0.18)]"
-                              : "border-transparent opacity-65 hover:opacity-100"
+                              ? "border-brand-600 shadow-[0_8px_24px_rgba(73,24,107,0.18)] "
+                              : "border-transparent opacity-65 hover:opacity-100 cursor-pointer"
                           }`}
                         >
                           <img
                             src={shirt.image}
                             alt=""
-                            className="absolute inset-0 h-full w-full object-cover object-center"
+                            className="absolute inset-0 h-full w-full object-contain object-center"
                             loading="lazy"
                           />
                           <span className="absolute bottom-2 left-2 bg-black/75 px-2 py-1 text-[10px] font-bold text-white backdrop-blur-sm">
