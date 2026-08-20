@@ -31,6 +31,9 @@ type FormData = {
   transferFile: File | null;
 };
 
+const LIMITED_SIZE_SHIRT_MODEL_ID = "1298b333-6577-437b-b9d1-076b11716e01";
+const LIMITED_SHIRT_SIZES = new Set(["3S", "2S", "S", "M", "L", "XL"]);
+
 const SaleShirt = () => {
   const { t } = useTranslation();
   const router = useNavigate();
@@ -54,6 +57,8 @@ const SaleShirt = () => {
     if (response.success) {
       setShirtSize(response.data.size);
       setShirtModels(response.data.shirtModel);
+      console.log("response.data.shirtModel", response.data.shirtModel);
+      console.log("response.data.size", response.data.size);
       setShirtColors(response.data.shirtColor);
     }
   };
@@ -192,7 +197,13 @@ const SaleShirt = () => {
   ) => {
     setShirts((prev) =>
       prev.map((shirt, shirtIndex) =>
-        shirtIndex === index ? { ...shirt, [field]: value } : shirt,
+        shirtIndex === index
+          ? {
+              ...shirt,
+              [field]: value,
+              ...(field === "type" ? { size: "" } : {}),
+            }
+          : shirt,
       ),
     );
   };
@@ -523,42 +534,6 @@ const SaleShirt = () => {
                         )}
                       </div>
 
-                      {/* เลือกสีเสื้อ */}
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          {t("form_sale.data_shirts.shirt_color")}
-                        </label>
-                        <div className="relative">
-                          <span className="material-symbols-outlined absolute left-3 top-3 text-gray-400 text-sm">
-                            style
-                          </span>
-                          <select
-                            value={shirt.color}
-                            onChange={(e) =>
-                              handleShirtChange(index, "color", e.target.value)
-                            }
-                            className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition appearance-none"
-                          >
-                            <option value="">
-                              -- {t("form_sale.data_shirts.shirt_color")} --
-                            </option>
-                            {shirtColors.map((s) => (
-                              <option
-                                key={s.shirtcolorId}
-                                value={s.shirtcolorId}
-                              >
-                                {s.name} {"["}
-                                {s.name_en}
-                                {"]"}
-                              </option>
-                            ))}
-                          </select>
-                          <span className="material-symbols-outlined absolute right-3 top-3 text-gray-400 pointer-events-none">
-                            expand_more
-                          </span>
-                        </div>
-                      </div>
-
                       {/* เลือกรุ่นเสื้อ */}
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -595,6 +570,42 @@ const SaleShirt = () => {
                         </div>
                       </div>
 
+                      {/* เลือกสีเสื้อ */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          {t("form_sale.data_shirts.shirt_color")}
+                        </label>
+                        <div className="relative">
+                          <span className="material-symbols-outlined absolute left-3 top-3 text-gray-400 text-sm">
+                            style
+                          </span>
+                          <select
+                            value={shirt.color}
+                            onChange={(e) =>
+                              handleShirtChange(index, "color", e.target.value)
+                            }
+                            className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition appearance-none"
+                          >
+                            <option value="">
+                              -- {t("form_sale.data_shirts.shirt_color")} --
+                            </option>
+                            {shirtColors.map((s) => (
+                              <option
+                                key={s.shirtcolorId}
+                                value={s.shirtcolorId}
+                              >
+                                {s.name} {"["}
+                                {s.name_en}
+                                {"]"}
+                              </option>
+                            ))}
+                          </select>
+                          <span className="material-symbols-outlined absolute right-3 top-3 text-gray-400 pointer-events-none">
+                            expand_more
+                          </span>
+                        </div>
+                      </div>
+
                       {/* เลือกไซส์เสื้อ */}
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -614,15 +625,24 @@ const SaleShirt = () => {
                             <option value="">
                               -- {t("form_sale.data_shirts.shirt_size")} --
                             </option>
-                            {shirtSize.map((shirt) => (
-                              <option key={shirt.shirtId} value={shirt.shirtId}>
-                                {`${shirt.size} = (${t(
-                                  "step3.form_personal.shirt.chest_size",
-                                )}:${shirt.s_width} ${t(
-                                  "step3.form_personal.shirt.length_size",
-                                )}:${shirt.s_high})`}
-                              </option>
-                            ))}
+                            {shirtSize
+                              .filter(
+                                (sizeOption) =>
+                                  shirt.type !== LIMITED_SIZE_SHIRT_MODEL_ID ||
+                                  LIMITED_SHIRT_SIZES.has(sizeOption.size),
+                              )
+                              .map((sizeOption) => (
+                                <option
+                                  key={sizeOption.shirtId}
+                                  value={sizeOption.shirtId}
+                                >
+                                  {`${sizeOption.size} = (${t(
+                                    "step3.form_personal.shirt.chest_size",
+                                  )}:${sizeOption.s_width} ${t(
+                                    "step3.form_personal.shirt.length_size",
+                                  )}:${sizeOption.s_high})`}
+                                </option>
+                              ))}
                           </select>
                           <span className="material-symbols-outlined absolute right-3 top-3 text-gray-400 pointer-events-none">
                             expand_more
@@ -827,7 +847,8 @@ const SaleShirt = () => {
                         <span>
                           {t("form_sale.data_method.cost_summary.shirt")}{" "}
                           {selectedQuantity} {t("form_sale.data_shirts.shirts")}{" "}
-                          × 350 {t("form_sale.data_method.cost_summary.bath")}
+                          × {SHIRT_PRICE}{" "}
+                          {t("form_sale.data_method.cost_summary.bath")}
                         </span>
                       </div>
                       <span className="font-medium">

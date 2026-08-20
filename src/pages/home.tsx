@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { images } from "../constant";
 import { useTranslation } from "react-i18next";
 import { useI18nReady } from "../i18n";
@@ -113,7 +113,27 @@ export default function Home() {
 
   const [sponsors, setSponsors] = useState<Sponsor[] | undefined>();
   const [activeShirt, setActiveShirt] = useState(0);
+  const [isRacePackageOpen, setIsRacePackageOpen] = useState(false);
+  const [racePackageZoom, setRacePackageZoom] = useState(1);
   const hasSponsor = useRef(false);
+
+  const zoomInRacePackage = () => {
+    setRacePackageZoom((currentZoom) => Math.min(currentZoom + 0.25, 3));
+  };
+
+  const zoomOutRacePackage = () => {
+    setRacePackageZoom((currentZoom) => Math.max(currentZoom - 0.25, 1));
+  };
+
+  const openRacePackage = () => {
+    setRacePackageZoom(1);
+    setIsRacePackageOpen(true);
+  };
+
+  const closeRacePackage = () => {
+    setIsRacePackageOpen(false);
+    setRacePackageZoom(1);
+  };
 
   const fetchSponsors = async () => {
     const response: any = await FunctionGetSponsorAll();
@@ -128,6 +148,25 @@ export default function Home() {
       hasSponsor.current = true;
     }
   }, []);
+
+  useEffect(() => {
+    if (!isRacePackageOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeRacePackage();
+      if (event.key === "+" || event.key === "=") zoomInRacePackage();
+      if (event.key === "-") zoomOutRacePackage();
+    };
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isRacePackageOpen]);
 
   if (isLoadings) {
     return <Loading />;
@@ -331,80 +370,244 @@ export default function Home() {
         </motion.div>
       </section>
 
-      <section
-        id="shirts"
-        className="overflow-hidden bg-[#f3f0f5] py-14 md:py-20"
-      >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-9 flex flex-col justify-between gap-5 md:flex-row md:items-end">
-            <div>
-              <p className="mb-2 text-xs font-bold uppercase tracking-[0.22em] text-brand-600">
-                2026 Collection
-              </p>
-              <h2 className="text-3xl font-black text-brand-900 sm:text-4xl md:text-5xl">
-                VET CMU RUN 2026
-              </h2>
+      <section className="relative">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div
+            id="shirts"
+            className="overflow-hidden bg-[#f3f0f5] py-14 md:py-20"
+          >
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <div className="mb-9 flex flex-col justify-between gap-5 md:flex-row md:items-end">
+                <div>
+                  <p className="mb-2 text-xs font-bold uppercase tracking-[0.22em] text-brand-600">
+                    VET CMU RUN 2026
+                  </p>
+                  <h2 className="text-3xl font-black text-brand-900 sm:text-4xl md:text-5xl">
+                    Collection
+                  </h2>
+                </div>
+              </div>
+
+              <div className="grid gap-5 grid-cols-1 lg:grid-cols-[1fr_2fr]">
+                <motion.div
+                  key={activeShirt}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.35 }}
+                  className="relative min-h-[330px] overflow-hidden rounded-md bg-[#242424] sm:min-h-[500px]"
+                >
+                  <img
+                    src={shirtGallery[activeShirt].image}
+                    alt={`${shirtGallery[activeShirt].label} ${shirtGallery[activeShirt].distance}`}
+                    className="absolute inset-0 h-full w-full object-contain object-center"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-black/85 to-transparent px-5 pb-5 pt-20 text-white sm:px-7 sm:pb-7">
+                    <div>
+                      <p className="text-sm font-semibold text-white/70">
+                        {shirtGallery[activeShirt].label}
+                      </p>
+                      <p className="mt-1 text-3xl font-black">
+                        {shirtGallery[activeShirt].distance}
+                      </p>
+                    </div>
+                    <span
+                      className="h-3 w-16"
+                      style={{
+                        backgroundColor: shirtGallery[activeShirt].accent,
+                      }}
+                    />
+                  </div>
+                </motion.div>
+
+                <div className="grid grid-cols-3 gap-2 lg:grid-cols-3">
+                  {shirtGallery.map((shirt, index) => (
+                    <button
+                      key={shirt.image}
+                      onClick={() => setActiveShirt(index)}
+                      aria-label={`ดูแบบเสื้อ ${shirt.label} ${shirt.distance}`}
+                      aria-pressed={activeShirt === index}
+                      className={`relative min-h-24 overflow-hidden rounded-md border-2 bg-[#242424] transition-all sm:min-h-32 lg:min-h-0 ${
+                        activeShirt === index
+                          ? "border-brand-600 shadow-[0_8px_24px_rgba(73,24,107,0.18)]"
+                          : "border-transparent opacity-65 hover:opacity-100 py-21"
+                      }`}
+                    >
+                      <img
+                        src={shirt.image}
+                        alt=""
+                        className="absolute inset-0 h-full w-full object-cover object-center"
+                        loading="lazy"
+                      />
+                      <span className="absolute bottom-2 left-2 bg-black/75 px-2 py-1 text-[10px] font-bold text-white backdrop-blur-sm">
+                        {shirt.distance}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="grid gap-5 lg:grid-cols-[1fr_300px]">
-            <motion.div
-              key={activeShirt}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35 }}
-              className="relative min-h-[330px] overflow-hidden rounded-md bg-[#242424] sm:min-h-[500px]"
-            >
-              <img
-                src={shirtGallery[activeShirt].image}
-                alt={`${shirtGallery[activeShirt].label} ${shirtGallery[activeShirt].distance}`}
-                className="absolute inset-0 h-full w-full object-contain object-center"
-                loading="lazy"
-              />
-              <div className="absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-black/85 to-transparent px-5 pb-5 pt-20 text-white sm:px-7 sm:pb-7">
+          <div id="race-package" className="overflow-hidden  py-14 md:py-20">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <div className="mb-9 flex flex-col justify-between gap-5 md:flex-row md:items-end">
                 <div>
-                  <p className="text-sm font-semibold text-white/70">
-                    {shirtGallery[activeShirt].label}
+                  <p className="mb-2 text-xs font-bold uppercase tracking-[0.22em] text-brand-600">
+                    VET CMU RUN 2026
                   </p>
-                  <p className="mt-1 text-3xl font-black">
-                    {shirtGallery[activeShirt].distance}
-                  </p>
+                  <h2 className="text-3xl font-black text-brand-900 sm:text-4xl md:text-5xl">
+                    Race Package
+                  </h2>
                 </div>
-                <span
-                  className="h-3 w-16"
-                  style={{ backgroundColor: shirtGallery[activeShirt].accent }}
-                />
               </div>
-            </motion.div>
-
-            <div className="grid grid-cols-3 gap-2 lg:grid-cols-2">
-              {shirtGallery.map((shirt, index) => (
-                <button
-                  key={shirt.image}
-                  onClick={() => setActiveShirt(index)}
-                  aria-label={`ดูแบบเสื้อ ${shirt.label} ${shirt.distance}`}
-                  aria-pressed={activeShirt === index}
-                  className={`relative min-h-24 overflow-hidden rounded-md border-2 bg-[#242424] transition-all sm:min-h-32 lg:min-h-0 ${
-                    activeShirt === index
-                      ? "border-brand-600 shadow-[0_8px_24px_rgba(73,24,107,0.18)]"
-                      : "border-transparent opacity-65 hover:opacity-100"
-                  }`}
-                >
+              <div>
+                <div className="group relative min-h-[330px] overflow-hidden rounded-md bg-[#242424] sm:min-h-[500px]">
                   <img
-                    src={shirt.image}
-                    alt=""
-                    className="absolute inset-0 h-full w-full object-cover object-center"
-                    loading="lazy"
+                    src={images.racePackage}
+                    alt="Race Package"
+                    className="absolute inset-0 h-full w-full object-contain object-center transition-transform duration-300"
+                    style={{ transform: `scale(${racePackageZoom})` }}
                   />
-                  <span className="absolute bottom-2 left-2 bg-black/75 px-2 py-1 text-[10px] font-bold text-white backdrop-blur-sm">
-                    {shirt.distance}
-                  </span>
-                </button>
-              ))}
+                  <div className="absolute right-3 top-3 flex items-center gap-1 rounded-md border border-white/15 bg-black/75 p-1 text-white shadow-lg backdrop-blur-sm">
+                    <button
+                      type="button"
+                      onClick={zoomOutRacePackage}
+                      disabled={racePackageZoom <= 1}
+                      aria-label="Zoom out Race Package"
+                      title="Zoom out"
+                      className="flex h-10 w-10 items-center justify-center rounded-sm transition-colors hover:bg-white/15 disabled:cursor-not-allowed disabled:opacity-35"
+                    >
+                      <span className="material-symbols-outlined">
+                        zoom_out
+                      </span>
+                    </button>
+                    <span className="w-12 text-center text-xs font-bold tabular-nums">
+                      {Math.round(racePackageZoom * 100)}%
+                    </span>
+                    <button
+                      type="button"
+                      onClick={zoomInRacePackage}
+                      disabled={racePackageZoom >= 3}
+                      aria-label="Zoom in Race Package"
+                      title="Zoom in"
+                      className="flex h-10 w-10 items-center justify-center rounded-sm transition-colors hover:bg-white/15 disabled:cursor-not-allowed disabled:opacity-35"
+                    >
+                      <span className="material-symbols-outlined">zoom_in</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={openRacePackage}
+                      aria-label="Open Race Package fullscreen"
+                      title="Fullscreen"
+                      className="flex h-10 w-10 items-center justify-center rounded-sm transition-colors hover:bg-white/15"
+                    >
+                      <span className="material-symbols-outlined">
+                        fullscreen
+                      </span>
+                    </button>
+                    <a
+                      href={images.racePackage}
+                      download="vet-cmu-run-2026-race-package"
+                      aria-label="Download Race Package"
+                      title="Download"
+                      className="flex h-10 w-10 items-center justify-center rounded-sm transition-colors hover:bg-white/15"
+                    >
+                      <span className="material-symbols-outlined">
+                        download
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
+
+      <AnimatePresence>
+        {isRacePackageOpen ? (
+          <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Race Package fullscreen viewer"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closeRacePackage}
+            className="fixed inset-0 z-[100] flex flex-col bg-black/95 text-white"
+          >
+            <div className="flex min-h-16 items-center justify-between gap-3 border-b border-white/10 bg-black/70 px-3 sm:px-5">
+              <p className="truncate text-sm font-bold sm:text-base">
+                Race Package
+              </p>
+              <div className="flex shrink-0 items-center gap-1">
+                <button
+                  type="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    zoomOutRacePackage();
+                  }}
+                  disabled={racePackageZoom <= 1}
+                  aria-label="Zoom out Race Package"
+                  title="Zoom out"
+                  className="flex h-10 w-10 items-center justify-center rounded-sm transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-35"
+                >
+                  <span className="material-symbols-outlined">zoom_out</span>
+                </button>
+                <span className="w-12 text-center text-xs font-bold tabular-nums">
+                  {Math.round(racePackageZoom * 100)}%
+                </span>
+                <button
+                  type="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    zoomInRacePackage();
+                  }}
+                  disabled={racePackageZoom >= 3}
+                  aria-label="Zoom in Race Package"
+                  title="Zoom in"
+                  className="flex h-10 w-10 items-center justify-center rounded-sm transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-35"
+                >
+                  <span className="material-symbols-outlined">zoom_in</span>
+                </button>
+                <a
+                  href={images.racePackage}
+                  download="vet-cmu-run-2026-race-package"
+                  onClick={(event) => event.stopPropagation()}
+                  aria-label="Download Race Package"
+                  title="Download"
+                  className="flex h-10 w-10 items-center justify-center rounded-sm transition-colors hover:bg-white/10"
+                >
+                  <span className="material-symbols-outlined">download</span>
+                </a>
+                <button
+                  type="button"
+                  onClick={closeRacePackage}
+                  aria-label="Close fullscreen viewer"
+                  title="Close"
+                  className="flex h-10 w-10 items-center justify-center rounded-sm transition-colors hover:bg-white/10"
+                >
+                  <span className="material-symbols-outlined">close</span>
+                </button>
+              </div>
+            </div>
+
+            <div
+              className="flex min-h-0 flex-1 items-center justify-center overflow-auto p-4 sm:p-8"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <motion.img
+                src={images.racePackage}
+                alt="Race Package"
+                animate={{ scale: racePackageZoom }}
+                transition={{ duration: 0.2 }}
+                className="max-h-full max-w-full object-contain"
+              />
+            </div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
 
       {sponsors !== undefined && sponsors.length > 0 && (
         <section className="relative overflow-hidden bg-white py-14 md:py-20">
@@ -579,7 +782,7 @@ export default function Home() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.6 }}
-          className="relative mx-auto max-w-4xl"
+          className="relative mx-auto max-w-7xl"
         >
           {/* Single Card */}
           <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 md:p-10 shadow-2xl">

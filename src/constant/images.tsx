@@ -9,6 +9,7 @@ import familyShirtsBlue from "../assets/images/shirts/02-01.jpg";
 import familyShirtsGreen from "../assets/images/shirts/02-02.jpg";
 import familyShirtsAlternate from "../assets/images/shirts/02-03.jpg";
 import finisherShirt from "../assets/images/shirts/03-01.jpg";
+import racePackage from "../assets/images/map/p01.jpg";
 
 export default {
   logo,
@@ -22,4 +23,5 @@ export default {
   familyShirtsGreen,
   familyShirtsAlternate,
   finisherShirt,
+  racePackage,
 };
