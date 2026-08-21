@@ -27,6 +27,7 @@ interface ShirtSize {
   size: string;
   s_width: number;
   s_high: number;
+  point: number | string;
 }
 
 const Step3Form: FC<Props> = ({
@@ -77,7 +78,12 @@ const Step3Form: FC<Props> = ({
   const listMenuShrit = async () => {
     const response = await FunctionMenuSizeShirt();
     if (response.success) {
-      setShirtSize(response.data.size);
+      setShirtSize(
+        response.data.size.filter((shirt: ShirtSize) => {
+          const point = Number(shirt.point);
+          return point >= 2 && point <= 17;
+        }),
+      );
     }
   };
 

@@ -14,6 +14,7 @@ interface ShirtSize {
   size: string;
   s_width: number;
   s_high: number;
+  point: number | string;
 }
 
 interface ShirtItem {
@@ -32,7 +33,6 @@ type FormData = {
 };
 
 const LIMITED_SIZE_SHIRT_MODEL_ID = "1298b333-6577-437b-b9d1-076b11716e01";
-const LIMITED_SHIRT_SIZES = new Set(["3S", "2S", "S", "M", "L", "XL"]);
 
 const SaleShirt = () => {
   const { t } = useTranslation();
@@ -57,8 +57,6 @@ const SaleShirt = () => {
     if (response.success) {
       setShirtSize(response.data.size);
       setShirtModels(response.data.shirtModel);
-      console.log("response.data.shirtModel", response.data.shirtModel);
-      console.log("response.data.size", response.data.size);
       setShirtColors(response.data.shirtColor);
     }
   };
@@ -626,11 +624,13 @@ const SaleShirt = () => {
                               -- {t("form_sale.data_shirts.shirt_size")} --
                             </option>
                             {shirtSize
-                              .filter(
-                                (sizeOption) =>
-                                  shirt.type !== LIMITED_SIZE_SHIRT_MODEL_ID ||
-                                  LIMITED_SHIRT_SIZES.has(sizeOption.size),
-                              )
+                              .filter((sizeOption) => {
+                                const point = Number(sizeOption.point);
+                                return shirt.type ===
+                                  LIMITED_SIZE_SHIRT_MODEL_ID
+                                  ? point >= 18 && point <= 23
+                                  : point >= 2 && point <= 17;
+                              })
                               .map((sizeOption) => (
                                 <option
                                   key={sizeOption.shirtId}

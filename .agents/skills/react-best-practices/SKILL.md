@@ -155,3 +155,5 @@ For the complete guide with all rules expanded: `AGENTS.md`
 - 2026-08-10: In multi-step registration forms, render selections from `formData`; use `localStorage` only for persistence, not as the live controlled-input state.
 - 2026-08-11: For grouped commerce inputs, keep `{ productId, variantId, quantity }` as UI state, derive totals during render, and expand quantities only at the API boundary when the backend expects one row per unit.
 - 2026-08-20: When one controlled select filters another, clear the dependent value when its parent changes so a hidden stale option cannot be submitted.
+- 2026-08-21: Filter API-backed shirt options by numeric `point` at ingestion so every select sharing that state receives the same allowed range.
+- 2026-08-21: When allowed shirt sizes depend on the selected model, convert API `point` values to numbers and apply the model-specific inclusive range in the size selector.
