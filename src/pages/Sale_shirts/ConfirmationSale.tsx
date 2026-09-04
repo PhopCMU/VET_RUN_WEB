@@ -17,9 +17,11 @@ interface ShirtItem {
 }
 
 interface NamedOption {
-  id: string;
+  shirtmodelId?: string;
+  shirtcolorId?: string;
   name: string;
   name_en?: string;
+  price?: number | string;
 }
 
 interface ConfirmationProps {
@@ -65,6 +67,14 @@ const ConfirmationSale = ({
   const agreed = confirmedData && acceptedRefundPolicy && acceptedPDPA;
   const totalQuantity = shirts.reduce(
     (total, shirt) => total + shirt.quantity,
+    0,
+  );
+  const getShirtPrice = (type: string) =>
+    Number(
+      shirtModels.find((model) => model.shirtmodelId === type)?.price ?? 0,
+    );
+  const shirtTotal = shirts.reduce(
+    (total, shirt) => total + shirt.quantity * getShirtPrice(shirt.type),
     0,
   );
 
@@ -285,7 +295,9 @@ const ConfirmationSale = ({
                       {shirt.quantity}
                     </td>
                     <td className="p-3 text-right border-b border-purple-100 font-semibold">
-                      {(shirt.quantity * 350).toLocaleString()}{" "}
+                      {(
+                        shirt.quantity * getShirtPrice(shirt.type)
+                      ).toLocaleString()}{" "}
                       {t("form_sale.data_method.cost_summary.bath")}
                     </td>
                   </motion.tr>
@@ -375,7 +387,9 @@ const ConfirmationSale = ({
                       {shirt.quantity}
                     </span>
                     <strong className="text-brand-900">
-                      {(shirt.quantity * 350).toLocaleString()}{" "}
+                      {(
+                        shirt.quantity * getShirtPrice(shirt.type)
+                      ).toLocaleString()}{" "}
                       {t("form_sale.data_method.cost_summary.bath")}
                     </strong>
                   </div>
@@ -405,11 +419,11 @@ const ConfirmationSale = ({
               </span>
               <span>
                 {t("form_confirm.data_detail.sh_price")} {totalQuantity}{" "}
-                {t("form_sale.data_shirts.shirts")} × 350{" "}
+                {t("form_sale.data_shirts.shirts")}{" "}
                 {t("form_sale.data_method.cost_summary.bath")}
               </span>
               <span className="font-medium ml-5">
-                {totalQuantity * 350}{" "}
+                {shirtTotal.toLocaleString()}{" "}
                 {t("form_sale.data_method.cost_summary.bath")}
               </span>
             </div>
@@ -423,7 +437,7 @@ const ConfirmationSale = ({
                   {t("form_sale.data_method.cost_summary.shipping_fee")}
                 </span>
                 <span className="font-medium ml-5">
-                  +{50 + Math.max(0, totalQuantity - 1) * 5}{" "}
+                  +{50 + Math.max(0, totalQuantity - 1) * 10}{" "}
                   {t("form_sale.data_method.cost_summary.bath")}
                 </span>
               </div>

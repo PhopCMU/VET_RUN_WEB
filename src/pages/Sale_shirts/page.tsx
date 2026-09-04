@@ -24,6 +24,13 @@ interface ShirtItem {
   quantity: number;
 }
 
+interface ShirtModel {
+  shirtmodelId: string;
+  name: string;
+  name_en?: string;
+  price: number | string;
+}
+
 type FormData = {
   fullName: string;
   phone: string;
@@ -41,7 +48,7 @@ const SaleShirt = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [activeShirt, setActiveShirt] = useState(0);
-  const [shirtModels, setShirtModels] = useState<any[]>([]);
+  const [shirtModels, setShirtModels] = useState<ShirtModel[]>([]);
   const [shirtColors, setShirtColors] = useState<any[]>([]);
   const [shirtSize, setShirtSize] = useState<ShirtSize[]>([]);
   const [formData, setFormData] = useState<FormData>({
@@ -71,11 +78,7 @@ const SaleShirt = () => {
   const [shirts, setShirts] = useState<ShirtItem[]>([
     { type: "", color: "", size: "", quantity: 1 },
   ]);
-  const [totalPrice, setTotalPrice] = useState<number>(0);
   const MAX_SHIRTS = 100;
-  const SHIRT_PRICE =
-    shirtModels.find((model) => model.shirtmodelId === shirts[0]?.type)
-      ?.price || 0;
   const shirtGallery = [
     {
       image: images.familyShirtsBlue,
@@ -142,17 +145,18 @@ const SaleShirt = () => {
     0,
   );
 
-  // คำนวณยอดรวม
-  useEffect(() => {
-    let price = selectedQuantity * SHIRT_PRICE;
-    if (openAddress) {
-      const shippingFirst = 50;
-      const shippingAdditional = Math.max(0, selectedQuantity - 1) * 5;
-      price += shippingFirst + shippingAdditional;
-    }
-
-    setTotalPrice(price);
-  }, [selectedQuantity, openAddress, SHIRT_PRICE, totalPrice]);
+  const getShirtPrice = (shirtType: string) =>
+    Number(
+      shirtModels.find((model) => model.shirtmodelId === shirtType)?.price ?? 0,
+    );
+  const shirtTotal = shirts.reduce(
+    (total, shirt) => total + shirt.quantity * getShirtPrice(shirt.type),
+    0,
+  );
+  const shippingFee = openAddress
+    ? 50 + Math.max(0, selectedQuantity - 1) * 5
+    : 0;
+  const totalPrice = shirtTotal + shippingFee;
 
   const accountNumber = "667-411644-1";
   const [copied, setCopied] = useState(false);
@@ -696,9 +700,11 @@ const SaleShirt = () => {
                           </div>
                         </div>
                         <p className="text-right text-sm text-gray-600">
-                          {shirt.quantity} × {SHIRT_PRICE} ={" "}
+                          {shirt.quantity} × {getShirtPrice(shirt.type)} ={" "}
                           <strong className="text-base text-brand-900">
-                            {(shirt.quantity * SHIRT_PRICE).toLocaleString()}{" "}
+                            {(
+                              shirt.quantity * getShirtPrice(shirt.type)
+                            ).toLocaleString()}{" "}
                             {t("form_sale.data_method.cost_summary.bath")}
                           </strong>
                         </p>
@@ -847,12 +853,12 @@ const SaleShirt = () => {
                         <span>
                           {t("form_sale.data_method.cost_summary.shirt")}{" "}
                           {selectedQuantity} {t("form_sale.data_shirts.shirts")}{" "}
-                          × {SHIRT_PRICE}{" "}
+                          {t("form_sale.data_method.cost_summary.bath")}
                           {t("form_sale.data_method.cost_summary.bath")}
                         </span>
                       </div>
                       <span className="font-medium">
-                        {selectedQuantity * SHIRT_PRICE}{" "}
+                        {shirtTotal.toLocaleString()}{" "}
                         {t("form_sale.data_method.cost_summary.bath")}
                       </span>
                     </div>
@@ -892,7 +898,7 @@ const SaleShirt = () => {
                               </span>
                             </div>
                             <span className="font-medium">
-                              +{Math.max(0, selectedQuantity - 1) * 5}{" "}
+                              +{Math.max(0, selectedQuantity - 1) * 10}{" "}
                               {t("form_sale.data_method.cost_summary.bath")}
                             </span>
                           </div>
@@ -1129,6 +1135,13 @@ const SaleShirt = () => {
                       type: "warning",
                     });
 
+                    return;
+                  }
+                  if (openAddress && !formData.address.trim()) {
+                    showCustomAlert("กรุณากรอกที่อยู่จัดส่ง", {
+                      title: "",
+                      type: "warning",
+                    });
                     return;
                   }
                   if (formData.transferFile === null) {
