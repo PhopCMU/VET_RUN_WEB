@@ -22,7 +22,7 @@ const environmentNotices = {
 
 const App: React.FC<AppProps> = ({ children }) => {
   const environmentNotice =
-    appEnvironment === "PROD" ? undefined : environmentNotices[appEnvironment];
+    appEnvironment === "TEST" ? environmentNotices.TEST : undefined;
   const [isDevelopmentNoticeOpen, setIsDevelopmentNoticeOpen] = useState(
     environmentNotice !== undefined,
   );

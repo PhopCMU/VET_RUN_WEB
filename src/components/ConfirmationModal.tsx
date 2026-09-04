@@ -361,6 +361,7 @@ const ConfirmationModal: FC<Props> = ({ formData, onConfirm, onEdit }) => {
                   <span className="text-gray-600">
                     {t("form_confirm.checkbox_confirm.pdpa")}
                   </span>
+           
                 </label>
               </div>
             </div>
