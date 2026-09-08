@@ -125,10 +125,10 @@ export default function Home() {
     setRacePackageZoom((currentZoom) => Math.max(currentZoom - 0.25, 1));
   };
 
-  const openRacePackage = () => {
-    setRacePackageZoom(1);
-    setIsRacePackageOpen(true);
-  };
+  // const openRacePackage = () => {
+  //   setRacePackageZoom(1);
+  //   setIsRacePackageOpen(true);
+  // };
 
   const closeRacePackage = () => {
     setIsRacePackageOpen(false);
@@ -371,7 +371,7 @@ export default function Home() {
       </section>
 
       <section className="relative">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1  gap-4">
           <div
             id="shirts"
             className="overflow-hidden bg-[#f3f0f5] py-14 md:py-20"
@@ -449,79 +449,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div id="race-package" className="overflow-hidden  py-14 md:py-20">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <div className="mb-9 flex flex-col justify-between gap-5 md:flex-row md:items-end">
-                <div>
-                  <p className="mb-2 text-xs font-bold uppercase tracking-[0.22em] text-brand-600">
-                    VET CMU RUN 2026
-                  </p>
-                  <h2 className="text-3xl font-black text-brand-900 sm:text-4xl md:text-5xl">
-                    Race Package
-                  </h2>
-                </div>
-              </div>
-              <div>
-                <div className="group relative min-h-[330px] overflow-hidden rounded-md bg-[#242424] sm:min-h-[500px]">
-                  <img
-                    src={images.racePackage}
-                    alt="Race Package"
-                    className="absolute inset-0 h-full w-full object-contain object-center transition-transform duration-300"
-                    style={{ transform: `scale(${racePackageZoom})` }}
-                  />
-                  <div className="absolute right-3 top-3 flex items-center gap-1 rounded-md border border-white/15 bg-black/75 p-1 text-white shadow-lg backdrop-blur-sm">
-                    <button
-                      type="button"
-                      onClick={zoomOutRacePackage}
-                      disabled={racePackageZoom <= 1}
-                      aria-label="Zoom out Race Package"
-                      title="Zoom out"
-                      className="flex h-10 w-10 items-center justify-center rounded-sm transition-colors hover:bg-white/15 disabled:cursor-not-allowed disabled:opacity-35"
-                    >
-                      <span className="material-symbols-outlined">
-                        zoom_out
-                      </span>
-                    </button>
-                    <span className="w-12 text-center text-xs font-bold tabular-nums">
-                      {Math.round(racePackageZoom * 100)}%
-                    </span>
-                    <button
-                      type="button"
-                      onClick={zoomInRacePackage}
-                      disabled={racePackageZoom >= 3}
-                      aria-label="Zoom in Race Package"
-                      title="Zoom in"
-                      className="flex h-10 w-10 items-center justify-center rounded-sm transition-colors hover:bg-white/15 disabled:cursor-not-allowed disabled:opacity-35"
-                    >
-                      <span className="material-symbols-outlined">zoom_in</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={openRacePackage}
-                      aria-label="Open Race Package fullscreen"
-                      title="Fullscreen"
-                      className="flex h-10 w-10 items-center justify-center rounded-sm transition-colors hover:bg-white/15"
-                    >
-                      <span className="material-symbols-outlined">
-                        fullscreen
-                      </span>
-                    </button>
-                    <a
-                      href={images.racePackage}
-                      download="vet-cmu-run-2026-race-package"
-                      aria-label="Download Race Package"
-                      title="Download"
-                      className="flex h-10 w-10 items-center justify-center rounded-sm transition-colors hover:bg-white/15"
-                    >
-                      <span className="material-symbols-outlined">
-                        download
-                      </span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        
         </div>
       </section>
 
