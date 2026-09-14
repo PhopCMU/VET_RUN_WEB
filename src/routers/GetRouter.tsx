@@ -1,18 +1,48 @@
 import axios from "axios";
 import { apiUrl } from "../configs/conf";
+import type { OpenProject } from "../types/OpenProject";
 
 // import CryptoJS from "crypto-js";
 
-interface ApiResponse {
+export interface ApiResponse<TData = unknown> {
   success: boolean;
   message?: string;
-  data?: any;
+  data?: TData;
+}
+
+function getErrorResponse<TData>(error: unknown): ApiResponse<TData> {
+  if (axios.isAxiosError<ApiResponse<TData>>(error) && error.response?.data) {
+    return error.response.data;
+  }
+
+  return { success: false, message: "ข้อพลาดในการเชื่อมต่อเซิร์ฟเวอร์" };
+}
+
+export interface ShirtMenuResponse {
+  size: Array<{
+    shirtId: string;
+    size: string;
+    s_width: number;
+    s_high: number;
+    point: number | string;
+  }>;
+  shirtModel: Array<{
+    shirtmodelId: string;
+    name: string;
+    name_en?: string;
+    price: number | string;
+  }>;
+  shirtColor: Array<{
+    shirtcolorId: string;
+    name: string;
+    name_en?: string;
+  }>;
 }
 
 // const secretKey = import.meta.env.VITE_SECRET_KEY_CRYPTO_FRONTEND;
 export const FunctionOpenProject = async () => {
   try {
-    const response = await axios.get<ApiResponse>(
+    const response = await axios.get<ApiResponse<OpenProject>>(
       `${apiUrl.URL_API}/role/project/projectId`,
       {
         params: {
@@ -25,38 +55,22 @@ export const FunctionOpenProject = async () => {
     );
 
     return response.data;
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error during search:");
-
-    if (error.response && error.response.data) {
-      return error.response.data as ApiResponse;
-    }
-
-    return {
-      success: false,
-      message: "ข้อพลาดในการเชื่อมต่อเซิร์ฟเวอร์",
-    };
+    return getErrorResponse<OpenProject>(error);
   }
 };
 
 export const FunctionMenuSizeShirt = async () => {
   try {
-    const response = await axios.get<ApiResponse>(
+    const response = await axios.get<ApiResponse<ShirtMenuResponse>>(
       `${apiUrl.URL_API}/vetrun/size/shirt`,
     );
 
     return response.data;
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error during search:", error);
-
-    if (error.response && error.response.data) {
-      return error.response.data as ApiResponse;
-    }
-
-    return {
-      success: false,
-      message: "ข้อพลาดในการเชื่อมต่อเซิร์ฟเวอร์",
-    };
+    return getErrorResponse<ShirtMenuResponse>(error);
   }
 };
 
@@ -67,17 +81,9 @@ export const FunctionLimitAnimal = async () => {
     );
 
     return response.data;
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error during search:", error);
-
-    if (error.response && error.response.data) {
-      return error.response.data as ApiResponse;
-    }
-
-    return {
-      success: false,
-      message: "ข้อพลาดในการเชื่อมต่อเซิร์ฟเวอร์",
-    };
+    return getErrorResponse(error);
   }
 };
 
@@ -90,17 +96,9 @@ export const FunctionGetParticipantByEmail = async (email: string) => {
       },
     );
     return response.data;
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error during search:", error);
-
-    if (error.response && error.response.data) {
-      return error.response.data as ApiResponse;
-    }
-
-    return {
-      success: false,
-      message: "ข้อพลาดในการเชื่อมต่อเซิร์ฟเวอร์",
-    };
+    return getErrorResponse(error);
   }
 };
 
@@ -110,17 +108,9 @@ export const FunctionGetSponsorAll = async () => {
       `${apiUrl.URL_API}/vetrun/sponsors`,
     );
     return response.data;
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error during search:", error);
-
-    if (error.response && error.response.data) {
-      return error.response.data as ApiResponse;
-    }
-
-    return {
-      success: false,
-      message: "ข้อพลาดในการเชื่อมต่อเซิร์ฟเวอร์",
-    };
+    return getErrorResponse(error);
   }
 };
 
@@ -139,14 +129,7 @@ export const FunctionGetTrackingAll = async (
     );
 
     return response.data;
-  } catch (error: any) {
-    if (error.response?.data) {
-      return error.response.data as ApiResponse;
-    }
-
-    return {
-      success: false,
-      message: "ข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์",
-    };
+  } catch (error) {
+    return getErrorResponse(error);
   }
 };

@@ -10,11 +10,11 @@
 
 ## Participant List
 
-`src/pages/table_list.tsx` loads all participants through `FunctionGetParticipantAll` and renders returned data. The complete response shape is not typed in the client.
+`src/pages/table_list.tsx` looks up participants by normalized email through `FunctionGetParticipantByEmail`, then supports category/subcategory filtering for the returned participant list. The complete response shape is not typed in the client.
 
 ## Shirt Sale and Tracking
 
-`src/pages/Sale_shirts/page.tsx` collects buyer/order details, obtains shirt sizes, calculates a displayed total, uploads a transfer slip, and confirms before posting. `tracking.tsx` obtains a visitor identifier through FingerprintJS Pro React, loads data, filters by name/phone/email, and displays payment, collection, EMS tracking, item count, and order date.
+`src/pages/Sale_shirts/page.tsx` collects buyer/order details, obtains model/color/size data, filters size options by API point ranges, calculates model-based shirt totals and delivery, uploads a transfer slip, and confirms before posting. `tracking.tsx` searches by normalized order email and displays payment, collection, EMS tracking, item count, and order date.
 
 ## Internationalization
 
@@ -22,4 +22,4 @@
 
 ## Environment Notices
 
-`src/App.tsx` displays a warning `AlertModal` when the resolved app environment is not `PROD`. `DEV` shows a non-dismissible development notice that blocks acknowledgement, while `TEST` shows a dismissible testing notice. `PROD` does not show an environment notice.
+`src/main.tsx` renders the dedicated maintenance screen in `DEV`. `src/App.tsx` displays a dismissible testing warning in `TEST`; `PROD` does not show an environment notice. See `features/dev-mode.md` for the maintenance behavior.

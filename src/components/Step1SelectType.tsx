@@ -50,7 +50,7 @@ const Step1SelectType: React.FC<Props> = ({ onSelect }) => {
       </h2>
 
       <div className="space-y-3">
-        {options.map((opt: any) => (
+        {options.map((opt) => (
           <motion.div
             key={opt.value}
             whileHover={{ scale: 1.02 }}

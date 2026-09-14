@@ -1,0 +1,94 @@
+# Skill: Code Review สำหรับ React
+
+## เป้าหมาย
+ตรวจสอบโค้ด React เพื่อหาข้อผิดพลาด ความเสี่ยงด้านความปลอดภัย ปัญหาด้านประสิทธิภาพ Accessibility และโค้ดที่ดูแลรักษายาก โดยรายงานเป็นแผนการแก้ไขที่นำไปทำต่อได้ทันที
+
+## กติกาการรีวิว
+- รีวิวจากโค้ดจริง ไม่คาดเดาปัญหาที่ไม่มีหลักฐาน
+- รายงานเฉพาะประเด็นที่ต้องแก้ไข
+- เรียงลำดับตาม `Critical` → `High` → `Medium` → `Low`
+- ไม่ต้องเขียนบทสรุป, คะแนน, จำนวน issue หรือ `Approve/Request changes`
+- ระบุไฟล์และบรรทัดเมื่อข้อมูลมีให้
+- อธิบายปัญหา ผลกระทบ และวิธีแก้ให้กระชับ
+- ไม่เสนอ refactor ขนาดใหญ่ หากไม่ช่วยแก้ bug, security, performance หรือ maintainability อย่างชัดเจน
+- หากไม่พบประเด็นที่ต้องแก้ไข ให้ตอบเพียง: `ไม่พบประเด็นที่ต้องแก้ไข`
+
+## ระดับความสำคัญ
+- **Critical:** ข้อมูลสำคัญรั่วไหล, bypass authentication/authorization, แอปล่ม, ข้อมูลเสียหายวงกว้าง
+- **High:** ผู้ใช้เข้าถึงข้อมูลผู้อื่นได้, secret รั่ว, validation สำคัญหายไป, ช่องโหว่ XSS หรือ injection
+- **Medium:** crash ใน edge case, memory leak, request ซ้ำ, performance ลดลงอย่างมีนัยสำคัญ
+- **Low:** type ไม่ชัดเจน, โค้ดซ้ำ, naming, accessibility หรือรูปแบบโค้ดที่ควรปรับ
+
+## จุดที่ต้องตรวจ
+
+### React Components และ Hooks
+- ไม่เรียก Hooks ภายในเงื่อนไข, loop, callback หรือ function ปกติ
+- ตรวจ dependency ของ `useEffect`, `useMemo` และ `useCallback` ให้ครบ
+- cleanup timer, event listener, subscription และ request ใน `useEffect`
+- ป้องกันการอัปเดต state หลัง component unmount
+- ไม่ mutate state หรือ props โดยตรง
+- ใช้ functional update เช่น `setItems((prev) => [...prev, item])` เมื่อค่าใหม่ขึ้นกับ state เดิม
+- หลีกเลี่ยง derived state หากสามารถคำนวณจาก props หรือ state เดิมได้
+- ใช้ `key` ที่คงที่และไม่ซ้ำในการ render list
+- หลีกเลี่ยงใช้ array index เป็น `key` หาก list สามารถเพิ่ม, ลบ หรือเรียงลำดับใหม่ได้
+- แยก component เมื่อ component เดียวมีหลายความรับผิดชอบ
+
+### Data Fetching และ Async Logic
+- รองรับสถานะ loading, error, empty และ success
+- ไม่เรียก API ซ้ำทุก render โดยไม่ตั้งใจ
+- ยกเลิกหรือ ignore request เดิมเมื่อ component unmount หรือมี request ใหม่แทนที่
+- ป้องกัน race condition ใน search, filter และ request ที่เปลี่ยนเร็ว
+- ตรวจ response และ handle กรณี API ส่งข้อมูลไม่ครบ
+- ป้องกัน double submit สำหรับ action สำคัญ เช่น บันทึก, ลบ, สั่งซื้อ และชำระเงิน
+- ไม่เก็บข้อมูลอ่อนไหวใน React state นานเกินจำเป็น
+
+### Security
+- ห้าม hardcode API key, password, token, private key หรือ connection string
+- ไม่ส่ง secret ไปยัง client bundle
+- ไม่ log password, access token, cookie, session หรือข้อมูลส่วนบุคคล
+- Validate input ก่อนส่ง API และ backend ต้อง validate ซ้ำเสมอ
+- ไม่เชื่อ `userId`, `role`, price หรือ permission จาก client
+- หลีกเลี่ยง `dangerouslySetInnerHTML`
+- หาก render HTML จากผู้ใช้หรือ CMS ต้อง sanitize ก่อน
+- ตรวจ URL ก่อน redirect หรือเปิด external link
+- ใช้ `rel="noopener noreferrer"` กับ external link ที่ใช้ `target="_blank"`
+- ไม่แสดง stack trace หรือข้อมูลภายในระบบใน production
+
+### Forms และ Accessibility
+- ใช้ semantic HTML เช่น `button`, `form`, `label`, `nav` และ `main`
+- ไม่ใช้ `div` หรือ `span` แทน `button` สำหรับ element ที่กดได้
+- ระบุ `type="button"` หรือ `type="submit"` ให้ชัดเจนสำหรับปุ่มใน form
+- input ทุกตัวต้องมี `label` หรือ accessible name
+- แสดง validation error ใกล้ input ที่เกี่ยวข้อง
+- เชื่อม error message กับ input ผ่าน `aria-describedby` ตามความเหมาะสม
+- รองรับ keyboard navigation และ focus state
+- ไม่ใช้สีเป็นวิธีเดียวในการสื่อสถานะหรือ error
+- รูปภาพที่มีความหมายต้องมี `alt` ที่เหมาะสม
+
+### Performance
+- หลีกเลี่ยง re-render ที่ไม่จำเป็นจาก state หรือ props ที่เปลี่ยนบ่อย
+- ใช้ `useMemo`, `useCallback` และ `React.memo` เฉพาะจุดที่มีต้นทุนสูงหรือมีหลักฐานว่าช่วยได้
+- หลีกเลี่ยงสร้าง object, array หรือ callback ใหม่ใน render หากส่งผลให้ child component หนัก render ซ้ำ
+- จำกัดจำนวนข้อมูลที่ render พร้อมกัน
+- ใช้ pagination หรือ virtualization สำหรับ list ขนาดใหญ่
+- ใช้ lazy loading หรือ code splitting สำหรับหน้าหรือ component ที่หนัก
+- หลีกเลี่ยง import library ขนาดใหญ่เมื่อใช้เพียง utility เล็กน้อย
+
+### TypeScript และ Maintainability
+- หลีกเลี่ยง `any`, `@ts-ignore` และ type assertion ที่ไม่ปลอดภัย
+- กำหนด type สำหรับ props, state, API response และ callbacks
+- ตรวจ `null` และ `undefined` ก่อนเข้าถึง property
+- แยก API client, business logic, custom hooks และ UI ออกจากกันเมื่อโค้ดซับซ้อน
+- ลด duplicated code ที่ทำให้ logic หลายจุดไม่ตรงกัน
+- ตั้งชื่อ component, function และ variable ให้สื่อความหมาย
+- ไม่ปิด ESLint หรือ TypeScript error โดยไม่มีเหตุผลชัดเจน
+
+## รูปแบบคำตอบ
+
+## แผนการแก้ไข
+
+1. **[High] หัวข้อปัญหา**
+   - **ไฟล์:** `src/components/Profile.tsx:42`
+   - **ปัญหา:** อธิบายสิ่งที่พบอย่างกระชับ
+   - **ผลกระทบ:** อธิบายความเสี่ยงหรือผลต่อผู้ใช้
+   - **วิธีแก้:** ระบุขั้นตอนที่นำไปแก้ไขได้ทันที

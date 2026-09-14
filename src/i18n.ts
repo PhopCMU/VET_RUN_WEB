@@ -2,8 +2,11 @@ import i18n from "i18next";
 import { useEffect, useState } from "react";
 import { initReactI18next } from "react-i18next";
 
-const loadLocale = async (lng: string): Promise<Record<string, any>> => {
+const loadLocale = async (lng: string): Promise<Record<string, unknown>> => {
   const response = await fetch(`/locales/${lng}/translation.json`);
+  if (!response.ok) {
+    throw new Error(`Unable to load ${lng} translations: ${response.status}`);
+  }
   return await response.json();
 };
 
@@ -31,27 +34,31 @@ i18n.use(initReactI18next).init({
 });
 
 // โหลด locale ทั้งสองภาษาตอนเริ่มต้น
-Promise.all([
+Promise.allSettled([
   loadLocale("en").then((data) => {
     i18n.addResourceBundle("en", "translation", data);
   }),
   loadLocale("th").then((data) => {
     i18n.addResourceBundle("th", "translation", data);
   }),
-]).then(() => {
-  resolveReadyPromise(true); // ✅ บอกว่าพร้อมแล้ว
-});
+]).finally(() => resolveReadyPromise(true));
 
 //  custom hook ที่ใช้ตรวจสอบว่า locale พร้อมแล้วหรือยัง
 export const useI18nReady = () => {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => {
-      readyPromise.then(() => {
+    let isMounted = true;
+
+    readyPromise.then(() => {
+      if (isMounted) {
         setIsReady(true);
-      });
-    }, 2000);
+      }
+    });
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return isReady;

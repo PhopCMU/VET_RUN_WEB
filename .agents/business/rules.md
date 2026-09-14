@@ -6,7 +6,7 @@ Only rules directly observable in the client are listed. Server-side rules remai
 
 - Home registration and shirt-sale actions navigate only when fetched project `status === true`.
 - Project lookup uses a fixed project ID in `FunctionOpenProject`.
-- Non-production environment warnings are client-side gates only: `DEV` displays a non-dismissible development notice, `TEST` displays a dismissible testing notice, and `PROD` shows no environment notice.
+- Environment handling is client-side: `DEV` replaces the normal app with a maintenance screen, `TEST` displays a dismissible testing notice over the normal app, and `PROD` shows no environment notice.
 
 ## Participant Registration
 
@@ -19,10 +19,11 @@ Only rules directly observable in the client are listed. Server-side rules remai
 
 - Shirt sizes are fetched from `/vetrun/size/shirt`.
 - The form collects buyer contact data, quantity, per-shirt model/size, collection method, address for delivery, and transfer-slip upload.
-- The UI displays 350 baht per shirt, delivery fees, and a 5-baht additional-shirt fee. These are client calculations and are not authoritative server pricing.
+- Shirt model prices are read from the `/vetrun/size/shirt` response and calculated per selected model. Delivery uses 50 baht for the first item and 5 baht for each additional item in the form total. These are client calculations and are not authoritative server pricing.
+- Size options are filtered by the API `point` field: points 2–17 for regular models and 18–23 for the limited model ID defined in `Sale_shirts/page.tsx`.
 - Submission posts multipart data to `/vetrun/sale/shirt`.
 
 ## Tracking
 
-- Tracking requests require a non-empty string visitor ID and send it as `X-Visitor-Id`.
-- Client-side filtering searches fullname, phone, or email; payment, collection, tracking number, item count, and date are rendered from API data.
+- Tracking requests use the trimmed, lowercased order email as the `email` query parameter.
+- Tracking results render payment, collection, tracking number, item count, and order date from API data; an object response is normalized to a one-item list.

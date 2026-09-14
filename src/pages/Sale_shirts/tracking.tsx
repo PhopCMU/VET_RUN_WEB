@@ -61,7 +61,11 @@ export default function Tracking() {
 
         <button
           onClick={() =>
-            window.open("https://track.thailandpost.com/", "_blank")
+            window.open(
+              "https://track.thailandpost.com/",
+              "_blank",
+              "noopener,noreferrer",
+            )
           }
           className="flex min-h-12 w-full items-center justify-between rounded-md border border-white/20 bg-white/10 px-4 py-3 text-sm transition-colors hover:bg-white/20"
         >

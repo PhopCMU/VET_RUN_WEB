@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { FunctionMenuSizeShirt } from "../../routers/GetRouter";
+import type { ShirtMenuResponse } from "../../routers/GetRouter";
 import { useEffect, useRef, useState, useMemo, type ChangeEvent } from "react";
 import ConfirmationSale from "./ConfirmationSale";
 import { useTranslation } from "react-i18next";
@@ -24,12 +25,8 @@ interface ShirtItem {
   quantity: number;
 }
 
-interface ShirtModel {
-  shirtmodelId: string;
-  name: string;
-  name_en?: string;
-  price: number | string;
-}
+type ShirtModel = ShirtMenuResponse["shirtModel"][number];
+type ShirtColor = ShirtMenuResponse["shirtColor"][number];
 
 type FormData = {
   fullName: string;
@@ -49,7 +46,7 @@ const SaleShirt = () => {
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [activeShirt, setActiveShirt] = useState(0);
   const [shirtModels, setShirtModels] = useState<ShirtModel[]>([]);
-  const [shirtColors, setShirtColors] = useState<any[]>([]);
+  const [shirtColors, setShirtColors] = useState<ShirtColor[]>([]);
   const [shirtSize, setShirtSize] = useState<ShirtSize[]>([]);
   const [formData, setFormData] = useState<FormData>({
     fullName: "",
@@ -61,7 +58,7 @@ const SaleShirt = () => {
 
   const listMenuShrit = async () => {
     const response = await FunctionMenuSizeShirt();
-    if (response.success) {
+    if (response.success && response.data) {
       setShirtSize(response.data.size);
       setShirtModels(response.data.shirtModel);
       setShirtColors(response.data.shirtColor);
@@ -154,7 +151,7 @@ const SaleShirt = () => {
     0,
   );
   const shippingFee = openAddress
-    ? 50 + Math.max(0, selectedQuantity - 1) * 5
+    ? 50 + Math.max(0, selectedQuantity - 1) * 10
     : 0;
   const totalPrice = shirtTotal + shippingFee;
 
@@ -339,7 +336,10 @@ const SaleShirt = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label
+                      htmlFor="buyer-full-name"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
                       {t("form_sale.data_user.fullname")}
                     </label>
                     <div className="relative">
@@ -347,6 +347,7 @@ const SaleShirt = () => {
                         badge
                       </span>
                       <input
+                        id="buyer-full-name"
                         type="text"
                         name="fullName"
                         value={formData.fullName}
@@ -358,7 +359,10 @@ const SaleShirt = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label
+                      htmlFor="buyer-phone"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
                       {t("form_sale.data_user.contact_number")}
                     </label>
                     <div className="relative">
@@ -366,6 +370,7 @@ const SaleShirt = () => {
                         call
                       </span>
                       <input
+                        id="buyer-phone"
                         type="tel"
                         name="phone"
                         value={formData.phone}
@@ -378,7 +383,10 @@ const SaleShirt = () => {
                   </div>
 
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label
+                      htmlFor="buyer-email"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
                       {t("form_sale.data_user.email")}
                     </label>
                     <div className="relative">
@@ -386,6 +394,7 @@ const SaleShirt = () => {
                         mail
                       </span>
                       <input
+                        id="buyer-email"
                         type="email"
                         name="email"
                         value={formData.email}
@@ -538,7 +547,10 @@ const SaleShirt = () => {
 
                       {/* เลือกรุ่นเสื้อ */}
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label
+                          htmlFor={`shirt-model-${index}`}
+                          className="block text-sm font-medium text-gray-700 mb-2"
+                        >
                           {t("form_sale.data_shirts.shirt_model")}
                         </label>
                         <div className="relative">
@@ -546,6 +558,7 @@ const SaleShirt = () => {
                             style
                           </span>
                           <select
+                            id={`shirt-model-${index}`}
                             value={shirt.type}
                             onChange={(e) =>
                               handleShirtChange(index, "type", e.target.value)
@@ -574,7 +587,10 @@ const SaleShirt = () => {
 
                       {/* เลือกสีเสื้อ */}
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label
+                          htmlFor={`shirt-color-${index}`}
+                          className="block text-sm font-medium text-gray-700 mb-2"
+                        >
                           {t("form_sale.data_shirts.shirt_color")}
                         </label>
                         <div className="relative">
@@ -582,6 +598,7 @@ const SaleShirt = () => {
                             style
                           </span>
                           <select
+                            id={`shirt-color-${index}`}
                             value={shirt.color}
                             onChange={(e) =>
                               handleShirtChange(index, "color", e.target.value)
@@ -610,7 +627,10 @@ const SaleShirt = () => {
 
                       {/* เลือกไซส์เสื้อ */}
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label
+                          htmlFor={`shirt-size-${index}`}
+                          className="block text-sm font-medium text-gray-700 mb-2"
+                        >
                           {t("form_sale.data_shirts.shirt_size")}
                         </label>
                         <div className="relative">
@@ -618,6 +638,7 @@ const SaleShirt = () => {
                             straighten
                           </span>
                           <select
+                            id={`shirt-size-${index}`}
                             value={shirt.size}
                             onChange={(e) =>
                               handleShirtChange(index, "size", e.target.value)

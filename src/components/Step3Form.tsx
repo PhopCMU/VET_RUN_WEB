@@ -77,7 +77,7 @@ const Step3Form: FC<Props> = ({
 
   const listMenuShrit = async () => {
     const response = await FunctionMenuSizeShirt();
-    if (response.success) {
+    if (response.success && response.data) {
       setShirtSize(
         response.data.size.filter((shirt: ShirtSize) => {
           const point = Number(shirt.point);
@@ -166,7 +166,7 @@ const Step3Form: FC<Props> = ({
     if (isDogEvent !== formData.hasDog) {
       updateFormData({ hasDog: isDogEvent });
     }
-  }, [subOption]);
+  }, [formData.hasDog, subOption, updateFormData]);
 
   useEffect(() => {
     if (
@@ -175,7 +175,7 @@ const Step3Form: FC<Props> = ({
     ) {
       updateFormData({ items: "shirt_2", model_shirt: "" });
     }
-  }, [type, formData.items, formData.model_shirt]);
+  }, [formData.items, formData.model_shirt, type, updateFormData]);
 
   const accountNumber = "667-411644-1";
   const [copied, setCopied] = useState(false);

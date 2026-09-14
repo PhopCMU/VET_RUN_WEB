@@ -1,6 +1,6 @@
 # Architecture Overview
 
-The application is a React SPA bootstrapped by `src/main.tsx`. `BrowserRouter` wraps the app; `App` provides `OpenProjectProvider`, the global shell, and environment-gated warning notices. `I18nProvider`, the skip-to-content link, `Navbar`, and the semantic `main` landmark surround the route outlet.
+The application is a React SPA bootstrapped by `src/main.tsx`. `BrowserRouter` wraps the app; `App` provides `OpenProjectProvider`, the global shell, and a TEST-only warning notice. `I18nProvider` wraps either the DEV maintenance screen or the normal shell containing the skip-to-content link, `Navbar`, and semantic `main` landmark.
 
 ## Routes
 
@@ -9,6 +9,8 @@ The application is a React SPA bootstrapped by `src/main.tsx`. `BrowserRouter` w
 - `/list/participants`: participant list/status.
 - `/sale/shirt`: shirt order form.
 - `/sale/shirt/tracking`: shirt order tracking.
+
+When `VITE_ENV` resolves to `DEV`, `src/main.tsx` renders `pages/dev_mode.tsx` instead of the normal routes. TEST and PROD render the normal route set; TEST also shows the dismissible warning modal from `App`.
 
 ## Request Flow
 
@@ -21,8 +23,8 @@ The application is a React SPA bootstrapped by `src/main.tsx`. `BrowserRouter` w
 - `src/types`, `src/configs`, `src/constant`: types, config, constants/assets.
 - `src/assets`, `public`: bundled/public assets, locales, and fonts.
 
-The tracking page imports FingerprintJS Pro React directly to obtain a visitor identifier; no separate application provider is mounted in `src/main.tsx`.
+The tracking page queries orders by normalized email; no visitor-identification provider is mounted in `src/main.tsx`.
 
 ## State and Persistence
 
-React state holds form, loading, and local shell state. `OpenProjectProvider` fetches project status once per provider lifetime using a ref guard. `App` opens a warning `AlertModal` automatically outside `PROD`; `DEV` notices are non-dismissible while `TEST` notices can be acknowledged. `localStorage` stores `language` and a temporary `items` flag. No global state library or SSR is present.
+React state holds form, loading, and local shell state. `OpenProjectProvider` fetches project status once per provider lifetime using a ref guard. `App` opens a dismissible TEST warning `AlertModal`; DEV uses the dedicated maintenance screen and PROD has no environment notice. `localStorage` stores `language` and a temporary `items` flag. No global state library or SSR is present.

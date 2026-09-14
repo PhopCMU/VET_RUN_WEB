@@ -7,9 +7,15 @@ interface Props {
   formData: any;
   onConfirm: () => void;
   onEdit: () => void;
+  isLoading: boolean;
 }
 
-const ConfirmationModal: FC<Props> = ({ formData, onConfirm, onEdit }) => {
+const ConfirmationModal: FC<Props> = ({
+  formData,
+  onConfirm,
+  onEdit,
+  isLoading,
+}) => {
   // สร้าง URL สำหรับแสดงรูปภาพ
   const [paymentImagePreview, setPaymentImagePreview] = useState<string | null>(
     null,
@@ -46,7 +52,7 @@ const ConfirmationModal: FC<Props> = ({ formData, onConfirm, onEdit }) => {
   };
 
   const isConfirmButtonDisabled =
-    !confirmedData || !acceptedRefundPolicy || !acceptedPDPA;
+    isLoading || !confirmedData || !acceptedRefundPolicy || !acceptedPDPA;
 
   const handleConfirm = () => {
     if (!isConfirmButtonDisabled) {
@@ -377,6 +383,7 @@ const ConfirmationModal: FC<Props> = ({ formData, onConfirm, onEdit }) => {
       >
         <motion.button
           onClick={onEdit}
+          disabled={isLoading}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-6 py-3 text-gray-700 shadow-sm hover:bg-gray-50"

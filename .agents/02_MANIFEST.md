@@ -9,9 +9,9 @@
 | `standards/typescript-react.md` | Implementation conventions | `tsconfig.app.json`, `eslint.config.js`, source |
 | `business/rules.md` | Registration, sale, validation behavior | page/component source |
 | `features/overview.md` | User-facing workflows and routes | `src/pages`, `src/components` |
+| `features/dev-mode.md` | DEV maintenance screen and environment gating | `src/main.tsx`, `src/pages/dev_mode.tsx`, `src/configs/conf.tsx` |
 | `overrides/README.md` | Explicit project-specific exceptions | No overrides currently found |
 
 ## Loading Policy
 
 Read this file and `00_AI_RULES.md` first. Do not load every module for a narrow task. Re-scan source when a module is stale or a claim is disputed.
-

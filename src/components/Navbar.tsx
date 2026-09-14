@@ -23,7 +23,7 @@ export default function Navbar() {
       setSearchParams({ id: "" });
       router("/");
     }
-  }, [i18n.language]);
+  }, [i18n.language, router, search, setSearchParams]);
 
   const toggleLanguage = () => {
     const newLang = language === "en" ? "th" : "en";

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Step1SelectType from "../components/Step1SelectType";
 import Step2SubOptions from "../components/Step2SubOptions";
 import Step3Form from "../components/Step3Form";
@@ -103,9 +103,9 @@ const Page = () => {
     });
   };
 
-  const updateFormData = (data: Partial<typeof formData>) => {
+  const updateFormData = useCallback((data: Partial<typeof formData>) => {
     setFormData((prev) => ({ ...prev, ...data }));
-  };
+  }, []);
 
   const clearStepData = (stepToClear: number) => {
     const newFormData: any = {};
@@ -263,7 +263,7 @@ const Page = () => {
   };
 
   const handleSubmit = async () => {
-    if (!isValid()) return;
+    if (isLoading || !isValid()) return;
     setIsLoading(true);
     setUploadProgress(0);
     const dataToSend = new FormData();
@@ -490,6 +490,7 @@ const Page = () => {
                 formData={formData}
                 onConfirm={handleSubmit}
                 onEdit={() => setStep(3)}
+                isLoading={isLoading}
               />
             )}
           </motion.div>

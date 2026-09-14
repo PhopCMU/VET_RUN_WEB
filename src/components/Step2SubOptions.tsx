@@ -8,7 +8,14 @@ interface Props {
   onSelect: (option: string) => void;
   selected: string | null;
   onBack: () => void;
-  checkLimitAnimal: limitAnimal | any;
+  checkLimitAnimal?: limitAnimal;
+}
+
+interface SubOption {
+  label: string;
+  icon: string;
+  color: string;
+  borderColor: string;
 }
 
 const Step2SubOptions: React.FC<Props> = ({
@@ -20,7 +27,7 @@ const Step2SubOptions: React.FC<Props> = ({
   const [selected, setSelected] = React.useState<string | null>(null);
   const { t } = useTranslation();
 
-  let options: any = [];
+  let options: SubOption[] = [];
 
   useEffect(() => {
     localStorage.removeItem("items");
@@ -118,7 +125,7 @@ const Step2SubOptions: React.FC<Props> = ({
       <div className="flex  md:flex-row gap-6">
         {/* Options Column */}
         <div className="w-full  space-y-3">
-          {options.map((opt: any) => {
+          {options.map((opt) => {
             // ตรวจสอบว่าเป็น option มีสุนัขหรือไม่
             const isPetOption =
               (type === "VIP" &&
@@ -127,7 +134,8 @@ const Step2SubOptions: React.FC<Props> = ({
                 opt.label === t("step2.option.funrun.label_radio2"));
 
             const isDisabled =
-              !checkLimitAnimal.not_fancy.status && isPetOption;
+              isPetOption &&
+              (!checkLimitAnimal || !checkLimitAnimal.not_fancy.status);
 
             return (
               <motion.div

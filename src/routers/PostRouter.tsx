@@ -6,7 +6,7 @@ import CryptoJS from "crypto-js";
 interface ApiResponse {
   success: boolean;
   message?: string;
-  data?: any;
+  data?: unknown;
 }
 
 /*
@@ -90,12 +90,12 @@ export const RegisterRouterCryptoJS = async (
 export const RegisterRouterCryptoJS = async (
   formDataToSend: FormData,
   setUploadProgress: (progress: number) => void
-): Promise<{ success: boolean; data?: any; message?: string }> => {
+): Promise<ApiResponse> => {
   let intervalId: number | null = null;
 
   // 1. แยกไฟล์และข้อมูลทั่วไป
   const files: Record<string, File> = {};
-  const nonFileData: Record<string, any> = {};
+  const nonFileData: Record<string, FormDataEntryValue> = {};
 
   formDataToSend.forEach((value, key) => {
     if (value instanceof File) {
@@ -180,11 +180,11 @@ export const RegisterRouterCryptoJS = async (
       success: true,
       data: response.data,
     };
-  } catch (error: any) {
+  } catch (error) {
     stopSimulatedProgress();
     setUploadProgress(0);
 
-    if (error.response?.data) {
+    if (axios.isAxiosError<ApiResponse>(error) && error.response?.data) {
       return {
         success: false,
         message: error.response.data.message || "เกิดข้อผิดพลาด",
@@ -201,12 +201,12 @@ export const RegisterRouterCryptoJS = async (
 export const SalesRouterCryptoJS = async (
   formDataToSend: FormData,
   setUploadProgress: (progress: number) => void
-): Promise<{ success: boolean; data?: any; message?: string }> => {
+): Promise<ApiResponse> => {
   let intervalId: number | null = null;
 
   // 1. แยกไฟล์และข้อมูลทั่วไป
   const files: Record<string, File> = {};
-  const nonFileData: Record<string, any> = {};
+  const nonFileData: Record<string, FormDataEntryValue> = {};
 
   formDataToSend.forEach((value, key) => {
     if (value instanceof File) {
@@ -291,11 +291,11 @@ export const SalesRouterCryptoJS = async (
       success: true,
       data: response.data,
     };
-  } catch (error: any) {
+  } catch (error) {
     stopSimulatedProgress();
     setUploadProgress(0);
 
-    if (error.response?.data) {
+    if (axios.isAxiosError<ApiResponse>(error) && error.response?.data) {
       return {
         success: false,
         message: error.response.data.message || "เกิดข้อผิดพลาด",
