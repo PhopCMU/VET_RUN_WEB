@@ -2,9 +2,10 @@ import { motion } from "framer-motion";
 import { useEffect, useState, type FC } from "react";
 import { useTranslation } from "react-i18next";
 import { AlertModal } from "./AlertModal";
+import type { RegistrationFormData } from "../types/OpenProject";
 
 interface Props {
-  formData: any;
+  formData: RegistrationFormData;
   onConfirm: () => void;
   onEdit: () => void;
   isLoading: boolean;
@@ -172,7 +173,7 @@ const ConfirmationModal: FC<Props> = ({
                 <InfoItem
                   icon="trophy"
                   label={t("step3.form_personal.select_trophy")}
-                  value={formData.items === "trophy" && ""}
+                  value={formData.items === "trophy" ? "" : undefined}
                 />
               )}
               {formData.items === "shirt_2" && (
@@ -412,7 +413,13 @@ const ConfirmationModal: FC<Props> = ({
 };
 
 // Helper component for consistent info items
-const InfoItem = ({ icon, label, value }: any) => (
+interface InfoItemProps {
+  icon: string;
+  label: string;
+  value: string | number | undefined;
+}
+
+const InfoItem = ({ icon, label, value }: InfoItemProps) => (
   <div className="flex items-start gap-2">
     <span className="material-symbols-outlined text-gray-500 mt-0.5">
       {icon}

@@ -10,7 +10,7 @@ interface Props {
 
 const Step1SelectType: React.FC<Props> = ({ onSelect }) => {
   const [selected, setSelected] = React.useState<string | null>(null);
-  const [hovered, setHovered] = useState(null);
+  const [hovered, setHovered] = useState<string | null>(null);
   const { t } = useTranslation();
 
   const options = [

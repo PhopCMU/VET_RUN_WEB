@@ -101,7 +101,7 @@ const ConfirmationSale = ({
 
   // แปลง shirtModelId เป็น label จากข้อมูลจริงที่ดึงมาจาก backend
   const getShirtLabel = (type: string) => {
-    const model = shirtModels.find((m: any) => m.shirtmodelId === type);
+    const model = shirtModels.find((m) => m.shirtmodelId === type);
 
     if (!model) return "ไม่ทราบ";
     return model.name_en ? `${model.name} [${model.name_en}]` : model.name;
@@ -109,7 +109,7 @@ const ConfirmationSale = ({
 
   // แปลง shirtColorId เป็น label
   const getColorLabel = (color: string) => {
-    const colorItem = shirtColors.find((c: any) => c.shirtcolorId === color);
+    const colorItem = shirtColors.find((c) => c.shirtcolorId === color);
     if (!colorItem) return "ไม่ทราบ";
     return colorItem.name_en
       ? `${colorItem.name} [${colorItem.name_en}]`

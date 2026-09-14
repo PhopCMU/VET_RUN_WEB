@@ -9,15 +9,18 @@ import { motion } from "framer-motion";
 import { FunctionMenuSizeShirt } from "../routers/GetRouter";
 import { useTranslation } from "react-i18next";
 import { AlertModal } from "./AlertModal";
-import type { limitAnimal } from "../types/OpenProject";
+import type {
+  limitAnimal,
+  RegistrationFormData,
+} from "../types/OpenProject";
 import vipShirtImage from "../assets/images/shirts/03-01.jpg";
 
 interface Props {
   type: string;
   subOption: string;
-  formData: any;
+  formData: RegistrationFormData;
   checkLimitAnimal: limitAnimal | undefined;
-  updateFormData: (data: any) => void;
+  updateFormData: (data: Partial<RegistrationFormData>) => void;
   onNext: () => void;
   onBack: () => void;
 }
@@ -115,7 +118,7 @@ const Step3Form: FC<Props> = ({
       updateFormData({
         animal: {
           ...(formData.animal || {}),
-          fancys: newValue,
+          fancys: newValue === true,
         },
       });
     } else if (name === "sizeId") {
@@ -125,7 +128,7 @@ const Step3Form: FC<Props> = ({
           sizeId: id,
           shirtSizeLabel: size,
         });
-      } catch (e) {
+      } catch {
         console.error("Invalid sizeId JSON");
         updateFormData({
           sizeId: "",
@@ -139,7 +142,7 @@ const Step3Form: FC<Props> = ({
           sizeId_2: id_2,
           shirtSizeLabel_2: size_2,
         });
-      } catch (e) {
+      } catch {
         console.error("Invalid sizeId JSON");
         updateFormData({
           sizeId_2: "",
@@ -394,12 +397,12 @@ const Step3Form: FC<Props> = ({
               <option value="" className="text-gray-700 ">
                 {formData.sizeId
                   ? shirtSize?.filter(
-                      (shirt: any) => shirt.shirtId === formData.sizeId,
+                      (shirt) => shirt.shirtId === formData.sizeId,
                     )[0].size
                   : t("step3.form_personal.select_size_shirt")}
               </option>
               {shirtSize &&
-                shirtSize.map((shirt: any) => (
+                shirtSize.map((shirt) => (
                   <option
                     key={shirt.shirtId}
                     value={JSON.stringify({

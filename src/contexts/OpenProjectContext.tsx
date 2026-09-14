@@ -1,16 +1,14 @@
-import { createContext, useContext } from "react";
+import { createContext } from "react";
 import type { OpenProject } from "../types/OpenProject";
 
 type OpenProjectContextType = {
-  openProject: OpenProject | any;
+  openProject: OpenProject | null;
   isLoadings: boolean;
 };
 
 const OpenProjectContext = createContext<OpenProjectContextType>({
-  openProject: {},
+  openProject: null,
   isLoadings: true,
 });
-
-export const useOpenProject = () => useContext(OpenProjectContext);
 
 export default OpenProjectContext;

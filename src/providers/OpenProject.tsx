@@ -1,6 +1,4 @@
 import React, {
-  createContext,
-  useContext,
   useEffect,
   useRef,
   useState,
@@ -8,26 +6,6 @@ import React, {
 import { FunctionOpenProject } from "../routers/GetRouter";
 import OpenMenuContext from "../contexts/OpenProjectContext";
 import type { OpenProject } from "../types/OpenProject";
-
-// 1. สร้าง context พร้อม type
-interface OpenProjectContextType {
-  openProject: OpenProject | null;
-  isLoading: boolean; // รวมทั้ง visitor + project
-  error: string | null;
-}
-
-const OpenProjectContext = createContext<OpenProjectContextType | undefined>(
-  undefined,
-);
-
-// 2. Custom Hook สำหรับใช้ context
-export const useOpenProject = () => {
-  const context = useContext(OpenProjectContext);
-  if (!context) {
-    throw new Error("useOpenProject must be used within OpenProjectProvider");
-  }
-  return context;
-};
 
 export const OpenProjectProvider: React.FC<{ children: React.ReactNode }> = ({
   children,

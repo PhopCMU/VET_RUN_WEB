@@ -1,6 +1,12 @@
 import axios from "axios";
 import { apiUrl } from "../configs/conf";
-import type { OpenProject } from "../types/OpenProject";
+import type {
+  OpenProject,
+  Participant,
+  Sponsor,
+  TrackingOrder,
+  limitAnimal,
+} from "../types/OpenProject";
 
 // import CryptoJS from "crypto-js";
 
@@ -76,20 +82,20 @@ export const FunctionMenuSizeShirt = async () => {
 
 export const FunctionLimitAnimal = async () => {
   try {
-    const response = await axios.get<ApiResponse>(
+    const response = await axios.get<ApiResponse<limitAnimal>>(
       `${apiUrl.URL_API}/vetrun/limit/animal`,
     );
 
     return response.data;
   } catch (error) {
     console.error("Error during search:", error);
-    return getErrorResponse(error);
+    return getErrorResponse<limitAnimal>(error);
   }
 };
 
 export const FunctionGetParticipantByEmail = async (email: string) => {
   try {
-    const response = await axios.get<ApiResponse>(
+    const response = await axios.get<ApiResponse<Participant[] | Participant>>(
       `${apiUrl.URL_API}/vetrun/participant/email`,
       {
         params: { email },
@@ -98,27 +104,27 @@ export const FunctionGetParticipantByEmail = async (email: string) => {
     return response.data;
   } catch (error) {
     console.error("Error during search:", error);
-    return getErrorResponse(error);
+    return getErrorResponse<Participant[] | Participant>(error);
   }
 };
 
 export const FunctionGetSponsorAll = async () => {
   try {
-    const response = await axios.get<ApiResponse>(
+    const response = await axios.get<ApiResponse<Sponsor[]>>(
       `${apiUrl.URL_API}/vetrun/sponsors`,
     );
     return response.data;
   } catch (error) {
     console.error("Error during search:", error);
-    return getErrorResponse(error);
+    return getErrorResponse<Sponsor[]>(error);
   }
 };
 
 export const FunctionGetTrackingAll = async (
   email: string,
-): Promise<ApiResponse> => {
+): Promise<ApiResponse<TrackingOrder[] | TrackingOrder>> => {
   try {
-    const response = await axios.get<ApiResponse>(
+    const response = await axios.get<ApiResponse<TrackingOrder[] | TrackingOrder>>(
       `${apiUrl.URL_API}/vetrun/tracking`,
       {
         params: { email },
@@ -130,6 +136,6 @@ export const FunctionGetTrackingAll = async (
 
     return response.data;
   } catch (error) {
-    return getErrorResponse(error);
+    return getErrorResponse<TrackingOrder[] | TrackingOrder>(error);
   }
 };

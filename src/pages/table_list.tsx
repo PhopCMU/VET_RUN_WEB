@@ -2,16 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { FunctionGetParticipantByEmail } from "../routers/GetRouter";
-
-interface Participant {
-  participantId?: string;
-  firstName?: string;
-  lastName?: string;
-  numberBib?: string;
-  nameBib?: string;
-  typeBib?: string;
-  payment?: boolean;
-}
+import type { Participant } from "../types/OpenProject";
 
 export default function Lists_participants() {
   const { t } = useTranslation();
@@ -330,7 +321,7 @@ export default function Lists_participants() {
         {/* Mobile Cards View */}
         <div className="lg:hidden space-y-3">
           {filteredParticipants.length > 0 ? (
-            filteredParticipants.map((participant: any, index: number) => {
+            filteredParticipants.map((participant, index: number) => {
               const {
                 category: displayCategory,
                 subCategory: displaySubCategory,
@@ -499,7 +490,7 @@ export default function Lists_participants() {
             </thead>
             <tbody className="divide-y divide-gray-200 bg-white">
               {filteredParticipants.length > 0 ? (
-                filteredParticipants.map((participant: any, index: number) => {
+                filteredParticipants.map((participant, index: number) => {
                   const {
                     category: displayCategory,
                     subCategory: displaySubCategory,

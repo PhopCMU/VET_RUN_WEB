@@ -10,6 +10,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ProcressLoadingModal } from "../components/ProcessLoadingModal";
 import { FunctionLimitAnimal } from "../routers/GetRouter";
 import type { limitAnimal } from "../types/OpenProject";
+import type { RegistrationFormData } from "../types/OpenProject";
 import { useNavigate } from "react-router-dom";
 
 const Page = () => {
@@ -22,9 +23,9 @@ const Page = () => {
   const hasanimal = useRef(false);
 
   const fetchLimitAnimal = async () => {
-    const response: any = await FunctionLimitAnimal();
-    if (response.success) {
-      setCheckLimitAnimal(response);
+    const response = await FunctionLimitAnimal();
+    if (response.success && response.data) {
+      setCheckLimitAnimal(response.data);
     }
   };
 
@@ -36,7 +37,7 @@ const Page = () => {
     }
   }, []);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<RegistrationFormData>({
     eventType: "",
     subOption: "",
     firstName: "",
@@ -57,6 +58,7 @@ const Page = () => {
       breed: "",
       weight: "",
       gender: "",
+      sex: "",
       fancys: false,
     },
 
@@ -108,7 +110,7 @@ const Page = () => {
   }, []);
 
   const clearStepData = (stepToClear: number) => {
-    const newFormData: any = {};
+    const newFormData: Partial<RegistrationFormData> = {};
 
     // กำหนด field ที่ควร clear ตามแต่ละ step
     if (stepToClear === 2) {
@@ -297,12 +299,15 @@ const Page = () => {
           type: "warning",
         });
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("Error during registration:", error);
-      showCustomAlert(error.message, {
+      showCustomAlert(
+        error instanceof Error ? error.message : "เกิดข้อผิดพลาดในการสมัคร",
+        {
         title: t("page.modal.error"),
         type: "error",
-      });
+        },
+      );
     } finally {
       setTimeout(() => {
         setIsLoading(false);

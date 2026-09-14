@@ -3,9 +3,10 @@ import { useState, type FormEvent } from "react";
 
 import { FunctionGetTrackingAll } from "../../routers/GetRouter";
 import { motion } from "framer-motion";
+import type { TrackingOrder } from "../../types/OpenProject";
 
 export default function Tracking() {
-  const [dataTracking, setDataTracking] = useState<any[]>([]);
+  const [dataTracking, setDataTracking] = useState<TrackingOrder[]>([]);
   const [email, setEmail] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -292,7 +293,7 @@ export default function Tracking() {
                           calendar_today
                         </span>
                         <span className="text-sm">
-                          {new Date(item.createdAt)
+                          {new Date(item.createdAt || "")
                             .toLocaleDateString("th-TH", {
                               year: "numeric",
                               month: "short",

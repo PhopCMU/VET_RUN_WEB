@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useI18nReady } from "../i18n";
 import Loading from "../components/Loading";
 import { useNavigate } from "react-router-dom";
-import { useOpenProject } from "../contexts/OpenProjectContext";
+import { useOpenProject } from "../hooks/useOpenProject";
 import { FunctionGetSponsorAll } from "../routers/GetRouter";
 import { useEffect, useRef, useState } from "react";
 import type { Sponsor } from "../types/OpenProject";
@@ -105,9 +105,10 @@ export default function Home() {
   ];
 
   const { openProject, isLoadings } = useOpenProject();
+  const projectIsOpen = openProject?.status === true;
 
   // ตรวจสอบว่าเป็น array และมีข้อมูล
-  const isArrayOfStrings = (arr: any): arr is string[] => {
+  const isArrayOfStrings = (arr: unknown): arr is string[] => {
     return Array.isArray(arr) && arr.every((item) => typeof item === "string");
   };
 
@@ -136,8 +137,8 @@ export default function Home() {
   };
 
   const fetchSponsors = async () => {
-    const response: any = await FunctionGetSponsorAll();
-    if (response.success) {
+    const response = await FunctionGetSponsorAll();
+    if (response.success && response.data) {
       setSponsors(response.data);
     }
   };
@@ -257,7 +258,7 @@ export default function Home() {
           >
             <motion.button
               onClick={() =>
-                openProject.status === true
+                projectIsOpen
                   ? router("/page/registration?id=register")
                   : ""
               }
@@ -267,7 +268,7 @@ export default function Home() {
               }}
               whileTap={{ scale: 0.98 }}
               className={`flex min-h-14 w-full items-center justify-center gap-2 rounded-md px-5 py-3 text-base font-bold shadow-sm transition-colors sm:text-lg ${
-                openProject.status === true
+                projectIsOpen
                   ? "bg-[#efc75e] text-brand-900 hover:bg-white"
                   : "cursor-not-allowed bg-white/10 text-white/45"
               }`}
@@ -275,7 +276,7 @@ export default function Home() {
               <span className="material-symbols-outlined text-xl">
                 how_to_reg
               </span>
-              {openProject.status === true
+              {projectIsOpen
                 ? t("home.register")
                 : t("home.close_register")}
             </motion.button>
@@ -295,7 +296,7 @@ export default function Home() {
 
             <motion.button
               onClick={() =>
-                openProject.status === true ? router("/sale/shirt?id=sale") : ""
+                projectIsOpen ? router("/sale/shirt?id=sale") : ""
               }
               whileHover={{
                 scale: 1.05,
@@ -303,7 +304,7 @@ export default function Home() {
               }}
               whileTap={{ scale: 0.98 }}
               className={`flex min-h-14 w-full items-center justify-center gap-2 rounded-md px-5 py-3 text-base font-bold shadow-sm transition-colors sm:text-lg ${
-                openProject.status === true
+                projectIsOpen
                   ? "bg-[#efc75e] text-brand-900 hover:bg-white"
                   : "cursor-not-allowed bg-white/10 text-white/45"
               }`}
@@ -312,7 +313,7 @@ export default function Home() {
                 point_of_sale
               </span>
 
-              {openProject.status === true
+              {projectIsOpen
                 ? t("home.sale_shirt")
                 : t("home.close_sale_shirt")}
             </motion.button>
@@ -332,7 +333,7 @@ export default function Home() {
           </motion.div>
 
           {/* Announcement */}
-          {!openProject.status && (
+          {!projectIsOpen && (
             <motion.div
               initial={{ opacity: 0, y: -15 }}
               animate={{ opacity: 1, y: 0 }}
