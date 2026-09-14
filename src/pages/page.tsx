@@ -24,8 +24,9 @@ const Page = () => {
 
   const fetchLimitAnimal = async () => {
     const response = await FunctionLimitAnimal();
-    if (response.success && response.data) {
-      setCheckLimitAnimal(response.data);
+    if (response.success && response) {
+      const limitAnimalData = response;
+      setCheckLimitAnimal(limitAnimalData as limitAnimal);
     }
   };
 

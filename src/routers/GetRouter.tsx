@@ -86,6 +86,8 @@ export const FunctionLimitAnimal = async () => {
       `${apiUrl.URL_API}/vetrun/limit/animal`,
     );
 
+
+
     return response.data;
   } catch (error) {
     console.error("Error during search:", error);
