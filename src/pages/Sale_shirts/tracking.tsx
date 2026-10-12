@@ -1,29 +1,29 @@
 import { useTranslation } from "react-i18next";
-import { useState, type FormEvent } from "react";
+import {
+  useEffect,
+  useState,
+  //  type FormEvent
+} from "react";
 
-import { FunctionGetTrackingAll } from "../../routers/GetRouter";
+import {
+  FunctionGetParticipantByNotEmail,
+  // FunctionGetTrackingAll,
+} from "../../routers/GetRouter";
 import { motion } from "framer-motion";
 import type { TrackingOrder } from "../../types/OpenProject";
 
 export default function Tracking() {
   const [dataTracking, setDataTracking] = useState<TrackingOrder[]>([]);
-  const [email, setEmail] = useState("");
-  const [hasSearched, setHasSearched] = useState(false);
+  // const [email, setEmail] = useState("");
+  // const [hasSearched, setHasSearched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const { t } = useTranslation();
 
-  const fetchData = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const normalizedEmail = email.trim().toLowerCase();
-
-    setIsLoading(true);
-    setHasSearched(true);
-    setErrorMessage("");
-    setDataTracking([]);
-
+  const fetch_non_email_participants = async () => {
+    console.log("Fetching non-email participants...");
     try {
-      const response = await FunctionGetTrackingAll(normalizedEmail);
+      const response = await FunctionGetParticipantByNotEmail();
       if (response.success && response.data) {
         setDataTracking(
           Array.isArray(response.data) ? response.data : [response.data],
@@ -33,7 +33,7 @@ export default function Tracking() {
           response.message || t("tracking.notFound", "ไม่พบข้อมูลออเดอร์"),
         );
       }
-    } catch {
+    } catch (error) {
       setErrorMessage(
         t("tracking.error", "ไม่สามารถค้นหาข้อมูลได้ กรุณาลองอีกครั้ง"),
       );
@@ -41,6 +41,41 @@ export default function Tracking() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetch_non_email_participants();
+  }, []);
+
+  // const fetchData = async (event: FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   const normalizedEmail = email.trim().toLowerCase();
+
+  //   setIsLoading(true);
+  //   setHasSearched(true);
+  //   setErrorMessage("");
+  //   setDataTracking([]);
+
+  //   try {
+  //     /** Fetch tracking data for the given email */
+  //     const response = await FunctionGetTrackingAll(normalizedEmail);
+
+  //     if (response.success && response.data) {
+  //       setDataTracking(
+  //         Array.isArray(response.data) ? response.data : [response.data],
+  //       );
+  //     } else {
+  //       setErrorMessage(
+  //         response.message || t("tracking.notFound", "ไม่พบข้อมูลออเดอร์"),
+  //       );
+  //     }
+  //   } catch {
+  //     setErrorMessage(
+  //       t("tracking.error", "ไม่สามารถค้นหาข้อมูลได้ กรุณาลองอีกครั้ง"),
+  //     );
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   return (
     <motion.div
@@ -75,7 +110,7 @@ export default function Tracking() {
         </button>
       </div>
 
-      <div className="content-panel mb-8 p-4 sm:p-5">
+      {/* <div className="content-panel mb-8 p-4 sm:p-5">
         <form onSubmit={fetchData} className="space-y-3">
           <label
             htmlFor="tracking-email"
@@ -142,7 +177,7 @@ export default function Tracking() {
             <span>{errorMessage}</span>
           </div>
         )}
-      </div>
+      </div> */}
 
       {/* Table or No Data */}
       {dataTracking.length > 0 ? (
@@ -309,7 +344,7 @@ export default function Tracking() {
             </table>
           </div>
         </div>
-      ) : hasSearched && !isLoading && !errorMessage ? (
+      ) :  !isLoading && !errorMessage ? (
         <div className="content-panel py-16 text-center">
           <span className="material-symbols-outlined text-gray-300 text-6xl mb-4">
             search_off

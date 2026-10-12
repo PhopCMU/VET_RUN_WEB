@@ -141,3 +141,17 @@ export const FunctionGetTrackingAll = async (
     return getErrorResponse<TrackingOrder[] | TrackingOrder>(error);
   }
 };
+
+
+/** search participant by not email */
+export const FunctionGetParticipantByNotEmail = async () => {
+  try {
+    const response = await axios.get<ApiResponse<Participant[] | Participant>>(
+      `${apiUrl.URL_API}/vetrun/tracking/not-email`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error during search:", error);
+    return getErrorResponse<Participant[] | Participant>(error);
+  }
+};

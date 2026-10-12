@@ -295,27 +295,32 @@ export default function Home() {
             </motion.button>
 
             <motion.button
-              onClick={() =>
-                projectIsOpen ? router("/sale/shirt?id=sale") : ""
+              // onClick={() =>
+              //   projectIsOpen ? router("/sale/shirt?id=sale") : ""
+              // }
+              onClick={() => router("/sale/shirt?id=sale")
               }
               whileHover={{
                 scale: 1.05,
                 boxShadow: "0 8px 20px -5px rgba(166, 105, 65, 0.4)",
               }}
               whileTap={{ scale: 0.98 }}
-              className={`flex min-h-14 w-full items-center justify-center gap-2 rounded-md px-5 py-3 text-base font-bold shadow-sm transition-colors sm:text-lg ${
-                projectIsOpen
-                  ? "bg-[#efc75e] text-brand-900 hover:bg-white"
-                  : "cursor-not-allowed bg-white/10 text-white/45"
-              }`}
+              // className={`flex min-h-14 w-full items-center justify-center gap-2 rounded-md px-5 py-3 text-base font-bold shadow-sm transition-colors sm:text-lg ${
+              //   projectIsOpen
+              //     ? "bg-[#efc75e] text-brand-900 hover:bg-white"
+              //     : "cursor-not-allowed bg-white/10 text-white/45"
+              // }`}
+                 className={`flex min-h-14 w-full items-center justify-center gap-2 rounded-md px-5 py-3 text-base font-bold shadow-sm transition-colors sm:text-lg bg-[#efc75e] text-brand-900 hover:bg-white`}
             >
               <span className="material-symbols-outlined text-xl">
                 point_of_sale
               </span>
 
-              {projectIsOpen
+              {/* ถ้ามีการเปิดระบบลงทะเบียน */}
+              {/* {projectIsOpen
                 ? t("home.sale_shirt")
-                : t("home.close_sale_shirt")}
+                : t("home.close_sale_shirt")} */}
+                {t("home.sale_shirt")}
             </motion.button>
 
             <motion.button
