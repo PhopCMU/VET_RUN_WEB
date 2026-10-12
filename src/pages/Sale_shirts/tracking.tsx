@@ -6,7 +6,7 @@ import {
 } from "react";
 
 import {
-  FunctionGetParticipantByNotEmail,
+  FunctionGetTrackingNonEmail,
   // FunctionGetTrackingAll,
 } from "../../routers/GetRouter";
 import { motion } from "framer-motion";
@@ -23,7 +23,7 @@ export default function Tracking() {
   const fetch_non_email_participants = async () => {
     console.log("Fetching non-email participants...");
     try {
-      const response = await FunctionGetParticipantByNotEmail();
+      const response = await FunctionGetTrackingNonEmail();
       if (response.success && response.data) {
         setDataTracking(
           Array.isArray(response.data) ? response.data : [response.data],

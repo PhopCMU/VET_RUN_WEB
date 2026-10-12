@@ -110,6 +110,19 @@ export const FunctionGetParticipantByEmail = async (email: string) => {
   }
 };
 
+export const FunctionGetParticipantNonEmail = async () => {
+  try {
+    const response = await axios.get<ApiResponse<Participant[] | Participant>>(
+      `${apiUrl.URL_API}/vetrun/participant/not-email`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error during search:", error);
+    return getErrorResponse<Participant[] | Participant>(error);
+  }
+};
+
+
 export const FunctionGetSponsorAll = async () => {
   try {
     const response = await axios.get<ApiResponse<Sponsor[]>>(
@@ -144,7 +157,7 @@ export const FunctionGetTrackingAll = async (
 
 
 /** search participant by not email */
-export const FunctionGetParticipantByNotEmail = async () => {
+export const FunctionGetTrackingNonEmail = async () => {
   try {
     const response = await axios.get<ApiResponse<Participant[] | Participant>>(
       `${apiUrl.URL_API}/vetrun/tracking/not-email`,

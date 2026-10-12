@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import { FunctionGetParticipantByEmail } from "../routers/GetRouter";
+import {
+  // FunctionGetParticipantByEmail,
+  FunctionGetParticipantNonEmail,
+} from "../routers/GetRouter";
 import type { Participant } from "../types/OpenProject";
 
 export default function Lists_participants() {
   const { t } = useTranslation();
-  const [email, setEmail] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState("");
   const [subCategory, setSubCategory] = useState("");
   const [participants, setParticipants] = useState<Participant[]>([]);
@@ -14,9 +17,9 @@ export default function Lists_participants() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const fetchDataParticipant = async (event: React.FormEvent) => {
-    event.preventDefault();
-    const normalizedEmail = email.trim().toLowerCase();
+  const fetchDataParticipant = async () => {
+  
+    // const normalizedEmail = email.trim().toLowerCase();
 
     setIsLoading(true);
     setHasSearched(true);
@@ -25,7 +28,8 @@ export default function Lists_participants() {
     setCategory("");
     setSubCategory("");
 
-    const response = await FunctionGetParticipantByEmail(normalizedEmail);
+    // const response = await FunctionGetParticipantByEmail(normalizedEmail);
+    const response = await FunctionGetParticipantNonEmail();
     if (response.success && response.data) {
       setParticipants(
         Array.isArray(response.data) ? response.data : [response.data],
@@ -35,6 +39,10 @@ export default function Lists_participants() {
     }
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    fetchDataParticipant();
+  }, []);
 
   const getCategoryFromNameBib = (nameBib?: string) => {
     if (!nameBib) return { category: "", subCategory: "" };
@@ -103,6 +111,11 @@ export default function Lists_participants() {
       category: participantCategory,
       subCategory: participantSubCategory,
     } = getCategoryFromNameBib(participant.nameBib);
+    const normalizedSearchTerm = searchTerm.trim().toLocaleLowerCase();
+    const fullName = `${participant.firstName || ""} ${participant.lastName || ""}`
+      .trim()
+      .toLocaleLowerCase();
+    const matchesSearch = !normalizedSearchTerm || fullName.includes(normalizedSearchTerm);
 
     let matchesCategory = true;
 
@@ -126,7 +139,7 @@ export default function Lists_participants() {
       matchesCategory = participantSubCategory === subCategory;
     }
 
-    return matchesCategory;
+    return matchesSearch && matchesCategory;
   });
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -153,7 +166,7 @@ export default function Lists_participants() {
         transition={{ delay: 0.2, duration: 0.5 }}
         className="content-panel mb-8 space-y-4 p-4 sm:p-5"
       >
-        <form onSubmit={fetchDataParticipant} className="space-y-3">
+        {/* <form onSubmit={fetchDataParticipant} className="space-y-3">
           <label
             htmlFor="participant-email"
             className="block text-sm font-semibold text-gray-800"
@@ -195,7 +208,28 @@ export default function Lists_participants() {
           <p id="participant-email-hint" className="text-sm text-gray-500">
             {t("table_list.email_hint")}
           </p>
-        </form>
+        </form> */}
+
+        <div className="w-full">
+          <label htmlFor="participant-search" className="sr-only">
+            {t("table_list.search")}
+          </label>
+          <div className="relative">
+          
+            <input
+              id="participant-search"
+              type="search"
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+              placeholder={t("table_list.search")}
+              className="w-full bg-white p-3 pl-11"
+            />
+          </div>
+        </div>
+
+       
+
+
 
         {errorMessage && (
           <div
